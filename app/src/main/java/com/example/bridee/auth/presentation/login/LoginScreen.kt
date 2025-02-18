@@ -1,12 +1,10 @@
 package com.example.bridee.auth.presentation.login
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -16,7 +14,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -32,12 +29,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 
-@Preview(showBackground = true)
 @Composable
 fun LoginScreen(){
 
@@ -103,71 +98,77 @@ fun LoginScreen(){
                 TextUnitType.Sp
             )
         )
-        TextField(
-            value = loginState.email.value,
-            onValueChange = {
-                loginState.email.value = it
-            },
-            placeholder = {
-                Icon(
-                    imageVector = Icons.Filled.Email,
-                    contentDescription = "Email",
-                    tint = Color(0xFFB55557)
-                )
-                Text(
-                    text = "E-mail",
-                    modifier = Modifier.offset(x = 30.dp),
-                    color = Color(0xFFC2C2C2)
-                )
-            },
-            modifier = Modifier.width(windowWidthDp - 45.dp)
-                .border(
-                    BorderStroke(width = 2.dp, color = Color(0xFF999999)),
-                    shape = RoundedCornerShape(25)
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier.height(200.dp)
+        ){
+            TextField(
+                value = loginState.email.value,
+                onValueChange = {
+                    loginState.email.value = it
+                },
+                placeholder = {
+                    Icon(
+                        imageVector = Icons.Filled.Email,
+                        contentDescription = "Email",
+                        tint = Color(0xFFB55557)
+                    )
+                    Text(
+                        text = "E-mail",
+                        modifier = Modifier.offset(x = 30.dp),
+                        color = Color(0xFFC2C2C2)
+                    )
+                },
+                modifier = Modifier.width(windowWidthDp - 45.dp)
+                    .border(
+                        BorderStroke(width = 2.dp, color = Color(0xFF999999)),
+                        shape = RoundedCornerShape(25)
+                    ),
+                colors = TextFieldDefaults.colors(
+                    unfocusedContainerColor = Color(0xFFF5F5F5),
+                    focusedContainerColor = Color(0xFFF5F5F5),
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
                 ),
-            colors = TextFieldDefaults.colors(
-                unfocusedContainerColor = Color(0xFFF5F5F5),
-                focusedContainerColor = Color(0xFFF5F5F5),
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent
-            ),
-            singleLine = true
-        )
-        TextField(
-            value = loginState.senha.value,
-            onValueChange = {
-                loginState.senha.value = it
-            },
-            visualTransformation = PasswordVisualTransformation(),
-            placeholder = {
-                Icon(
-                    imageVector = Icons.Filled.Lock,
-                    contentDescription = "Senha",
-                    tint = Color(0xFFB55557)
-                )
-                Text(
-                    text = "Senha",
-                    modifier = Modifier.offset(x = 30.dp),
-                    color = Color(0xFFC2C2C2)
-                )
-            },
-            modifier = Modifier.width(windowWidthDp - 45.dp)
-                .border(
-                    BorderStroke(width = 2.dp, color = Color(0xFF999999)),
-                    shape = RoundedCornerShape(30)
+                singleLine = true
+            )
+            TextField(
+                value = loginState.senha.value,
+                onValueChange = {
+                    loginState.senha.value = it
+                },
+                visualTransformation = PasswordVisualTransformation(),
+                placeholder = {
+                    Icon(
+                        imageVector = Icons.Filled.Lock,
+                        contentDescription = "Senha",
+                        tint = Color(0xFFB55557)
+                    )
+                    Text(
+                        text = "Senha",
+                        modifier = Modifier.offset(x = 30.dp),
+                        color = Color(0xFFC2C2C2)
+                    )
+                },
+                modifier = Modifier.width(windowWidthDp - 45.dp)
+                    .border(
+                        BorderStroke(width = 2.dp, color = Color(0xFF999999)),
+                        shape = RoundedCornerShape(30)
+                    ),
+                colors = TextFieldDefaults.colors(
+                    unfocusedContainerColor = Color(0xFFF5F5F5),
+                    focusedContainerColor = Color(0xFFF5F5F5),
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
                 ),
-            colors = TextFieldDefaults.colors(
-                unfocusedContainerColor = Color(0xFFF5F5F5),
-                focusedContainerColor = Color(0xFFF5F5F5),
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent
-            ),
-            singleLine = true,
-        )
-        Text(
-            text = "Esqueceu sua senha?",
-            fontSize = TextUnit(value = 14.0f, type = TextUnitType.Sp)
-        )
+                singleLine = true,
+            )
+            Text(
+                text = "Esqueceu sua senha?",
+                fontSize = TextUnit(value = 14.0f, type = TextUnitType.Sp)
+            )
+        }
         Button(
             onClick = {},
             colors = ButtonDefaults.buttonColors(
