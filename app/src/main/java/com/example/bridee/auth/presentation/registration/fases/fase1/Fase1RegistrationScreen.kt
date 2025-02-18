@@ -1,4 +1,4 @@
-package com.example.bridee.auth.presentation.registration
+package com.example.bridee.auth.presentation.registration.fases.fase1
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
@@ -30,14 +30,14 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.example.bridee.auth.presentation.registration.RegistrationState
 
-@Preview(showBackground = true)
 @Composable
-fun RegistrationScreen(){
+fun Fase1RegistrationScreen(navController: NavController){
 
     val registrationState by remember{
         mutableStateOf(

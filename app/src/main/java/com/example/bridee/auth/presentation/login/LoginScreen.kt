@@ -2,6 +2,7 @@ package com.example.bridee.auth.presentation.login
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -32,9 +33,11 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.example.bridee.core.nav.Screen
 
 @Composable
-fun LoginScreen(){
+fun LoginScreen(navController: NavController){
 
     val loginState by remember {
         mutableStateOf(
@@ -70,7 +73,10 @@ fun LoginScreen(){
                         value = 20.0f,
                         type = TextUnitType.Sp
                     )
-                )
+                ),
+                modifier = Modifier.clickable(enabled = true){
+                    navController.navigate(route = Screen.Fase1Registration.route)
+                }
             )
         }
         Column(
