@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.bridee.auth.presentation.login.LoginScreen
 import com.example.bridee.auth.presentation.registration.fases.fase1.Fase1RegistrationScreen
+import com.example.bridee.auth.presentation.registration.fases.fase2.Fase2RegistrationScreen
 
 @Composable
 fun NavController(){
@@ -16,6 +17,9 @@ fun NavController(){
         }
         composable(route = Screen.Fase1Registration.route) {
             Fase1RegistrationScreen(navController)
+        }
+        composable(route = Screen.Fase2Registration.route) {
+            Fase2RegistrationScreen(navController)
         }
     }
 }

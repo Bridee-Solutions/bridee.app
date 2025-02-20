@@ -27,11 +27,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.bridee.auth.presentation.registration.loadbar.LoadBar
 
-@Preview(showBackground = true)
 @Composable
-fun Fase2RegistrationScreen(){
+fun Fase2RegistrationScreen(navController: NavController){
 
     val windowWidthDp = LocalConfiguration.current.screenWidthDp.dp
     val windowHeightDp = LocalConfiguration.current.screenHeightDp.dp
@@ -102,7 +102,9 @@ fun Fase2RegistrationScreen(){
                 textAlign = TextAlign.Center,)
         }
         Button(
-            onClick = {},
+            onClick = {
+
+            },
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFFD86B67)
             ),
