@@ -6,10 +6,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
@@ -31,12 +35,7 @@ fun Fase2RegistrationScreen(){
     val windowWidthDp = LocalConfiguration.current.screenWidthDp.dp
     val windowHeightDp = LocalConfiguration.current.screenHeightDp.dp
 
-    Column(
-        modifier = Modifier.fillMaxWidth()
-            .height(windowHeightDp - 100.dp),
-//        horizontalAlignment = Alignment.CenterHorizontally,
-//        verticalArrangement = Arrangement.SpaceEvenly
-    ){
+    Column {
         Row (
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -47,7 +46,14 @@ fun Fase2RegistrationScreen(){
             )
             Text("VOLTAR")
         }
+    }
 
+    Column(
+        modifier = Modifier.fillMaxWidth()
+            .height(windowHeightDp - 100.dp),
+//        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceEvenly
+    ){
         Column(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -77,6 +83,30 @@ fun Fase2RegistrationScreen(){
             ) {
                 LoadBar(windowWidthDp - 150.dp)
             }
+        }
+        Column (
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.width(windowWidthDp)
+                .padding(35.dp, 0.dp)
+        ) {
+            Text(text = "Vamos começar a festa...")
+            Text(text = """
+                Responda a algumas perguntas rápidas e criaremos seu painel de planejamento personalizado para tornar o casamento dos seus sonhos realidade!
+            """.trimIndent(),
+                textAlign = TextAlign.Center,)
+        }
+        Button(
+            onClick = {},
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFFD86B67)
+            ),
+            modifier = Modifier.height(40.dp)
+                .width(windowWidthDp - 200.dp)
+                .align(Alignment.CenterHorizontally),
+            shape = RoundedCornerShape(25)
+        ) {
+            Text("Vamos")
         }
     }
 
