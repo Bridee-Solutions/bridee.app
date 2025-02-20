@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.bridee.auth.presentation.registration.RegistrationState
+import com.example.bridee.core.nav.Screen
 
 @Composable
 fun Fase1RegistrationScreen(navController: NavController){
@@ -203,7 +204,9 @@ fun Fase1RegistrationScreen(navController: NavController){
             )
         }
         Button(
-            onClick = {},
+            onClick = {
+                navController.navigate(route = Screen.Fase2Registration.route)
+            },
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFFD86B67)
             ),
