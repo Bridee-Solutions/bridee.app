@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 fun LoadBar(fillPercentage: Dp){
 
     Row (
-        modifier = Modifier.height(15.dp)
+        modifier = Modifier.height(10.dp)
             .width(fillPercentage)
             .clip(
                 shape = RoundedCornerShape(30)

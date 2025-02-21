@@ -1,7 +1,12 @@
 package com.example.bridee.auth.presentation.registration
 
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 
-data class RegistrationState(var email: MutableState<String>,
-    var senha: MutableState<String>,
-    var confirmarSenha: MutableState<String>)
+data class RegistrationState(
+    var email: MutableState<String> = mutableStateOf(""),
+    var senha: MutableState<String> = mutableStateOf(""),
+    var confirmarSenha: MutableState<String> = mutableStateOf(""),
+    var nome: MutableState<String> = mutableStateOf(""),
+    var nomeParceiro: MutableState<String> = mutableStateOf("")
+)

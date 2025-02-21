@@ -42,11 +42,7 @@ fun Fase1RegistrationScreen(navController: NavController){
 
     val registrationState by remember{
         mutableStateOf(
-            RegistrationState(
-                email = mutableStateOf(""),
-                senha = mutableStateOf(""),
-                confirmarSenha = mutableStateOf("")
-            )
+            RegistrationState()
         )
     }
 
@@ -205,7 +201,7 @@ fun Fase1RegistrationScreen(navController: NavController){
         }
         Button(
             onClick = {
-                navController.navigate(route = Screen.Fase2Registration.route)
+                navController.navigate(route = Screen.Fase2Registration.route, )
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFFD86B67)
