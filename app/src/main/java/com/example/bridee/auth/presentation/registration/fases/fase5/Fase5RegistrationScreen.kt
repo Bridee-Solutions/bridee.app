@@ -49,7 +49,7 @@ fun Fase5RegistrationScreen(navController: NavController){
             modifier = Modifier.fillMaxWidth()
                 .offset(x = 15.dp)
                 .clickable {
-                navController.navigate(route = Screen.Fase3Registration.route)
+                navController.navigate(route = Screen.Fase4Registration.route)
                 }
         ) {
             Icon(
@@ -113,7 +113,7 @@ fun Fase5RegistrationScreen(navController: NavController){
         }
         Button(
             onClick = {
-                navController.navigate(Screen.Fase4Registration.route)
+                navController.navigate(Screen.Fase6Registration.route)
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFFD86B67)
