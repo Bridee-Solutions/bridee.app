@@ -1,6 +1,7 @@
 package com.example.bridee.auth.presentation.registration.fases.fase2
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -42,7 +43,10 @@ fun Fase2RegistrationScreen(navController: NavController){
         modifier = Modifier.offset(x = 10.dp,y = 20.dp)
     ){
         Row (
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.clickable {
+                navController.navigate(route = Screen.Fase1Registration.route)
+            }
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
