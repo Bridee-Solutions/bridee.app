@@ -151,7 +151,7 @@ fun Fase3RegistrationScreen(navController: NavController){
 
         Button(
             onClick = {
-                navController.navigate(Screen.Fase3Registration.route)
+                navController.navigate(Screen.Fase4Registration.route)
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFFD86B67)
@@ -162,7 +162,7 @@ fun Fase3RegistrationScreen(navController: NavController){
                 .align(Alignment.CenterHorizontally),
             shape = RoundedCornerShape(25)
         ) {
-            Text("Vamos")
+            Text("Próximo")
         }
     }
 }
