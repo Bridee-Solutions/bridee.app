@@ -9,6 +9,7 @@ import com.example.bridee.auth.presentation.registration.fases.fase1.Fase1Regist
 import com.example.bridee.auth.presentation.registration.fases.fase2.Fase2RegistrationScreen
 import com.example.bridee.auth.presentation.registration.fases.fase3.Fase3RegistrationScreen
 import com.example.bridee.auth.presentation.registration.fases.fase4.Fase4RegistrationScreen
+import com.example.bridee.auth.presentation.registration.fases.fase5.Fase5RegistrationScreen
 
 @Composable
 fun NavController(){
@@ -28,6 +29,9 @@ fun NavController(){
         }
         composable(route = Screen.Fase4Registration.route) {
             Fase4RegistrationScreen(navController)
+        }
+        composable(route = Screen.Fase5Registration.route) {
+            Fase5RegistrationScreen(navController)
         }
     }
 }
