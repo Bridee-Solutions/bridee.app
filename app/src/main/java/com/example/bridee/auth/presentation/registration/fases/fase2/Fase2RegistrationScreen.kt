@@ -23,16 +23,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.bridee.auth.presentation.registration.loadbar.LoadBar
+import com.example.bridee.core.nav.Screen
 
-@Preview(showBackground = true)
 @Composable
-fun Fase2RegistrationScreen(navController: NavController?){
+fun Fase2RegistrationScreen(navController: NavController){
 
     val windowWidthDp = LocalConfiguration.current.screenWidthDp.dp
     val windowHeightDp = LocalConfiguration.current.screenHeightDp.dp
@@ -55,9 +54,9 @@ fun Fase2RegistrationScreen(navController: NavController?){
     }
 
     Column(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
             .height(windowHeightDp - 100.dp),
-//        horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly
     ){
         Column(
@@ -81,7 +80,8 @@ fun Fase2RegistrationScreen(navController: NavController?){
             Row (
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Start,
-                modifier = Modifier.width(windowWidthDp - 100.dp)
+                modifier = Modifier
+                    .width(windowWidthDp - 100.dp)
                     .clip(
                         shape = RoundedCornerShape(50)
                     )
@@ -93,7 +93,8 @@ fun Fase2RegistrationScreen(navController: NavController?){
         Column (
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
-            modifier = Modifier.width(windowWidthDp)
+            modifier = Modifier
+                .width(windowWidthDp)
                 .padding(35.dp, 0.dp)
         ) {
             Text(text = "Vamos começar a festa...")
@@ -104,12 +105,13 @@ fun Fase2RegistrationScreen(navController: NavController?){
         }
         Button(
             onClick = {
-
+                navController.navigate(Screen.Fase3Registration.route)
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFFD86B67)
             ),
-            modifier = Modifier.height(40.dp)
+            modifier = Modifier
+                .height(40.dp)
                 .width(windowWidthDp - 200.dp)
                 .align(Alignment.CenterHorizontally),
             shape = RoundedCornerShape(25)

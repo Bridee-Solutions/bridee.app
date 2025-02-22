@@ -1,51 +1,53 @@
 package com.example.bridee.auth.presentation.registration.fases.fase3
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
-import com.example.bridee.auth.presentation.registration.RegistrationState
+import androidx.navigation.NavController
 import com.example.bridee.auth.presentation.registration.loadbar.LoadBar
+import com.example.bridee.core.nav.Screen
 
-@Preview(showBackground = true)
 @Composable
-fun Fase3RegistrationScreen(){
+fun Fase3RegistrationScreen(navController: NavController){
 
     val windowWidthDp = LocalConfiguration.current.screenWidthDp.dp
     val windowHeightDp = LocalConfiguration.current.screenHeightDp.dp
 
-    val registrationState by remember {
-        RegistrationState(nome = )
-    }
-
-    Column (
-        horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier.offset(x = 10.dp,y = 20.dp)
+    Column(
+        modifier = Modifier.fillMaxWidth()
+            .height(windowHeightDp - 150.dp),
+        verticalArrangement = Arrangement.SpaceEvenly
     ){
         Row (
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.clickable {
+                navController.navigate(route = Screen.Fase2Registration.route)
+            }
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -54,14 +56,6 @@ fun Fase3RegistrationScreen(){
             )
             Text("VOLTAR")
         }
-    }
-
-    Column(
-        modifier = Modifier.fillMaxWidth()
-            .height(windowHeightDp - 100.dp),
-//        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceEvenly
-    ){
         Column(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -93,10 +87,82 @@ fun Fase3RegistrationScreen(){
             }
         }
         
-        Column () {
-            Text("Qual o seu nome")
-            TextField()
+        Column (
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier.fillMaxWidth()
+                .height(350.dp)
+        ) {
+            Text(
+                text = "Qual o seu nome?",
+                fontSize = TextUnit(
+                    value = 20.0f,
+                    type = TextUnitType.Sp
+                )
+            )
+            TextField(
+                value = "",
+                onValueChange = {
+                },
+                label = {
+                    Text("Primeiro nome")
+                },
+                modifier = Modifier.width(windowWidthDp - 45.dp)
+                    .border(
+                        BorderStroke(width = 2.dp, color = Color(0xFF999999)),
+                        shape = RoundedCornerShape(30)
+                    ),
+                colors = TextFieldDefaults.colors(
+                    unfocusedContainerColor = Color(0xFFF5F5F5),
+                    focusedContainerColor = Color(0xFFF5F5F5),
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
+                ),
+                singleLine = true
+            )
+            Text(
+                text = "Qual o nome do seu amor?",
+                fontSize = TextUnit(
+                    value = 20.0f,
+                    type = TextUnitType.Sp
+                )
+            )
+            TextField(
+                value = "",
+                onValueChange = {
+                },
+                label = {
+                    Text("Primeiro nome")
+                },
+                modifier = Modifier.width(windowWidthDp - 45.dp)
+                    .border(
+                        BorderStroke(width = 2.dp, color = Color(0xFF999999)),
+                        shape = RoundedCornerShape(30)
+                    ),
+                colors = TextFieldDefaults.colors(
+                    unfocusedContainerColor = Color(0xFFF5F5F5),
+                    focusedContainerColor = Color(0xFFF5F5F5),
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
+                ),
+                singleLine = true
+            )
         }
 
+        Button(
+            onClick = {
+                navController.navigate(Screen.Fase3Registration.route)
+            },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFFD86B67)
+            ),
+            modifier = Modifier
+                .height(40.dp)
+                .width(windowWidthDp - 200.dp)
+                .align(Alignment.CenterHorizontally),
+            shape = RoundedCornerShape(25)
+        ) {
+            Text("Vamos")
+        }
     }
 }
