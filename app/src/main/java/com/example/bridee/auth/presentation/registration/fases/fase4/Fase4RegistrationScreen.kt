@@ -152,7 +152,7 @@ fun Fase4RegistrationScreen(navController: NavController){
 
         Button(
             onClick = {
-                navController.navigate(Screen.Fase4Registration.route)
+                navController.navigate(Screen.Fase5Registration.route)
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFFD86B67)
