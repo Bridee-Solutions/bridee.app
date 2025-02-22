@@ -1,28 +1,41 @@
-package com.example.bridee.auth.presentation.registration.fases.fase6
+package com.example.bridee.auth.presentation.registration.fases.fase7
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.rememberScrollableState
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
-import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
@@ -31,7 +44,11 @@ import com.example.bridee.auth.presentation.registration.loadbar.LoadBar
 import com.example.bridee.core.nav.Screen
 
 @Composable
-fun Fase6RegistrationScreen(navController: NavController){
+fun Fase7RegistrationScreen(navController: NavController){
+
+    var offset by remember {
+        mutableStateOf(0f)
+    }
 
     val windowWidthDp = LocalConfiguration.current.screenWidthDp.dp
     val windowHeightDp = LocalConfiguration.current.screenHeightDp.dp
@@ -46,9 +63,9 @@ fun Fase6RegistrationScreen(navController: NavController){
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start,
             modifier = Modifier.fillMaxWidth()
-                .offset(x = 15.dp)
+                .offset(x = 15.dp, y = 20.dp)
                 .clickable {
-                    navController.navigate(route = Screen.Fase5Registration.route)
+                    navController.navigate(route = Screen.Fase6Registration.route)
                 }
         ) {
             Icon(
@@ -89,100 +106,51 @@ fun Fase6RegistrationScreen(navController: NavController){
                 LoadBar(windowWidthDp - 150.dp)
             }
         }
-        Column {
+        Column (
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Text(
-                text = "Quantos convidados você acha que terá?"
+                text = "Termos de uso e política de privacidade",
+                textAlign = TextAlign.Center
             )
-            Row (
-                modifier = Modifier.width(windowWidthDp - 100.dp)
-            ) {
-                Column {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        RadioButton(
-                            selected = true,
-                            onClick = {}
-                        )
-                        Text(
-                            text = "0-50"
-                        )
-                    }
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        RadioButton(
-                            selected = true,
-                            onClick = {}
-                        )
-                        Text(
-                            text = "51-100"
-                        )
-                    }
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        RadioButton(
-                            selected = true,
-                            onClick = {}
-                        )
-                        Text(
-                            text = "101-150"
-                        )
-                    }
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        RadioButton(
-                            selected = true,
-                            onClick = {}
-                        )
-                        Text(
-                            text = "151-200"
-                        )
-                    }
-                }
-                Column {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        RadioButton(
-                            selected = true,
-                            onClick = {}
-                        )
-                        Text(
-                            text = "201-300"
-                        )
-                    }
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        RadioButton(
-                            selected = true,
-                            onClick = {}
-                        )
-                        Text(
-                            text = "300"
-                        )
-                    }
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        RadioButton(
-                            selected = true,
-                            onClick = {}
-                        )
-                        Text(
-                            text = "Ainda não temos certeza"
-                        )
-                    }
-                }
-            }
+            TextField(
+                value = "",
+                onValueChange = {}, modifier = Modifier
+                    .fillMaxWidth()
+                    .height(350.dp)
+                    .padding(20.dp)
+                    .border(
+                        BorderStroke(width = 1.dp, color = Color(0x56999999)),
+                        shape = RoundedCornerShape(3)
+                    )
+                    .scrollable(
+                        orientation = Orientation.Vertical,
+                        state = rememberScrollableState {
+                            offset += it
+                            it
+                        }
+                    ),
+                colors = TextFieldDefaults.colors(
+                    unfocusedContainerColor = Color(0xFFF5F5F5),
+                    focusedContainerColor = Color(0xFFF5F5F5),
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
+                )
+            )
+        }
+        Row {
+            Checkbox(
+                checked = false,
+                onCheckedChange = {}
+            )
+            Text(
+                text = "Li e concordo com os termos de uso e política de privacidade",
+                textAlign = TextAlign.Start
+            )
         }
         Button(
-            onClick = {
-                navController.navigate(route = Screen.Fase7Registration.route)
-            },
+            onClick = {},
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFFD86B67)
             ),
@@ -195,4 +163,5 @@ fun Fase6RegistrationScreen(navController: NavController){
             Text("Próximo")
         }
     }
+
 }
