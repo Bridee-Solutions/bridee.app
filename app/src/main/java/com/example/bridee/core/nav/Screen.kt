@@ -7,4 +7,5 @@ sealed class Screen (val route: String){
     object Fase3Registration: Screen("fase3_registration")
     object Fase4Registration: Screen("fase4_registration")
     object Fase5Registration: Screen("fase5_registration")
+    object Fase6Registration: Screen("fase6_registration")
 }
