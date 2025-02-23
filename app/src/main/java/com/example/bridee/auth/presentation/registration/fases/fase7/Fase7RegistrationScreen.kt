@@ -40,7 +40,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.bridee.auth.presentation.registration.loadbar.LoadBar
+import com.example.bridee.auth.presentation.component.LoadBar
 import com.example.bridee.core.navigation.Screen
 
 @Composable

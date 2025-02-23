@@ -1,4 +1,4 @@
-package com.example.bridee.auth.presentation.registration.loadbar
+package com.example.bridee.auth.presentation.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
