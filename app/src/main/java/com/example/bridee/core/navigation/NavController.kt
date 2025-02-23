@@ -1,10 +1,11 @@
-package com.example.bridee.core.nav
+package com.example.bridee.core.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.bridee.auth.presentation.login.LoginScreen
+import com.example.bridee.auth.presentation.registration.email.EmailRegistrationScreen
 import com.example.bridee.auth.presentation.registration.fases.fase1.Fase1RegistrationScreen
 import com.example.bridee.auth.presentation.registration.fases.fase2.Fase2RegistrationScreen
 import com.example.bridee.auth.presentation.registration.fases.fase3.Fase3RegistrationScreen
@@ -40,6 +41,9 @@ fun NavController(){
         }
         composable(route = Screen.Fase7Registration.route) {
             Fase7RegistrationScreen(navController)
+        }
+        composable(route = Screen.EmailRegistration.route){
+            EmailRegistrationScreen()
         }
     }
 }

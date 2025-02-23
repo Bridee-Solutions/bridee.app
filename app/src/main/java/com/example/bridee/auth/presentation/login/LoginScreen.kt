@@ -34,7 +34,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.bridee.core.nav.Screen
+import com.example.bridee.core.navigation.Screen
 
 @Composable
 fun LoginScreen(navController: NavController){

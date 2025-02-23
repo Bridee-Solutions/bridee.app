@@ -1,4 +1,4 @@
-package com.example.bridee.core.nav
+package com.example.bridee.core.navigation
 
 sealed class Screen (val route: String){
     object Login: Screen("login")
@@ -9,4 +9,5 @@ sealed class Screen (val route: String){
     object Fase5Registration: Screen("fase5_registration")
     object Fase6Registration: Screen("fase6_registration")
     object Fase7Registration: Screen("fase7_registration")
+    object EmailRegistration: Screen("email_confirmation")
 }
