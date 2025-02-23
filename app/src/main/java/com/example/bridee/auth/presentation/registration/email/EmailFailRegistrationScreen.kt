@@ -10,6 +10,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,8 +27,9 @@ import androidx.compose.ui.unit.dp
 import com.example.bridee.R
 
 @Composable
-fun EmailRegistrationScreen(){
+fun EmailFailRegistrationScreen(){
 
+    val windowWidthDp = LocalConfiguration.current.screenWidthDp.dp
     val windowHeightDp = LocalConfiguration.current.screenHeightDp.dp
 
     Column(
@@ -75,36 +79,32 @@ fun EmailRegistrationScreen(){
                     modifier = Modifier.height(25.dp)
                 )
                 Image(
-                    painter = painterResource(R.drawable.certo),
+                    painter = painterResource(R.drawable.errado),
                     contentDescription = "E-mail image"
                 )
             }
             Column (
                 verticalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier.height(200.dp)
+                modifier = Modifier.height(250.dp)
             ) {
                 Text(
-                    text = "Enviamos um e-mail para [e-mail] para confirmar a validade do seu endereço de e-mail. Após receber o e-mail, siga o link fornecido para completar o seu registro.",
+                    text = "O link de confirmação enviado para [email] expirou. Por favor, solicite um novo e-mail de confirmação para validar seu endereço de e-mail e concluir o seu registro",
                     textAlign = TextAlign.Center
                 )
-                Row (
-                    horizontalArrangement = Arrangement.Center,
-                    modifier = Modifier.fillMaxWidth()
+                Button(
+                    onClick = {},
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFFD86B67)
+                    ),
+                    modifier = Modifier
+                        .height(40.dp)
+                        .width(windowWidthDp - 200.dp)
+                        .align(Alignment.CenterHorizontally),
+                    shape = RoundedCornerShape(25)
                 ) {
-                    Text(
-                        text = "Se você não recebeu o e-mail,"
-                    )
-                    Spacer(
-                        modifier = Modifier.width(5.dp)
-                    )
-                    Text(
-                        text = "clique aqui",
-                        color = Color(0xFFF38986),
-                        modifier = Modifier.clickable {}
-                    )
+                    Text("Enviar email")
                 }
             }
         }
     }
-
 }

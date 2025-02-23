@@ -10,4 +10,5 @@ sealed class Screen (val route: String){
     object Fase6Registration: Screen("fase6_registration")
     object Fase7Registration: Screen("fase7_registration")
     object EmailRegistration: Screen("email_confirmation")
+    object EmailFailRegistration: Screen("email_fail_confirmation")
 }
