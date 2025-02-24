@@ -14,12 +14,12 @@ import androidx.navigation.NavController
 import com.example.bridee.core.navigation.Screen
 
 @Composable
-fun ArrowBack(navController: NavController){
+fun ArrowBack(navController: NavController, previousFase: String){
 
     Row (
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.clickable {
-            navController.navigate(route = Screen.Fase2Registration.route)
+            navController.navigate(route = previousFase)
         }
     ) {
         Icon(
