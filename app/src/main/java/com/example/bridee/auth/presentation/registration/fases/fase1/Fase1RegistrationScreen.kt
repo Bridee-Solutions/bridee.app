@@ -1,7 +1,5 @@
 package com.example.bridee.auth.presentation.registration.fases.fase1
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,8 +15,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,6 +30,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.bridee.auth.presentation.component.Input
 import com.example.bridee.auth.presentation.registration.RegistrationState
 import com.example.bridee.core.navigation.Screen
 
@@ -106,9 +103,9 @@ fun Fase1RegistrationScreen(navController: NavController){
             verticalArrangement = Arrangement.SpaceEvenly,
             modifier = Modifier.height(230.dp)
         ){
-            TextField(
-                value = registrationState.email.value,
-                onValueChange = {
+            Input(
+                state = registrationState.email.value,
+                onStateChange = {
                     registrationState.email.value = it
                 },
                 placeholder = {
@@ -122,23 +119,11 @@ fun Fase1RegistrationScreen(navController: NavController){
                         modifier = Modifier.offset(x = 30.dp),
                         color = Color(0xFFC2C2C2)
                     )
-                },
-                modifier = Modifier.width(windowWidthDp - 45.dp)
-                    .border(
-                        BorderStroke(width = 2.dp, color = Color(0xFF999999)),
-                        shape = RoundedCornerShape(25)
-                    ),
-                colors = TextFieldDefaults.colors(
-                    unfocusedContainerColor = Color(0xFFF5F5F5),
-                    focusedContainerColor = Color(0xFFF5F5F5),
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent
-                ),
-                singleLine = true
+                }
             )
-            TextField(
-                value = registrationState.senha.value,
-                onValueChange = {
+            Input(
+                state = registrationState.senha.value,
+                onStateChange = {
                     registrationState.senha.value = it
                 },
                 visualTransformation = PasswordVisualTransformation(),
@@ -153,23 +138,11 @@ fun Fase1RegistrationScreen(navController: NavController){
                         modifier = Modifier.offset(x = 30.dp),
                         color = Color(0xFFC2C2C2)
                     )
-                },
-                modifier = Modifier.width(windowWidthDp - 45.dp)
-                    .border(
-                        BorderStroke(width = 2.dp, color = Color(0xFF999999)),
-                        shape = RoundedCornerShape(30)
-                    ),
-                colors = TextFieldDefaults.colors(
-                    unfocusedContainerColor = Color(0xFFF5F5F5),
-                    focusedContainerColor = Color(0xFFF5F5F5),
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent
-                ),
-                singleLine = true,
+                }
             )
-            TextField(
-                value = registrationState.confirmarSenha.value,
-                onValueChange = {
+            Input(
+                state = registrationState.confirmarSenha.value,
+                onStateChange = {
                     registrationState.confirmarSenha.value = it
                 },
                 visualTransformation = PasswordVisualTransformation(),
@@ -184,19 +157,7 @@ fun Fase1RegistrationScreen(navController: NavController){
                         modifier = Modifier.offset(x = 30.dp),
                         color = Color(0xFFC2C2C2)
                     )
-                },
-                modifier = Modifier.width(windowWidthDp - 45.dp)
-                    .border(
-                        BorderStroke(width = 2.dp, color = Color(0xFF999999)),
-                        shape = RoundedCornerShape(30)
-                    ),
-                colors = TextFieldDefaults.colors(
-                    unfocusedContainerColor = Color(0xFFF5F5F5),
-                    focusedContainerColor = Color(0xFFF5F5F5),
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent
-                ),
-                singleLine = true
+                }
             )
         }
         Button(
