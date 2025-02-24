@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.bridee.auth.presentation.component.Input
 import com.example.bridee.core.navigation.Screen
 
 @Composable
@@ -109,9 +110,9 @@ fun LoginScreen(navController: NavController){
             verticalArrangement = Arrangement.SpaceEvenly,
             modifier = Modifier.height(200.dp)
         ){
-            TextField(
-                value = loginState.email.value,
-                onValueChange = {
+            Input(
+                state = loginState.email.value,
+                onStateChange = {
                     loginState.email.value = it
                 },
                 placeholder = {
@@ -125,23 +126,11 @@ fun LoginScreen(navController: NavController){
                         modifier = Modifier.offset(x = 30.dp),
                         color = Color(0xFFC2C2C2)
                     )
-                },
-                modifier = Modifier.width(windowWidthDp - 45.dp)
-                    .border(
-                        BorderStroke(width = 2.dp, color = Color(0xFF999999)),
-                        shape = RoundedCornerShape(25)
-                    ),
-                colors = TextFieldDefaults.colors(
-                    unfocusedContainerColor = Color(0xFFF5F5F5),
-                    focusedContainerColor = Color(0xFFF5F5F5),
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent
-                ),
-                singleLine = true
+                }
             )
-            TextField(
-                value = loginState.senha.value,
-                onValueChange = {
+            Input(
+                state = loginState.senha.value,
+                onStateChange = {
                     loginState.senha.value = it
                 },
                 visualTransformation = PasswordVisualTransformation(),
@@ -156,19 +145,7 @@ fun LoginScreen(navController: NavController){
                         modifier = Modifier.offset(x = 30.dp),
                         color = Color(0xFFC2C2C2)
                     )
-                },
-                modifier = Modifier.width(windowWidthDp - 45.dp)
-                    .border(
-                        BorderStroke(width = 2.dp, color = Color(0xFF999999)),
-                        shape = RoundedCornerShape(30)
-                    ),
-                colors = TextFieldDefaults.colors(
-                    unfocusedContainerColor = Color(0xFFF5F5F5),
-                    focusedContainerColor = Color(0xFFF5F5F5),
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent
-                ),
-                singleLine = true,
+                }
             )
             Text(
                 text = "Esqueceu sua senha?",
