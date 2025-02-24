@@ -16,18 +16,18 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun Input(
-    state: MutableState<String>,
-    visualTransformation: VisualTransformation,
-    placeholder: @Composable () -> Unit
+    state: String,
+    onStateChange: (String) -> Unit,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    placeholder: @Composable () -> Unit,
+    singleLine: Boolean = true
 ){
 
     val windowWidthDp = LocalConfiguration.current.screenWidthDp.dp
 
     TextField(
-        value = state.value,
-        onValueChange = {
-            state.value = it
-        },
+        value = state,
+        onValueChange = onStateChange,
         visualTransformation = visualTransformation,
         placeholder = placeholder,
         modifier = Modifier.width(windowWidthDp - 45.dp)
@@ -41,6 +41,6 @@ fun Input(
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent
         ),
-        singleLine = true,
+        singleLine = singleLine,
     )
 }
