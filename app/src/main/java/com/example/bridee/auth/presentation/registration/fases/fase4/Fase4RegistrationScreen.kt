@@ -16,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,14 +24,15 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.bridee.auth.presentation.component.Header
+import com.example.bridee.auth.presentation.component.Input
+import com.example.bridee.auth.presentation.registration.RegistrationState
 import com.example.bridee.core.navigation.Screen
 
 @Composable
-fun Fase4RegistrationScreen(navController: NavController){
+fun Fase4RegistrationScreen(registrationState: RegistrationState, navController: NavController){
 
     val windowWidthDp = LocalConfiguration.current.screenWidthDp.dp
     val windowHeightDp = LocalConfiguration.current.screenHeightDp.dp
-
 
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -84,21 +86,11 @@ fun Fase4RegistrationScreen(navController: NavController){
             Text(
                 text = "Ótimo! vamos adicionar ao seu plano."
             )
-            TextField(
-                value = "",
-                onValueChange = {},
-                modifier = Modifier.width(windowWidthDp - 60.dp)
-                    .border(
-                        BorderStroke(width = 2.dp, color = Color(0xFF999999)),
-                        shape = RoundedCornerShape(30)
-                    ),
-                colors = TextFieldDefaults.colors(
-                    unfocusedContainerColor = Color(0xFFF5F5F5),
-                    focusedContainerColor = Color(0xFFF5F5F5),
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent
-                ),
-                singleLine = true
+            Input(
+                state = registrationState.local.value,
+                onStateChange = {
+                    registrationState.local.value = it
+                },
             )
         }
 

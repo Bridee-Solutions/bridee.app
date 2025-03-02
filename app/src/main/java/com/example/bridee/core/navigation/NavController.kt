@@ -1,9 +1,17 @@
 package com.example.bridee.core.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import com.example.bridee.auth.domain.RegistrationSharedViewModel
 import com.example.bridee.auth.presentation.login.LoginScreen
 import com.example.bridee.auth.presentation.registration.email.EmailFailRegistrationScreen
 import com.example.bridee.auth.presentation.registration.email.EmailRegistrationScreen
@@ -22,26 +30,43 @@ fun NavController(){
         composable(route = Screen.Login.route) {
             LoginScreen(navController)
         }
-        composable(route = Screen.Fase1Registration.route) {
-            Fase1RegistrationScreen(navController)
-        }
-        composable(route = Screen.Fase2Registration.route) {
-            Fase2RegistrationScreen(navController)
-        }
-        composable(route = Screen.Fase3Registration.route){
-            Fase3RegistrationScreen(navController)
-        }
-        composable(route = Screen.Fase4Registration.route) {
-            Fase4RegistrationScreen(navController)
-        }
-        composable(route = Screen.Fase5Registration.route) {
-            Fase5RegistrationScreen(navController)
-        }
-        composable(route = Screen.Fase6Registration.route) {
-            Fase6RegistrationScreen(navController)
-        }
-        composable(route = Screen.Fase7Registration.route) {
-            Fase7RegistrationScreen(navController)
+        navigation(
+            route = Screen.Cadastro.route,
+            startDestination = Screen.Fase1Registration.route
+        ){
+            composable(route = Screen.Fase1Registration.route) {
+                val viewModel = it.sharedViewModel<RegistrationSharedViewModel>(navController)
+                val registrationState = viewModel.sharedRegistrationObject
+                Fase1RegistrationScreen(registrationState, navController)
+            }
+            composable(route = Screen.Fase2Registration.route) {
+                Fase2RegistrationScreen(navController)
+            }
+            composable(route = Screen.Fase3Registration.route){
+                val viewModel = it.sharedViewModel<RegistrationSharedViewModel>(navController)
+                val registrationState = viewModel.sharedRegistrationObject
+                Fase3RegistrationScreen(registrationState, navController)
+            }
+            composable(route = Screen.Fase4Registration.route) {
+                val viewModel = it.sharedViewModel<RegistrationSharedViewModel>(navController)
+                val registrationState = viewModel.sharedRegistrationObject
+                Fase4RegistrationScreen(registrationState, navController)
+            }
+            composable(route = Screen.Fase5Registration.route) {
+                val viewModel = it.sharedViewModel<RegistrationSharedViewModel>(navController)
+                val registrationState = viewModel.sharedRegistrationObject
+                Fase5RegistrationScreen(registrationState, navController)
+            }
+            composable(route = Screen.Fase6Registration.route) {
+                val viewModel = it.sharedViewModel<RegistrationSharedViewModel>(navController)
+                val registrationState = viewModel.sharedRegistrationObject
+                Fase6RegistrationScreen(registrationState, navController)
+            }
+            composable(route = Screen.Fase7Registration.route) {
+                val viewModel = it.sharedViewModel<RegistrationSharedViewModel>(navController)
+                val registrationState = viewModel.sharedRegistrationObject
+                Fase7RegistrationScreen(registrationState, navController)
+            }
         }
         composable(route = Screen.EmailRegistration.route){
             EmailRegistrationScreen()
@@ -50,4 +75,15 @@ fun NavController(){
             EmailFailRegistrationScreen()
         }
     }
+}
+
+@Composable
+inline fun <reified T: ViewModel> NavBackStackEntry.sharedViewModel(
+    navController: NavController
+): T{
+    val navGraphRoute = destination.parent?.route ?: viewModel()
+    val parentEntry = remember(this) {
+        navController.getBackStackEntry(navGraphRoute)
+    }
+    return viewModel(parentEntry)
 }

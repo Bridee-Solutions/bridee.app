@@ -1,7 +1,6 @@
 package com.example.bridee.auth.presentation.registration.fases.fase5
 
 import DateDefaults
-import android.service.autofill.DateTransformation
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -18,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,7 +28,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
-import androidx.compose.ui.input.key.type
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
@@ -36,18 +35,15 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.bridee.auth.presentation.component.Header
-import com.example.bridee.auth.presentation.component.Input
 import com.example.bridee.auth.presentation.component.MaskVisualTransformation
+import com.example.bridee.auth.presentation.registration.RegistrationState
 import com.example.bridee.core.navigation.Screen
 
 @Composable
-fun Fase5RegistrationScreen(navController: NavController){
+fun Fase5RegistrationScreen(registrationState: RegistrationState,navController: NavController){
 
     val windowWidthDp = LocalConfiguration.current.screenWidthDp.dp
     val windowHeightDp = LocalConfiguration.current.screenHeightDp.dp
-    var dateState by remember {
-        mutableStateOf("")
-    }
     var isDeletingCharacter by remember {
         mutableStateOf(false)
     }
@@ -78,11 +74,11 @@ fun Fase5RegistrationScreen(navController: NavController){
                 modifier = Modifier.width(250.dp)
             )
             TextField(
-                value = dateState,
+                value = registrationState.dataCasamento.value,
                 onValueChange = {
-                    if(dateState.length < DateDefaults.DATE_LENGTH ||
+                    if(registrationState.dataCasamento.value.length < DateDefaults.DATE_LENGTH ||
                         isDeletingCharacter){
-                        dateState = it
+                        registrationState.dataCasamento.value = it
                     }
                 },
                 visualTransformation = MaskVisualTransformation(DateDefaults.DATE_MASK),

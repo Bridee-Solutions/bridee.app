@@ -2,6 +2,7 @@ package com.example.bridee.core.navigation
 
 sealed class Screen (val route: String){
     object Login: Screen("login")
+    object Cadastro: Screen("cadastro")
     object Fase1Registration: Screen("fase1_registration")
     object Fase2Registration: Screen("fase2_registration")
     object Fase3Registration: Screen("fase3_registration")

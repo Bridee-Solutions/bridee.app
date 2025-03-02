@@ -1,5 +1,6 @@
 package com.example.bridee.auth.presentation.registration.fases.fase1
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,9 +17,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,13 +34,7 @@ import com.example.bridee.auth.presentation.registration.RegistrationState
 import com.example.bridee.core.navigation.Screen
 
 @Composable
-fun Fase1RegistrationScreen(navController: NavController){
-
-    val registrationState by remember{
-        mutableStateOf(
-            RegistrationState()
-        )
-    }
+fun Fase1RegistrationScreen(registrationState: RegistrationState, navController: NavController){
 
     val windowWidthDp = LocalConfiguration.current.screenWidthDp.dp
     val windowHeightDp = LocalConfiguration.current.screenHeightDp.dp
@@ -68,7 +61,10 @@ fun Fase1RegistrationScreen(navController: NavController){
                         value = 20.0f,
                         type = TextUnitType.Sp
                     )
-                )
+                ),
+                modifier = Modifier.clickable(enabled = true) {
+                    navController.navigate(route = Screen.Login.route)
+                }
             )
         }
         Column(

@@ -8,5 +8,7 @@ data class RegistrationState(
     var senha: MutableState<String> = mutableStateOf(""),
     var confirmarSenha: MutableState<String> = mutableStateOf(""),
     var nome: MutableState<String> = mutableStateOf(""),
-    var nomeParceiro: MutableState<String> = mutableStateOf("")
+    var nomeParceiro: MutableState<String> = mutableStateOf(""),
+    var local: MutableState<String> = mutableStateOf(""),
+    var dataCasamento: MutableState<String> = mutableStateOf("")
 )

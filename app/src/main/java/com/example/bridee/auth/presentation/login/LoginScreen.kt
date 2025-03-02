@@ -76,7 +76,7 @@ fun LoginScreen(navController: NavController){
                     )
                 ),
                 modifier = Modifier.clickable(enabled = true){
-                    navController.navigate(route = Screen.Fase1Registration.route)
+                    navController.navigate(route = Screen.Cadastro.route)
                 }
             )
         }
