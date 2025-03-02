@@ -17,7 +17,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,6 +32,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
+import androidx.core.text.isDigitsOnly
 import androidx.navigation.NavController
 import com.example.bridee.auth.presentation.component.Header
 import com.example.bridee.auth.presentation.component.MaskVisualTransformation
@@ -76,7 +76,10 @@ fun Fase5RegistrationScreen(registrationState: RegistrationState,navController: 
             TextField(
                 value = registrationState.dataCasamento.value,
                 onValueChange = {
-                    if(registrationState.dataCasamento.value.length < DateDefaults.DATE_LENGTH ||
+                    if(registrationState.dataCasamento.value.length < DateDefaults.DATE_LENGTH){
+                        isDeletingCharacter = false
+                    }
+                    if((registrationState.dataCasamento.value.length < DateDefaults.DATE_LENGTH && it.isDigitsOnly()) ||
                         isDeletingCharacter){
                         registrationState.dataCasamento.value = it
                     }
