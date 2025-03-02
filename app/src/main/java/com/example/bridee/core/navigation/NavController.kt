@@ -18,7 +18,7 @@ import com.example.bridee.auth.presentation.registration.fases.fase7.Fase7Regist
 @Composable
 fun NavController(){
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = Screen.Fase5Registration.route){
+    NavHost(navController = navController, startDestination = Screen.Login.route){
         composable(route = Screen.Login.route) {
             LoginScreen(navController)
         }
