@@ -19,7 +19,7 @@ fun Input(
     state: String,
     onStateChange: (String) -> Unit,
     visualTransformation: VisualTransformation = VisualTransformation.None,
-    placeholder: @Composable () -> Unit,
+    placeholder: @Composable () -> Unit = {},
     singleLine: Boolean = true
 ){
 
