@@ -22,6 +22,7 @@ import com.example.bridee.auth.presentation.registration.fases.fase4.Fase4Regist
 import com.example.bridee.auth.presentation.registration.fases.fase5.Fase5RegistrationScreen
 import com.example.bridee.auth.presentation.registration.fases.fase6.Fase6RegistrationScreen
 import com.example.bridee.auth.presentation.registration.fases.fase7.Fase7RegistrationScreen
+import com.example.bridee.calculadora.presentation.screens.CalculadoraScreen
 
 @Composable
 fun NavController(){
@@ -73,6 +74,9 @@ fun NavController(){
         }
         composable(route = Screen.EmailFailRegistration.route){
             EmailFailRegistrationScreen()
+        }
+        composable(route = Screen.Calculadora.route) {
+            CalculadoraScreen()
         }
     }
 }

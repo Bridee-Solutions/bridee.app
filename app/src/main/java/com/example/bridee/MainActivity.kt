@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.example.bridee.core.navigation.NavController
 import com.example.bridee.ui.theme.BrideeTheme
+import com.example.bridee.calculadora.presentation.screens.CalculadoraScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -13,7 +14,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             BrideeTheme {
-                NavController()
+                // NavController()
+                CalculadoraScreen()
             }
         }
     }
