@@ -66,7 +66,7 @@ fun TopBar() {
         // Tarefas
         MenuItem(
             iconRes = R.drawable.ic_tarefas,
-            text = "Tarefas",
+            text = "Tarefass",
             isSelected = selectedTool.value == Tool.TAREFAS,
             onClick = { selectedTool.value = Tool.TAREFAS }
         )
