@@ -11,7 +11,6 @@ import com.example.bridee.R
 
 val playfairDisplay = FontFamily(Font(R.font.playfair_display))
 val productSans = FontFamily(Font(R.font.product_sans))
-val qlassy = FontFamily(Font(R.font.qlassy))
 
 // Set of Material typography styles to start with
 val Typography = Typography(
@@ -22,33 +21,24 @@ val Typography = Typography(
     ),
     titleMedium  = TextStyle(
         fontFamily = playfairDisplay,
-        fontWeight = FontWeight.Bold,
-        fontSize = 28.sp
+        fontWeight = FontWeight.Normal,
+        fontSize = 25.sp
     ),
     titleSmall  = TextStyle(
         fontFamily = playfairDisplay,
         fontWeight = FontWeight.Bold,
-        fontSize = 24.sp
+        fontSize = 22.sp
     ),
     bodyLarge = TextStyle(
         fontFamily = productSans,
         fontWeight = FontWeight.Normal,
-        fontSize = 16.sp
+        fontSize = 17.sp
     ),
     bodyMedium = TextStyle(
         fontFamily = productSans,
         fontWeight = FontWeight.Normal,
-        fontSize = 14.sp
-    ),
-    bodySmall  = TextStyle(
-        fontFamily = qlassy,
-        fontWeight = FontWeight.Bold,
-        fontSize = 20.sp
-    ),
-    labelLarge  = TextStyle(
-        fontFamily = qlassy,
-        fontWeight = FontWeight.Normal,
-        fontSize = 16.sp
+        fontSize = 15.sp
     )
+
 
 )
