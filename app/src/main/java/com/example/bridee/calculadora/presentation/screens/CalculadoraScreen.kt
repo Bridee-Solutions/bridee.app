@@ -1,24 +1,32 @@
 package com.example.bridee.calculadora.presentation.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.bridee.R
-
+import com.example.bridee.ui.theme.BrideeTheme
 
 enum class Tool {
     TAREFAS,
@@ -28,101 +36,115 @@ enum class Tool {
 
 @Composable
 fun CalculadoraScreen() {
-    Column(modifier = Modifier.fillMaxSize().padding(20.dp)) {
-        // Barra de navegação superior
-        Spacer(modifier = Modifier.height(20.dp))
+    Column(modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)) {
 
-        Text(
-            text = "Ferramentas",
-            fontFamily = FontFamily(Font(R.font.playfair_display)),
-            fontSize = 24.sp,
-            modifier = Modifier.align(Alignment.CenterHorizontally))
+
+        FerramentasSection()
         Spacer(modifier = Modifier.height(16.dp))
-
-        // Passar o estado de seleção para a TopBar
-        TopBar()
-
-        Spacer(modifier = Modifier.height(16.dp))
-
         ControleDeGastoCard()
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        CategoriaItem(nome = "Fornecedores", despesas = "10 despesas", valor = "R$2.900")
-        CategoriaItem(nome = "Moda e Beleza", despesas = "10 despesas", valor = "R$1.900")
-        CategoriaItem(nome = "Decoração", despesas = "5 despesas", valor = "R$5.600")
     }
+
+
 }
 
 @Composable
-fun TopBar() {
+fun FerramentasSection() {
     val selectedTool = remember { mutableStateOf(Tool.CALCULADORA) }
 
-    Row(
-        modifier = Modifier.fillMaxWidth().padding(16.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color(0xFFF9F9F9))            ,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Tarefas
-        MenuItem(
-            iconRes = R.drawable.ic_tarefas,
-            text = "Tarefass",
-            isSelected = selectedTool.value == Tool.TAREFAS,
-            onClick = { selectedTool.value = Tool.TAREFAS }
+        Spacer(modifier = Modifier.height(40.dp))
+        Text(
+            text = "Ferramentas",
+            fontSize = 24.sp,
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.align(Alignment.CenterHorizontally)
         )
 
-        // Calculadora
-        MenuItem(
-            iconRes = R.drawable.ic_calculadora,
-            text = "Calculadora",
-            isSelected = selectedTool.value == Tool.CALCULADORA,
-            onClick = { selectedTool.value = Tool.CALCULADORA }
-        )
+        Spacer(modifier = Modifier.height(16.dp))
 
-        // Convidados
-        MenuItem(
-            iconRes = R.drawable.ic_convidados,
-            text = "Convidados",
-            isSelected = selectedTool.value == Tool.CONVIDADOS,
-            onClick = { selectedTool.value = Tool.CONVIDADOS }
-        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            FerramentaItem(
+                nome = "Tarefas",
+                iconeRes = R.drawable.ic_tarefas,
+                ativo = selectedTool.value == Tool.TAREFAS,
+                onClick = { selectedTool.value = Tool.TAREFAS }
+            )
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            FerramentaItem(
+                nome = "Calculadora",
+                iconeRes = R.drawable.ic_calculadora,
+                ativo = selectedTool.value == Tool.CALCULADORA,
+                onClick = { selectedTool.value = Tool.CALCULADORA }
+            )
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            FerramentaItem(
+                nome = "Convidados",
+                iconeRes = R.drawable.ic_convidados,
+                ativo = selectedTool.value == Tool.CONVIDADOS,
+                onClick = { selectedTool.value = Tool.CONVIDADOS }
+            )
+
+
+
+        }
+        Spacer(modifier = Modifier.height(40.dp))
     }
 }
 
 @Composable
-fun MenuItem(iconRes: Int, text: String, isSelected: Boolean, onClick: () -> Unit) {
-    val rosaSelecionado = Color(0xFFDD7B78)
-
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
+fun FerramentaItem(nome: String, iconeRes: Int, ativo: Boolean, onClick: () -> Unit) {
+    Box(
         modifier = Modifier
-            .clickable(onClick = onClick)
-            .background(
-                if (isSelected) Color.White else Color.Transparent,
-                shape = RoundedCornerShape(12.dp)
-            )
-            .padding(vertical = 8.dp, horizontal = 16.dp)
-
+            .width(100.dp)
+            .height(70.dp)
+            .clickable { onClick() }
+            .background(if (ativo) Color.White else Color.LightGray.copy(alpha = 0.5f))
     ) {
-        Icon(
-            painter = painterResource(id = iconRes),
-            contentDescription = text,
-            modifier = Modifier.size(40.dp),
-            tint = if (isSelected) rosaSelecionado  else Color.Black // Rosa se selecionado, preto caso contrário
-        )
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(
-            text = text,
-            fontSize = 13.sp,
-            color = if (isSelected) rosaSelecionado  else Color.Black // Rosa se selecionado, preto caso contrário
-        )
-        if (isSelected) {
-            Spacer(modifier = Modifier.height(4.dp))
+        
+        if (ativo) {
             Box(
                 modifier = Modifier
-                    .height(2.dp)
-                    .width(40.dp)
-                    .background(rosaSelecionado)
+                    .height(5.dp)
+                    .fillMaxWidth()
+                    .align(Alignment.BottomCenter)
+                    .background(Color(0xFFE57373))
+
+            )
+        }
+
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            Icon(
+                painter = painterResource(id = iconeRes),
+                contentDescription = nome,
+                tint = if (ativo) Color(0xFFE57373) else Color.Gray,
+                modifier = Modifier.size(32.dp)
+            )
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Text(
+                text = nome,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Medium,
+                color = if (ativo) Color.Black else Color.Gray
             )
         }
     }
@@ -130,11 +152,20 @@ fun MenuItem(iconRes: Int, text: String, isSelected: Boolean, onClick: () -> Uni
 
 
 
+
 @Composable
 fun ControleDeGastoCard() {
-    Card(modifier = Modifier.fillMaxWidth(), elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .border(1.dp, Color(0xFFD9D9D9)) // Borda cinza claro
+            .background(Color.White)
+    ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Text(text = "Controle de Gasto", fontSize = 18.sp)
+            Text(
+                text = "Controle de Gasto",
+                style = MaterialTheme.typography.titleMedium // Usando o estilo titleLarge
+            )
 
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -144,10 +175,17 @@ fun ControleDeGastoCard() {
             Text(text = "Resta: R$60.000")
             LinearProgressIndicator(progress = 0.66f, modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp))
 
-            Text(text = "Orçamento total: R$90.000", fontSize = 16.sp, fontWeight = androidx.compose.ui.text.font.FontWeight.Bold)
+            Text(
+                text = "Orçamento total: R$90.000",
+                fontSize = 16.sp,
+                fontWeight = androidx.compose.ui.text.font.FontWeight.Bold
+            )
         }
     }
 }
+
+
+
 
 @Composable
 fun CategoriaItem(nome: String, despesas: String, valor: String) {
@@ -159,5 +197,13 @@ fun CategoriaItem(nome: String, despesas: String, valor: String) {
             }
             Text(text = valor, fontSize = 14.sp, fontWeight = androidx.compose.ui.text.font.FontWeight.Bold)
         }
+    }
+}
+
+@Preview(showSystemUi = true)
+@Composable
+fun PreviewCalculadoraScreen() {
+    BrideeTheme {
+        CalculadoraScreen()
     }
 }
