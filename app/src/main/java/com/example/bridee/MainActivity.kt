@@ -12,6 +12,7 @@ import com.example.bridee.calculadora.presentation.screens.CalculadoraScreen
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setTheme(R.style.Theme_Bridee)
 
         // Ativa a ocultação da barra de navegação e de status
         window.decorView.systemUiVisibility = (

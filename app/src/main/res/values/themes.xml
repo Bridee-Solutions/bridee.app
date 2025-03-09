@@ -2,4 +2,8 @@
 <resources>
 
     <style name="Theme.Bridee" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="Theme.Bridee.Splash" parent="Theme.Bridee">
+        <item name="android:windowBackground">@color/cor_splash</item>
+    </style>
 </resources>
