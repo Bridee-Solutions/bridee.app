@@ -16,13 +16,13 @@ val productSans = FontFamily(Font(R.font.product_sans))
 val Typography = Typography(
     titleLarge  = TextStyle(
         fontFamily = playfairDisplay,
-        fontWeight = FontWeight.Bold,
+        fontWeight = FontWeight.Normal,
         fontSize = 30.sp
     ),
     titleMedium  = TextStyle(
         fontFamily = playfairDisplay,
         fontWeight = FontWeight.Normal,
-        fontSize = 25.sp
+        fontSize = 23.sp
     ),
     titleSmall  = TextStyle(
         fontFamily = playfairDisplay,

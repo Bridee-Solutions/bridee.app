@@ -14,10 +14,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
@@ -31,21 +34,79 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.bridee.R
+import com.example.bridee.ui.theme.BrideeTheme
+
+data class SubcategoriaItemData(
+    val nome: String,
+    val valor: String
+)
+
 
 @Composable
 fun CategoriaDetalhesScreen() {
+
     val scrollState = rememberScrollState()
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
-            .verticalScroll(scrollState)
+
     ) {
+        tituloCategoria("Moda & Beleza")
         ControleGastoDetalhes()
         Subcategorias()
+    }
+}
+
+
+
+@Composable
+fun tituloCategoria(nomeCategoria: String) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
+    ) {
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 0.dp, top = 20.dp)
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.seta),
+                contentDescription = "Voltar",
+                tint = Color(0xFFA09F9F),
+                modifier = Modifier.size(39.dp)
+            )
+        }
+
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = nomeCategoria,
+                fontSize = 24.sp,
+                style = MaterialTheme.typography.titleLarge
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Icon(
+                painter = painterResource(id = R.drawable.ic_moda_beleza),
+                contentDescription = "Ícone $nomeCategoria",
+                tint = Color.Unspecified,
+                modifier = Modifier.size(70.dp)
+            )
+        }
     }
 }
 
@@ -56,7 +117,7 @@ fun ControleGastoDetalhes() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(240.dp)
+            .height(220.dp)
             .padding(19.dp)
             .background(Color.White, RoundedCornerShape(20.dp))
             .border(1.dp, Color(0xFFD9D9D9), RoundedCornerShape(20.dp))
@@ -121,43 +182,59 @@ fun ControleGastoDetalhes() {
 
 @Composable
 fun Subcategorias() {
-    Box(
+    val subcategoriasList = listOf(
+        SubcategoriaItemData("Vestido de madrinha", "R$500"),
+        SubcategoriaItemData("Sapato de madrinha",  "R$700"),
+        SubcategoriaItemData("Vestido de noiva", "R$6.000"),
+        SubcategoriaItemData("Maquiagem",  "R$1.200"),
+        SubcategoriaItemData("Acessórios",  "R$950")
+    )
+
+    Column( // <-- Alterado para Column para organizar os elementos corretamente
         modifier = Modifier
             .fillMaxWidth()
             .background(Color.White)
             .border(1.dp, Color(0xFFD9D9D9), RoundedCornerShape(1.dp))
+            .padding(16.dp) // Adicionado padding geral
+    ) {
+        // Título e botão de adicionar
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp), // Pequeno espaçamento abaixo
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "Subcategorias",
+                style = MaterialTheme.typography.titleMedium,
+                color = Color(0xFF484646),
+            )
 
-    )  {
-        Column(modifier = Modifier.padding(16.dp)) {
-            // Título e botão de adicionar
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "Subcategorias",
-                    style = MaterialTheme.typography.titleMedium,
-                    color = Color(0xFF484646),
-                )
+            Text(
+                text = "+ SUBCATEGORIA",
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color(0xFFD77C8C),
+                modifier = Modifier.clickable { }
+            )
+        }
 
-                Text(
-                    text = "+ SUBCATEGORIA",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = Color(0xFFD77C8C),
-                    modifier = Modifier.clickable { }
-                )
+        Spacer(modifier = Modifier.height(8.dp)) // Adicionando espaçamento antes da lista
+
+        LazyColumn(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            items(subcategoriasList) { item ->
+                SubcategoriaItem(item)
+                Spacer(modifier = Modifier.height(8.dp))
             }
-            Spacer(modifier = Modifier.height(15.dp))
-
-
-
         }
     }
 }
 
+
 @Composable
-fun SubcategoriaItem(item: CategoriaItem) {
+fun SubcategoriaItem(item: SubcategoriaItemData) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -165,16 +242,12 @@ fun SubcategoriaItem(item: CategoriaItem) {
             .background(Color.White)
             .padding(vertical = 8.dp, horizontal = 12.dp)
     ) {
+
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(
-                painter = painterResource(id = item.icon),
-                contentDescription = null,
-                tint = Color(0xFFD77C8C),
-                modifier = Modifier.size(32.dp)
-            )
+
             Spacer(modifier = Modifier.width(12.dp))
             Column(
                 modifier = Modifier
@@ -185,12 +258,7 @@ fun SubcategoriaItem(item: CategoriaItem) {
                         color = Color(0xFF484646)
                     )
                 )
-                Text(
-                    text = item.despesas,
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        color = Color(0xFF5C5757)
-                    )
-                )
+
             }
             Text(
                 text = item.valor,
@@ -206,5 +274,12 @@ fun SubcategoriaItem(item: CategoriaItem) {
                 )
             }
         }
+    }
+}
+@Preview(showSystemUi = true)
+@Composable
+fun PreviewCategoriaDetalhesScreen() {
+    BrideeTheme {
+        CategoriaDetalhesScreen()
     }
 }

@@ -26,8 +26,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             BrideeTheme {
                 // NavController()
-                // CalculadoraScreen()
-                CategoriaDetalhesScreen()
+                CalculadoraScreen()
+                // CategoriaDetalhesScreen()
             }
         }
     }

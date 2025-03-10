@@ -52,6 +52,7 @@ fun CalculadoraScreen() {
         CategoriaScreen()
     }
 }
+data class CategoriaItem(val nome: String, val despesas: String, val valor: String, val icon: Int)
 
 @Composable
 fun FerramentasSection() {
@@ -265,7 +266,6 @@ fun CategoriaScreen() {
 
     )  {
     Column(modifier = Modifier.padding(16.dp)) {
-        // Título e botão de adicionar
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -294,7 +294,7 @@ fun CategoriaScreen() {
         )
 
         categorias.forEachIndexed { index, item ->
-            CategoriaCard(item)
+            CategoriaCard(item, onClick = { })
 
             if (index < categorias.size - 1) {
                 Divider(
@@ -309,12 +309,13 @@ fun CategoriaScreen() {
 }
 
 @Composable
-fun CategoriaCard(item: CategoriaItem) {
+fun CategoriaCard(item: CategoriaItem, onClick: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
             .background(Color.White)
+            .clickable { onClick() }
             .padding(vertical = 8.dp, horizontal = 12.dp)
     ) {
         Row(
@@ -362,7 +363,6 @@ fun CategoriaCard(item: CategoriaItem) {
 }
 
 
-data class CategoriaItem(val nome: String, val despesas: String, val valor: String, val icon: Int)
 
 @Preview(showSystemUi = true)
 @Composable
