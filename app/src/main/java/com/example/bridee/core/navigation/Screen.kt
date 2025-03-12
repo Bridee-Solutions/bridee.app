@@ -13,4 +13,7 @@ sealed class Screen (val route: String){
     object EmailRegistration: Screen("email_confirmation")
     object EmailFailRegistration: Screen("email_fail_confirmation")
     object Calculadora : Screen("calculadora")
+    object CategoriaDetalhes : Screen("categoria_detalhes/{nome}/{icon}") {
+        fun createRoute(nome: String, icon: Int) = "categoria_detalhes/$nome/$icon"
+    }
 }

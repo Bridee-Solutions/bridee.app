@@ -153,7 +153,9 @@ fun LoginScreen(navController: NavController){
             )
         }
         Button(
-            onClick = {},
+            onClick = {
+                navController.navigate(Screen.Calculadora.route)
+            },
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFFD86B67)
             ),

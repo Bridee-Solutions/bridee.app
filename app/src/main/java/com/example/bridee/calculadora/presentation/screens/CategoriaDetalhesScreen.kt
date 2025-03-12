@@ -1,5 +1,6 @@
 package com.example.bridee.calculadora.presentation.screens
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -20,9 +21,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
@@ -34,11 +33,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.bridee.R
+import com.example.bridee.core.navigation.Screen
 import com.example.bridee.ui.theme.BrideeTheme
 
 data class SubcategoriaItemData(
@@ -48,7 +48,7 @@ data class SubcategoriaItemData(
 
 
 @Composable
-fun CategoriaDetalhesScreen() {
+fun CategoriaDetalhesScreen(nomeCategoria: String, icon: Int, navController: NavController) {
 
     val scrollState = rememberScrollState()
 
@@ -58,7 +58,7 @@ fun CategoriaDetalhesScreen() {
             .background(Color.White)
 
     ) {
-        tituloCategoria("Moda & Beleza")
+        tituloCategoria(nomeCategoria, icon, navController)
         ControleGastoDetalhes()
         Subcategorias()
     }
@@ -67,7 +67,8 @@ fun CategoriaDetalhesScreen() {
 
 
 @Composable
-fun tituloCategoria(nomeCategoria: String) {
+fun tituloCategoria(nomeCategoria: String, icon: Int, navController: NavController) {
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -79,12 +80,19 @@ fun tituloCategoria(nomeCategoria: String) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 0.dp, top = 20.dp)
+
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.seta),
                 contentDescription = "Voltar",
                 tint = Color(0xFFA09F9F),
-                modifier = Modifier.size(39.dp)
+                modifier = Modifier
+                    .size(39.dp)
+                    .clickable {
+                        Log.d("NAVIGATION", "Navegação chamadaaaaaaa")
+                        navController.popBackStack()
+                    }
+
             )
         }
 
@@ -101,7 +109,7 @@ fun tituloCategoria(nomeCategoria: String) {
             Spacer(modifier = Modifier.height(8.dp))
 
             Icon(
-                painter = painterResource(id = R.drawable.ic_moda_beleza),
+                painter = painterResource(id = icon),
                 contentDescription = "Ícone $nomeCategoria",
                 tint = Color.Unspecified,
                 modifier = Modifier.size(70.dp)
@@ -190,18 +198,18 @@ fun Subcategorias() {
         SubcategoriaItemData("Acessórios",  "R$950")
     )
 
-    Column( // <-- Alterado para Column para organizar os elementos corretamente
+    Column( //
         modifier = Modifier
             .fillMaxWidth()
             .background(Color.White)
             .border(1.dp, Color(0xFFD9D9D9), RoundedCornerShape(1.dp))
-            .padding(16.dp) // Adicionado padding geral
+            .padding(16.dp)
     ) {
-        // Título e botão de adicionar
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 8.dp), // Pequeno espaçamento abaixo
+                .padding(bottom = 8.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -219,7 +227,7 @@ fun Subcategorias() {
             )
         }
 
-        Spacer(modifier = Modifier.height(8.dp)) // Adicionando espaçamento antes da lista
+        Spacer(modifier = Modifier.height(8.dp))
 
         LazyColumn(
             modifier = Modifier.fillMaxWidth()
@@ -274,12 +282,5 @@ fun SubcategoriaItem(item: SubcategoriaItemData) {
                 )
             }
         }
-    }
-}
-@Preview(showSystemUi = true)
-@Composable
-fun PreviewCategoriaDetalhesScreen() {
-    BrideeTheme {
-        CategoriaDetalhesScreen()
     }
 }

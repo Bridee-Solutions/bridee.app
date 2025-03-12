@@ -7,10 +7,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.bridee.auth.domain.RegistrationSharedViewModel
 import com.example.bridee.auth.presentation.login.LoginScreen
 import com.example.bridee.auth.presentation.registration.email.EmailFailRegistrationScreen
@@ -23,6 +25,7 @@ import com.example.bridee.auth.presentation.registration.fases.fase5.Fase5Regist
 import com.example.bridee.auth.presentation.registration.fases.fase6.Fase6RegistrationScreen
 import com.example.bridee.auth.presentation.registration.fases.fase7.Fase7RegistrationScreen
 import com.example.bridee.calculadora.presentation.screens.CalculadoraScreen
+import com.example.bridee.calculadora.presentation.screens.CategoriaDetalhesScreen
 
 @Composable
 fun NavController(){
@@ -76,7 +79,18 @@ fun NavController(){
             EmailFailRegistrationScreen()
         }
         composable(route = Screen.Calculadora.route) {
-            CalculadoraScreen()
+            CalculadoraScreen(navController)
+        }
+        composable(
+            route = Screen.CategoriaDetalhes.route,
+            arguments = listOf(
+                navArgument("nome") { type = NavType.StringType },
+                navArgument("icon") { type = NavType.IntType }
+            )
+        ) { backStackEntry ->
+            val nome = backStackEntry.arguments?.getString("nome") ?: ""
+            val icon = backStackEntry.arguments?.getInt("icon") ?: 0
+            CategoriaDetalhesScreen(nome, icon, navController = navController)
         }
     }
 }

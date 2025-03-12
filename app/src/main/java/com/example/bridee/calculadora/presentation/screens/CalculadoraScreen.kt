@@ -27,7 +27,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.bridee.R
+import com.example.bridee.core.navigation.Screen
 import com.example.bridee.ui.theme.BrideeTheme
 
 enum class Tool {
@@ -36,8 +41,10 @@ enum class Tool {
     CONVIDADOS
 }
 
+
+
 @Composable
-fun CalculadoraScreen() {
+fun CalculadoraScreen(navController: NavController) {
     val scrollState = rememberScrollState()
 
     Column(
@@ -49,7 +56,7 @@ fun CalculadoraScreen() {
         FerramentasSection()
         Spacer(modifier = Modifier.height(16.dp))
         ControleDeGastoCard()
-        CategoriaScreen()
+        CategoriaScreen(navController = navController)
     }
 }
 data class CategoriaItem(val nome: String, val despesas: String, val valor: String, val icon: Int)
@@ -257,7 +264,7 @@ fun ControleDeGastoCard() {
 
 
 @Composable
-fun CategoriaScreen() {
+fun CategoriaScreen(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -294,8 +301,14 @@ fun CategoriaScreen() {
         )
 
         categorias.forEachIndexed { index, item ->
-            CategoriaCard(item, onClick = { })
+            // Card da categoria
+            CategoriaCard(
+                item = item,
+                onClick = {
 
+                    navController.navigate(Screen.CategoriaDetalhes.createRoute(item.nome, item.icon))
+                }
+            )
             if (index < categorias.size - 1) {
                 Divider(
                     color = Color(0xFFE8E8E8),
@@ -315,7 +328,9 @@ fun CategoriaCard(item: CategoriaItem, onClick: () -> Unit) {
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
             .background(Color.White)
-            .clickable { onClick() }
+            .clickable { onClick()
+
+            }
             .padding(vertical = 8.dp, horizontal = 12.dp)
     ) {
         Row(
@@ -367,7 +382,9 @@ fun CategoriaCard(item: CategoriaItem, onClick: () -> Unit) {
 @Preview(showSystemUi = true)
 @Composable
 fun PreviewCalculadoraScreen() {
+    val navController = rememberNavController()
+
     BrideeTheme {
-        CalculadoraScreen()
+        CalculadoraScreen(navController = navController)
     }
 }
