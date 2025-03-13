@@ -14,17 +14,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(R.style.Theme_Bridee)
-<<<<<<< Updated upstream
 
-        // msg para Ian: ativa a ocultação da barra de navegação e de status. acho q fica mais bonito sei la
-        window.decorView.systemUiVisibility = (
-                View.SYSTEM_UI_FLAG_FULLSCREEN or
-                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
-                        View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                )
 
-=======
->>>>>>> Stashed changes
         enableEdgeToEdge()
         setContent {
             BrideeTheme {
