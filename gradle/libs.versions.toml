@@ -9,7 +9,11 @@ lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.10.0"
 composeBom = "2024.04.01"
 navigationCompose = "2.8.6"
+<<<<<<< Updated upstream
 androidx-material3 = "1.1.2"
+=======
+material3 = "1.2.0"
+>>>>>>> Stashed changes
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -26,7 +30,12 @@ androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+<<<<<<< Updated upstream
 androidx-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "androidx-material3" }
+=======
+androidx-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
+
+>>>>>>> Stashed changes
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
