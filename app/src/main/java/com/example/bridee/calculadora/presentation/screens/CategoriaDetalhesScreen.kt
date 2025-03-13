@@ -19,20 +19,29 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -40,6 +49,10 @@ import androidx.navigation.compose.rememberNavController
 import com.example.bridee.R
 import com.example.bridee.core.navigation.Screen
 import com.example.bridee.ui.theme.BrideeTheme
+import com.example.bridee.ui.theme.cinza
+import com.example.bridee.ui.theme.pretoMedio
+import com.example.bridee.ui.theme.rosa
+import com.seuapp.presentation.components.CustomModal
 
 data class SubcategoriaItemData(
     val nome: String,
@@ -165,7 +178,7 @@ fun ControleGastoDetalhes() {
                     .fillMaxWidth()
                     .height(30.dp)
                     .padding(vertical = 4.dp),
-                color = Color(0xFFDD7B78)
+                color = rosa
             )
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -188,6 +201,7 @@ fun ControleGastoDetalhes() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Subcategorias() {
     val subcategoriasList = listOf(
@@ -197,6 +211,8 @@ fun Subcategorias() {
         SubcategoriaItemData("Maquiagem",  "R$1.200"),
         SubcategoriaItemData("Acessórios",  "R$950")
     )
+
+    var showAddSubcategoriaModal by remember { mutableStateOf(false) }
 
     Column( //
         modifier = Modifier
@@ -223,7 +239,7 @@ fun Subcategorias() {
                 text = "+ SUBCATEGORIA",
                 style = MaterialTheme.typography.bodyMedium,
                 color = Color(0xFFD77C8C),
-                modifier = Modifier.clickable { }
+                modifier = Modifier.clickable {showAddSubcategoriaModal = true  }
             )
         }
 
@@ -238,6 +254,81 @@ fun Subcategorias() {
             }
         }
     }
+    // Modal para adicionar subcategoria
+    CustomModal (
+        showModal = showAddSubcategoriaModal,
+        onDismissRequest = { showAddSubcategoriaModal = false },
+        title = "Adicionar subcategoria",
+        content = {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 16.dp)
+                ,
+                horizontalAlignment = Alignment.Start
+            ) {
+
+                OutlinedTextField(
+                    value = "",
+                    onValueChange = { /* Atualizar estado */ },
+                    label = {
+                        Text(
+                            text = "Nome da Subcategoria",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = pretoMedio
+                        )
+                    },
+                    singleLine = true,
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        focusedBorderColor = cinza,
+                        unfocusedBorderColor = cinza
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 16.dp)
+                )
+
+
+                OutlinedTextField(
+                    value = "",
+                    onValueChange = { /* Atualizar estado */ },
+                    label = {
+                        Text(
+                            text = "Orçamento",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = pretoMedio
+                        )
+                    },
+                    singleLine = true,
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        focusedBorderColor = cinza,
+                        unfocusedBorderColor = cinza
+                    ),
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        keyboardType = KeyboardType.Number
+                    ),
+                    leadingIcon = {
+                        Text(
+                            text = "R$",
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = Color.Gray
+                        )
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+        },
+        onConfirm = {
+            // Lógica para salvar a subcategoria
+            println("Subcategoria salva!")
+            showAddSubcategoriaModal = false
+        },
+        onCancel = {
+            // Lógica para cancelar
+            showAddSubcategoriaModal = false
+        }
+    )
+
 }
 
 

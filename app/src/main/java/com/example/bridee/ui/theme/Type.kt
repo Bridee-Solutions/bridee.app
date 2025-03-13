@@ -21,13 +21,13 @@ val Typography = Typography(
     ),
     titleMedium  = TextStyle(
         fontFamily = playfairDisplay,
-        fontWeight = FontWeight.Normal,
+        fontWeight = FontWeight.Medium,
         fontSize = 23.sp
     ),
     titleSmall  = TextStyle(
         fontFamily = playfairDisplay,
-        fontWeight = FontWeight.Bold,
-        fontSize = 22.sp
+        fontWeight = FontWeight.Normal,
+        fontSize = 23.sp
     ),
     bodyLarge = TextStyle(
         fontFamily = productSans,
@@ -38,7 +38,13 @@ val Typography = Typography(
         fontFamily = productSans,
         fontWeight = FontWeight.Normal,
         fontSize = 15.sp
+    ),
+    bodySmall= TextStyle(
+        fontFamily = productSans,
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp
     )
+
 
 
 )

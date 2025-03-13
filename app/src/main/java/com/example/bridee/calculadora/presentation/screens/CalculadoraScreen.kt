@@ -9,6 +9,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.material3.AlertDialogDefaults.containerColor
 import androidx.compose.runtime.Composable
@@ -24,9 +26,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -34,6 +43,10 @@ import androidx.navigation.compose.rememberNavController
 import com.example.bridee.R
 import com.example.bridee.core.navigation.Screen
 import com.example.bridee.ui.theme.BrideeTheme
+import com.example.bridee.ui.theme.cinza
+import com.example.bridee.ui.theme.pretoMedio
+import com.example.bridee.ui.theme.rosa
+import com.seuapp.presentation.components.CustomModal
 
 enum class Tool {
     TAREFAS,
@@ -54,8 +67,9 @@ fun CalculadoraScreen(navController: NavController) {
             .verticalScroll(scrollState)
     ) {
         FerramentasSection()
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(10.dp))
         ControleDeGastoCard()
+        Spacer(modifier = Modifier.height(10.dp))
         CategoriaScreen(navController = navController)
     }
 }
@@ -124,7 +138,7 @@ fun FerramentaItem(nome: String, iconeRes: Int, ativo: Boolean, onClick: () -> U
             .width(100.dp)
             .height(70.dp)
             .clickable { onClick() }
-            .background(if (ativo) Color.White else Color.LightGray.copy(alpha = 0.5f))
+            .background(if (ativo) Color.White else cinza.copy(alpha = 0.5f))
     ) {
         
         if (ativo) {
@@ -165,8 +179,12 @@ fun FerramentaItem(nome: String, iconeRes: Int, ativo: Boolean, onClick: () -> U
 
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ControleDeGastoCard() {
+    var showEditModal by remember { mutableStateOf(false) }
+    var novoOrcamento by remember { mutableStateOf("") }
+    val orcamentoAtual = "R$90.000"
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -180,11 +198,26 @@ fun ControleDeGastoCard() {
             modifier = Modifier.
             padding(16.dp)
         ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
             Text(
                 text = "Controle de Gasto",
                 color = Color(0xFF484646),
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleSmall
             )
+                IconButton(
+                    onClick = { showEditModal = true } // Abre o modal de edição
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Edit, // Ícone de editar
+                        contentDescription = "Editar orçamento",
+                        tint = Color(0xFF9B9B9B) // Cor rosa
+                    )
+                }
+                }
 
             Spacer(modifier = Modifier.height(12.dp))
 
@@ -210,7 +243,7 @@ fun ControleDeGastoCard() {
                     .fillMaxWidth()
                     .height(30.dp)
                     .padding(vertical = 4.dp),
-                color = Color(0xFFDD7B78)
+                color = rosa
             )
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -237,7 +270,7 @@ fun ControleDeGastoCard() {
                     .fillMaxWidth()
                     .height(30.dp)
                     .padding(vertical = 4.dp),
-                color = Color(0xFFDD7B78)
+                color = rosa
             )
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -255,71 +288,187 @@ fun ControleDeGastoCard() {
                     style = MaterialTheme.typography.bodyLarge
                 )
             }
-
         }
     }
-}
 
+    // Modal de edição
+    CustomModal(
+        showModal = showEditModal,
+        onDismissRequest = { showEditModal = false },
+        title = "Editar orçamento geral",
+        content = {
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalAlignment = Alignment.Start
+            ) {
+                Text(
+                    text = "Orçamento atual: $orcamentoAtual",
+                    color = pretoMedio,
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier
+                        .padding(bottom = 6.dp),
+                )
+                OutlinedTextField(
+                    value = novoOrcamento,
+                    onValueChange = { novoValor ->
+                        novoOrcamento = novoValor.filter { it.isDigit() }
+                    },
+                    label = {
+                        Text("Novo orçamento",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = pretoMedio) },
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        keyboardType = KeyboardType.Number
+                    ),
+                    leadingIcon = {
+                        Text(
+                            text = "R$",
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = cinza
+                        )
+                    },
+                    shape = RoundedCornerShape(12.dp),
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        focusedBorderColor = cinza,
+                        unfocusedBorderColor = cinza
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp)
+                )
+            }
+        },
+        onConfirm = {
+            // Lógica para salvar a edição
+            println("Novo orçamento salvo: $novoOrcamento")
+            showEditModal = false
+        },
+        onCancel = {
+            // Lógica para cancelar a edição
+            novoOrcamento = ""
+            showEditModal = false
+        }
+    )
+}
 
 
 
 @Composable
 fun CategoriaScreen(navController: NavController) {
+    var showModal by remember { mutableStateOf(false) }
+    var novaCategoria by remember {
+        mutableStateOf(TextFieldValue(""))
+    }
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .background(Color.White)
             .border(1.dp, Color(0xFFD9D9D9), RoundedCornerShape(1.dp))
-
-    )  {
-    Column(modifier = Modifier.padding(16.dp)) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = "Categoria",
-                style = MaterialTheme.typography.titleMedium,
-                color = Color(0xFF484646),
-            )
-
-            Text(
-                text = "+ CATEGORIA",
-                style = MaterialTheme.typography.bodyMedium,
-                color = Color(0xFFD77C8C),
-                modifier = Modifier.clickable { }
-            )
-        }
-        Spacer(modifier = Modifier.height(15.dp))
-
-        // Lista de categorias
-        val categorias = listOf(
-            CategoriaItem("Fornecedores", "10 despesas", "R$2.900", R.drawable.ic_fornecedores),
-            CategoriaItem("Moda e Beleza", "10 despesas", "R$1.900", R.drawable.ic_moda_beleza),
-            CategoriaItem("Decoração", "5 despesas", "R$5.600", R.drawable.ic_decoracao)
-        )
-
-        categorias.forEachIndexed { index, item ->
-            // Card da categoria
-            CategoriaCard(
-                item = item,
-                onClick = {
-
-                    navController.navigate(Screen.CategoriaDetalhes.createRoute(item.nome, item.icon))
-                }
-            )
-            if (index < categorias.size - 1) {
-                Divider(
-                    color = Color(0xFFE8E8E8),
-                    thickness = 1.dp,
-                    modifier = Modifier.padding(vertical = 8.dp)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Categoria",
+                    style = MaterialTheme.typography.titleSmall,
+                    color = Color(0xFF484646)
                 )
+
+                Text(
+                    text = "+ CATEGORIA",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color(0xFFD77C8C),
+                    modifier = Modifier.clickable {
+                        showModal = true
+                    }
+                )
+            }
+
+            Spacer(modifier = Modifier.height(15.dp))
+
+            // Lista de categorias
+            val categorias = listOf(
+                CategoriaItem("Fornecedores", "10 despesas", "R$2.900", R.drawable.ic_fornecedores),
+                CategoriaItem("Moda e Beleza", "10 despesas", "R$1.900", R.drawable.ic_moda_beleza),
+                CategoriaItem("Decoração", "5 despesas", "R$5.600", R.drawable.ic_decoracao)
+            )
+
+            categorias.forEachIndexed { index, item ->
+                // Card da categoria
+                CategoriaCard(
+                    item = item,
+                    onClick = {
+                        navController.navigate(Screen.CategoriaDetalhes.createRoute(item.nome, item.icon))
+                    }
+                )
+
+                if (index < categorias.size - 1) {
+                    Divider(
+                        color = Color(0xFFE8E8E8),
+                        thickness = 1.dp,
+                        modifier = Modifier.padding(vertical = 8.dp)
+                    )
+                }
             }
         }
     }
-    }
+
+    // Modal para adicionar nova categoria
+
+    CustomModal (
+        showModal = showModal,
+        onDismissRequest = { showModal = false },
+        title = "Adicionar nova categoria",
+        content = {
+            TextField(
+                value = novaCategoria,
+                onValueChange = { novaCategoria = it },
+                label = { Text("Nome da categoria", style = MaterialTheme.typography.bodyMedium) },
+                singleLine = true,
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = Color.White,
+                    unfocusedContainerColor = Color.White,
+                    focusedTextColor = Color.Black,
+                    unfocusedTextColor = Color.Gray,
+                    focusedLabelColor = Color.Black,
+                    unfocusedLabelColor = Color.Gray,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
+
+
+                ),
+                shape = RoundedCornerShape(8.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(60.dp)
+                    .border(
+                        width = 1.dp,
+                        color = Color.LightGray,
+                        shape = RoundedCornerShape(8.dp)
+                    )
+            )
+        },
+        onConfirm = {
+            // Lógica para adicionar a nova categoria
+            if (novaCategoria.text.isNotBlank()) {
+                println("Nova categoria: ${novaCategoria.text}")
+                showModal = false
+                novaCategoria = TextFieldValue("")
+            }
+        },
+        onCancel = {
+            showModal = false
+        }
+    )
 }
+
 
 @Composable
 fun CategoriaCard(item: CategoriaItem, onClick: () -> Unit) {
@@ -376,6 +525,7 @@ fun CategoriaCard(item: CategoriaItem, onClick: () -> Unit) {
         }
     }
 }
+
 
 
 
