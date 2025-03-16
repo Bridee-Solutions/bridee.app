@@ -2,12 +2,14 @@ package com.example.bridee.auth.presentation.registration.fases.fase3
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -17,6 +19,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.bridee.auth.presentation.component.Header
 import com.example.bridee.auth.presentation.component.Input
@@ -47,34 +50,37 @@ fun Fase3RegistrationScreen(registrationState: RegistrationState, navController:
         ) {
             Text(
                 text = "Qual o seu nome?",
-                fontSize = TextUnit(
-                    value = 20.0f,
-                    type = TextUnitType.Sp
-                )
+                style = MaterialTheme.typography.titleMedium
             )
             Column {
-                Text("Primeiro nome")
+                Text("Primeiro nome",
+                style = MaterialTheme.typography.bodyLarge.copy(fontSize = 19.sp))
+                Spacer(modifier = Modifier.height(5.dp))
+
                 Input(
                     state = registrationState.nome.value,
                     onStateChange = {
                         registrationState.nome.value = it
-                    }
+                    },
+                    height = 50.dp
                 )
             }
             Text(
                 text = "Qual o nome do seu amor?",
-                fontSize = TextUnit(
-                    value = 20.0f,
-                    type = TextUnitType.Sp
-                )
+                style = MaterialTheme.typography.titleMedium
             )
             Column {
-                Text("Primeiro nome")
+                Text("Primeiro nome",
+                style = MaterialTheme.typography.bodyLarge.copy(fontSize = 19.sp)
+                )
+                Spacer(modifier = Modifier.height(5.dp))
+
                 Input(
                     state = registrationState.nomeParceiro.value,
                     onStateChange = {
                         registrationState.nomeParceiro.value = it
-                    }
+                    },
+                    height = 50.dp
                 )
             }
         }

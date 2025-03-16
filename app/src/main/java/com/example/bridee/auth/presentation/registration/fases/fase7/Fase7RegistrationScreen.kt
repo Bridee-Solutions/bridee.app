@@ -16,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -31,6 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.bridee.auth.presentation.component.Header
 import com.example.bridee.auth.presentation.registration.RegistrationState
@@ -64,7 +66,8 @@ fun Fase7RegistrationScreen(registrationState: RegistrationState,navController: 
         ) {
             Text(
                 text = "Termos de uso e política de privacidade",
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.titleMedium.copy(fontSize = 21.sp),
             )
             TextField(
                 value = "",

@@ -1,9 +1,11 @@
 package com.example.bridee.auth.presentation.registration.fases.fase1
 
+import BrideeLogo
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -15,6 +17,7 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
@@ -23,11 +26,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.bridee.auth.presentation.component.Input
 import com.example.bridee.auth.presentation.registration.RegistrationState
@@ -45,23 +50,16 @@ fun Fase1RegistrationScreen(registrationState: RegistrationState, navController:
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
+        Spacer(modifier = Modifier.height(5.dp))
         Row {
             Text(
                 text = "Já possui uma conta? ",
-                fontSize = TextUnit(
-                    value = 20.0f,
-                    type = TextUnitType.Sp
-                )
+                style = MaterialTheme.typography.titleSmall
             )
             Text(
                 text = "Faça login",
-                style = TextStyle(
-                    color = Color(0xFFB55557),
-                    fontSize = TextUnit(
-                        value = 20.0f,
-                        type = TextUnitType.Sp
-                    )
-                ),
+                style = MaterialTheme.typography.titleSmall.copy(color = Color(0xFFB55557),
+                    fontWeight = FontWeight.Bold),
                 modifier = Modifier.clickable(enabled = true) {
                     navController.navigate(route = Screen.Login.route)
                 }
@@ -70,13 +68,7 @@ fun Fase1RegistrationScreen(registrationState: RegistrationState, navController:
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                text = "bridee.",
-                fontSize = TextUnit(
-                    value = 48.0f,
-                    type = TextUnitType.Sp
-                )
-            )
+            BrideeLogo(fontSize = 50.sp)
             Text(
                 text = "O match perfeito para o dia dos seus sonhos",
                 fontSize = TextUnit(
@@ -86,11 +78,8 @@ fun Fase1RegistrationScreen(registrationState: RegistrationState, navController:
             )
         }
         Text(
-            text = "Crie uma conta e comece a planejar seu casamento",
-            fontSize = TextUnit(
-                22.0f,
-                TextUnitType.Sp
-            ),
+            text = "Crie uma conta e comece a planejar seu casamento.",
+            style = MaterialTheme.typography.titleMedium.copy(fontSize = 21.sp),
             textAlign = TextAlign.Center,
             modifier = Modifier.width(windowWidthDp - 80.dp)
         )
@@ -115,7 +104,8 @@ fun Fase1RegistrationScreen(registrationState: RegistrationState, navController:
                         modifier = Modifier.offset(x = 30.dp),
                         color = Color(0xFFC2C2C2)
                     )
-                }
+                },
+
             )
             Input(
                 state = registrationState.senha.value,
@@ -134,7 +124,8 @@ fun Fase1RegistrationScreen(registrationState: RegistrationState, navController:
                         modifier = Modifier.offset(x = 30.dp),
                         color = Color(0xFFC2C2C2)
                     )
-                }
+                },
+
             )
             Input(
                 state = registrationState.confirmarSenha.value,
@@ -153,7 +144,8 @@ fun Fase1RegistrationScreen(registrationState: RegistrationState, navController:
                         modifier = Modifier.offset(x = 30.dp),
                         color = Color(0xFFC2C2C2)
                     )
-                }
+                },
+
             )
         }
         Button(
@@ -172,20 +164,12 @@ fun Fase1RegistrationScreen(registrationState: RegistrationState, navController:
         Row {
             Text(
                 text = "Você é um assessor? ",
-                fontSize = TextUnit(
-                    value = 20.0f,
-                    type = TextUnitType.Sp
-                )
+                style = MaterialTheme.typography.titleSmall
             )
             Text(
                 text = "Clique aqui.",
-                style = TextStyle(
-                    color = Color(0xFFB55557),
-                    fontSize = TextUnit(
-                        value = 20.0f,
-                        type = TextUnitType.Sp
-                    )
-                )
+                style = MaterialTheme.typography.titleSmall.copy(color = Color(0xFFB55557),
+                    fontWeight = FontWeight.Bold),
             )
         }
     }

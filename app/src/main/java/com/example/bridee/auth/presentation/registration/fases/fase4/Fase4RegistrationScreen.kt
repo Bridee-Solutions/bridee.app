@@ -5,24 +5,31 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.bridee.auth.presentation.component.CustomCheckbox
 import com.example.bridee.auth.presentation.component.Header
 import com.example.bridee.auth.presentation.component.Input
 import com.example.bridee.auth.presentation.registration.RegistrationState
@@ -33,6 +40,8 @@ fun Fase4RegistrationScreen(registrationState: RegistrationState, navController:
 
     val windowWidthDp = LocalConfiguration.current.screenWidthDp.dp
     val windowHeightDp = LocalConfiguration.current.screenHeightDp.dp
+
+    val (hasLocation, setHasLocation) = remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -51,47 +60,66 @@ fun Fase4RegistrationScreen(registrationState: RegistrationState, navController:
                 .height(300.dp)
         ) {
             Text(
-                text = "Você já reservou um local?"
+                text = "Você já reservou um local?",
+                style = MaterialTheme.typography.titleMedium
             )
             Row (
                 horizontalArrangement = Arrangement.Center
             ) {
+
                 Column {
-                    Row (
+                    Row(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Checkbox(
-                            checked = true,
-                            onCheckedChange = {}
+                        CustomCheckbox(
+                            checked = hasLocation,
+                            onCheckedChange = { setHasLocation(true) }
                         )
                         Text(
-                            text = "Sim"
+                            text = "Sim",
+                            modifier = Modifier.padding(end = 15.dp, start = 8.dp),
                         )
                     }
                 }
                 Column {
-                    Row (
+                    Row(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Checkbox(
-                            checked = false,
-                            onCheckedChange = {}
+
+                        CustomCheckbox(
+                            checked = !hasLocation,
+                            onCheckedChange = { setHasLocation(false) }
                         )
                         Text(
-                            text = "Não"
+                            text = "Não",
+                            modifier = Modifier.padding(end = 15.dp, start = 8.dp),
+                            style = MaterialTheme.typography.bodyLarge.copy(fontSize = 18.sp)
                         )
                     }
                 }
             }
-            Text(
-                text = "Ótimo! vamos adicionar ao seu plano."
-            )
+
+            if (hasLocation) {
+                Text(
+                    text = "Ótimo! Vamos adicionar ao seu plano.",
+                    style = MaterialTheme.typography.bodyLarge.copy(fontSize = 18.sp)
+                )
+            } else {
+                Text(
+                    text = "Em qual região você gostaria de se casar?",
+                    style = MaterialTheme.typography.bodyLarge.copy(fontSize = 18.sp)
+                )
+            }
+
+
             Input(
                 state = registrationState.local.value,
                 onStateChange = {
                     registrationState.local.value = it
                 },
+                height = 50.dp
             )
+
         }
 
         Button(

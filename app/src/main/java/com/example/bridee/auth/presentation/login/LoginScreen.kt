@@ -1,11 +1,13 @@
 package com.example.bridee.auth.presentation.login
 
+import BrideeLogo
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -17,6 +19,7 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -29,13 +32,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.bridee.auth.presentation.component.Input
 import com.example.bridee.core.navigation.Screen
+import com.example.bridee.ui.theme.rosa
 
 @Composable
 fun LoginScreen(navController: NavController){
@@ -58,23 +64,17 @@ fun LoginScreen(navController: NavController){
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
+        Spacer(modifier = Modifier.height(5.dp))
+
         Row {
             Text(
                 text = "Não tem uma conta? ",
-                fontSize = TextUnit(
-                    value = 20.0f,
-                    type = TextUnitType.Sp
-                )
+                style = MaterialTheme.typography.titleSmall
             )
             Text(
                 text = "Cadastre-se",
-                style = TextStyle(
-                    color = Color(0xFFB55557),
-                    fontSize = TextUnit(
-                        value = 20.0f,
-                        type = TextUnitType.Sp
-                    )
-                ),
+                style = MaterialTheme.typography.titleSmall.copy(color = Color(0xFFB55557),
+                    fontWeight = FontWeight.Bold),
                 modifier = Modifier.clickable(enabled = true){
                     navController.navigate(route = Screen.Cadastro.route)
                 }
@@ -83,13 +83,7 @@ fun LoginScreen(navController: NavController){
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                text = "bridee.",
-                fontSize = TextUnit(
-                    value = 48.0f,
-                    type = TextUnitType.Sp
-                )
-            )
+            BrideeLogo(fontSize = 50.sp)
             Text(
                 text = "O match perfeito para o dia dos seus sonhos",
                 fontSize = TextUnit(
@@ -100,10 +94,7 @@ fun LoginScreen(navController: NavController){
         }
         Text(
             text = "Bem vindo de volta!",
-            fontSize = TextUnit(
-                24.0f,
-                TextUnitType.Sp
-            )
+            style = MaterialTheme.typography.titleMedium
         )
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -126,7 +117,7 @@ fun LoginScreen(navController: NavController){
                         modifier = Modifier.offset(x = 30.dp),
                         color = Color(0xFFC2C2C2)
                     )
-                }
+                },
             )
             Input(
                 state = loginState.senha.value,
@@ -145,16 +136,16 @@ fun LoginScreen(navController: NavController){
                         modifier = Modifier.offset(x = 30.dp),
                         color = Color(0xFFC2C2C2)
                     )
-                }
+                },
             )
             Text(
                 text = "Esqueceu sua senha?",
-                fontSize = TextUnit(value = 14.0f, type = TextUnitType.Sp)
+                style = MaterialTheme.typography.bodyMedium
             )
         }
         Button(
             onClick = {
-                navController.navigate(Screen.Calculadora.route)
+                navController.navigate(Screen.Home.route)
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFFD86B67)
@@ -168,20 +159,12 @@ fun LoginScreen(navController: NavController){
         Row {
             Text(
                 text = "Você é um assessor? ",
-                fontSize = TextUnit(
-                    value = 20.0f,
-                    type = TextUnitType.Sp
-                )
+                style = MaterialTheme.typography.titleSmall
             )
             Text(
                 text = "Clique aqui.",
-                style = TextStyle(
-                    color = Color(0xFFB55557),
-                    fontSize = TextUnit(
-                        value = 20.0f,
-                        type = TextUnitType.Sp
-                    )
-                )
+                style = MaterialTheme.typography.titleSmall.copy(color = Color(0xFFB55557),
+                    fontWeight = FontWeight.Bold),
             )
         }
     }

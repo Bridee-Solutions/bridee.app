@@ -27,7 +27,7 @@ val Typography = Typography(
     titleSmall  = TextStyle(
         fontFamily = playfairDisplay,
         fontWeight = FontWeight.Normal,
-        fontSize = 23.sp
+        fontSize = 18.sp
     ),
     bodyLarge = TextStyle(
         fontFamily = productSans,

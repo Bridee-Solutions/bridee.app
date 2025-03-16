@@ -8,11 +8,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -32,8 +34,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.text.isDigitsOnly
 import androidx.navigation.NavController
+import com.example.bridee.auth.presentation.component.CustomCheckbox
 import com.example.bridee.auth.presentation.component.Header
 import com.example.bridee.auth.presentation.component.MaskVisualTransformation
 import com.example.bridee.auth.presentation.registration.RegistrationState
@@ -47,6 +51,8 @@ fun Fase5RegistrationScreen(registrationState: RegistrationState,navController: 
     var isDeletingCharacter by remember {
         mutableStateOf(false)
     }
+
+    val (isDateNotSet, setIsDateNotSet) = remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -65,12 +71,9 @@ fun Fase5RegistrationScreen(registrationState: RegistrationState,navController: 
                 .height(350.dp)
         ) {
             Text(
-                text = "Você já definiu uma data para o casamento",
+                text = "Você já definiu uma data para o casamento?",
                 textAlign = TextAlign.Center,
-                fontSize = TextUnit(
-                    value = 20f,
-                    type = TextUnitType.Sp
-                ),
+                style = MaterialTheme.typography.titleMedium.copy(fontSize = 21.sp),
                 modifier = Modifier.width(250.dp)
             )
             TextField(
@@ -85,12 +88,15 @@ fun Fase5RegistrationScreen(registrationState: RegistrationState,navController: 
                     }
                 },
                 visualTransformation = MaskVisualTransformation(DateDefaults.DATE_MASK),
-                modifier = Modifier.onKeyEvent {
+                modifier = Modifier
+
+                    .height(50.dp)
+                    .onKeyEvent {
                     isDeletingCharacter = it.key.keyCode == Key.Backspace.keyCode
                     true
                 }
                     .border(
-                    BorderStroke(width = 2.dp, color = Color(0xFF999999)),
+                    BorderStroke(width = 2.dp, color = Color.LightGray),
                     shape = RoundedCornerShape(30)
                 ),
                 colors = TextFieldDefaults.colors(
@@ -103,12 +109,13 @@ fun Fase5RegistrationScreen(registrationState: RegistrationState,navController: 
             Row (
                 verticalAlignment = Alignment.CenterVertically
             ){
-                Checkbox(
-                    checked = false,
-                    onCheckedChange = {}
+                CustomCheckbox(
+                    checked = isDateNotSet,
+                    onCheckedChange = { setIsDateNotSet(it) }
                 )
                 Text(
-                    text = "Ainda não sabemos"
+                    text = "Ainda não sabemos",
+                    modifier = Modifier.padding(end = 15.dp, start = 8.dp),
                 )
             }
             Button(
