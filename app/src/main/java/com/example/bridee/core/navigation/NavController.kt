@@ -26,6 +26,7 @@ import com.example.bridee.auth.presentation.registration.fases.fase6.Fase6Regist
 import com.example.bridee.auth.presentation.registration.fases.fase7.Fase7RegistrationScreen
 import com.example.bridee.calculadora.presentation.screens.CalculadoraScreen
 import com.example.bridee.calculadora.presentation.screens.CategoriaDetalhesScreen
+import com.example.bridee.lista_tarefas.presentation.screens.ListaTarefasScreen
 
 @Composable
 fun NavController(){
@@ -91,6 +92,9 @@ fun NavController(){
             val nome = backStackEntry.arguments?.getString("nome") ?: ""
             val icon = backStackEntry.arguments?.getInt("icon") ?: 0
             CategoriaDetalhesScreen(nome, icon, navController = navController)
+        }
+        composable(route = Screen.ListaTarefas.route) {
+            ListaTarefasScreen(navController);
         }
     }
 }
