@@ -1,12 +1,16 @@
 package com.example.bridee.core.navigation
 
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -26,11 +30,18 @@ import com.example.bridee.auth.presentation.registration.fases.fase6.Fase6Regist
 import com.example.bridee.auth.presentation.registration.fases.fase7.Fase7RegistrationScreen
 import com.example.bridee.calculadora.presentation.screens.CalculadoraScreen
 import com.example.bridee.calculadora.presentation.screens.CategoriaDetalhesScreen
+import com.example.bridee.servicos.presentation.screens.HomeScreen
+import com.example.bridee.servicos.presentation.screens.InspiracaoScreen
+import com.example.bridee.servicos.presentation.screens.ServicosScreen
 
 @Composable
-fun NavController(){
-    val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = Screen.Login.route){
+fun NavController(navController: NavHostController, paddingValues: PaddingValues){
+    // val navController = rememberNavController()
+
+    NavHost(
+        navController = navController,
+        startDestination = Screen.Login.route,
+        modifier = Modifier.padding(paddingValues) ){
         composable(route = Screen.Login.route) {
             LoginScreen(navController)
         }
@@ -78,6 +89,7 @@ fun NavController(){
         composable(route = Screen.EmailFailRegistration.route){
             EmailFailRegistrationScreen()
         }
+
         composable(route = Screen.Calculadora.route) {
             CalculadoraScreen(navController)
         }
@@ -92,6 +104,20 @@ fun NavController(){
             val icon = backStackEntry.arguments?.getInt("icon") ?: 0
             CategoriaDetalhesScreen(nome, icon, navController = navController)
         }
+        // Rotas do menu
+        composable(route = Screen.Home.route) {
+            HomeScreen(navController)
+        }
+        composable(route = Screen.Ferramentas.route) {
+            CalculadoraScreen(navController)
+        }
+        composable(route = Screen.Servicos.route) {
+            ServicosScreen(navController)
+        }
+        composable(route = Screen.Inspiracao.route) {
+            InspiracaoScreen(navController)
+        }
+
     }
 }
 

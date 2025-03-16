@@ -16,4 +16,8 @@ sealed class Screen (val route: String){
     object CategoriaDetalhes : Screen("categoria_detalhes/{nome}/{icon}") {
         fun createRoute(nome: String, icon: Int) = "categoria_detalhes/$nome/$icon"
     }
+    object Home : Screen("home")
+    object Ferramentas : Screen("calculadora")
+    object Servicos : Screen("servicos")
+    object Inspiracao : Screen("inspiracao")
 }
