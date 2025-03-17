@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -18,18 +17,14 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
+
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -40,6 +35,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.bridee.R
+import com.example.bridee.home.domain.Fornecedor
+import com.example.bridee.home.presentation.CountdownItem
+import com.example.bridee.home.presentation.components.FornecedorItem
 import com.example.bridee.ui.theme.rosa
 
 @Composable
@@ -180,19 +178,19 @@ fun WeddingCountdownScreen() {
 
             // Lista de fornecedores
             val fornecedores = listOf(
-                Fornecedor("Assessor", "Buscar fornecedores", true, R.drawable.assessor),
-                Fornecedor("Local", "Buscar fornecedores", false, R.drawable.assessor),
-                Fornecedor("Florista", "Buscar fornecedores", false, R.drawable.assessor),
-                Fornecedor("Buffet e Gastronomia", "Buscar fornecedores", false, R.drawable.assessor),
-                Fornecedor("Vestido", "Buscar fornecedores", false, R.drawable.assessor),
-                Fornecedor("Fotógrafo", "Buscar fornecedores", false, R.drawable.assessor),
-                Fornecedor("Decoração", "Buscar fornecedores", false, R.drawable.assessor),
-                Fornecedor("Hospedagem", "Buscar fornecedores", false, R.drawable.assessor),
-                Fornecedor("Confeitaria", "Buscar fornecedores", false, R.drawable.assessor),
-                Fornecedor("Moda e Beleza", "Buscar fornecedores", false, R.drawable.assessor),
-                Fornecedor("Videógrafos", "Buscar fornecedores", false, R.drawable.assessor),
-                Fornecedor("Papelaria", "Buscar fornecedores", false, R.drawable.assessor),
-                Fornecedor("Entretenimento", "Buscar fornecedores", false, R.drawable.assessor)
+                Fornecedor("Assessor", "Buscar fornecedores", true, R.drawable.novoassessor),
+                Fornecedor("Local", "Buscar fornecedores", false, R.drawable.novoassessor),
+                Fornecedor("Florista", "Buscar fornecedores", false, R.drawable.novoassessor),
+                Fornecedor("Buffet e Gastronomia", "Buscar fornecedores", false, R.drawable.novoassessor),
+                Fornecedor("Vestido", "Buscar fornecedores", false, R.drawable.novoassessor),
+                Fornecedor("Fotógrafo", "Buscar fornecedores", false, R.drawable.novoassessor),
+                Fornecedor("Decoração", "Buscar fornecedores", false, R.drawable.novoassessor),
+                Fornecedor("Hospedagem", "Buscar fornecedores", false, R.drawable.novoassessor),
+                Fornecedor("Confeitaria", "Buscar fornecedores", false, R.drawable.novoassessor),
+                Fornecedor("Moda e Beleza", "Buscar fornecedores", false, R.drawable.novoassessor),
+                Fornecedor("Videógrafos", "Buscar fornecedores", false, R.drawable.novoassessor),
+                Fornecedor("Papelaria", "Buscar fornecedores", false, R.drawable.novoassessor),
+                Fornecedor("Entretenimento", "Buscar fornecedores", false, R.drawable.novoassessor)
             )
 
 
@@ -205,75 +203,4 @@ fun WeddingCountdownScreen() {
 
 
 
-data class Fornecedor(
-    val nome: String,
-    val descricao: String,
-    val selecionado: Boolean,
-    val drawableResId: Int )
 
-@Composable
-fun FornecedorItem(fornecedor: Fornecedor) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp)
-            .background(Color.White)
-            .padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-
-        Image(
-            painter = painterResource(id = fornecedor.drawableResId),
-            contentDescription = "Ícone do fornecedor",
-            modifier = Modifier.size(60.dp)
-        )
-
-        Spacer(modifier = Modifier.width(12.dp))
-
-
-        Column(modifier = Modifier.weight(1f)) {
-            Text(text = fornecedor.nome, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-            Text(text = fornecedor.descricao, fontSize = 14.sp, color = Color.Gray)
-        }
-
-        Spacer(modifier = Modifier.width(12.dp))
-
-
-        if (fornecedor.selecionado) {
-            Icon(
-                painter = painterResource(id = R.drawable.check),
-                contentDescription = "Selecionado",
-                tint = Color.Green,
-                modifier = Modifier.size(37.dp)
-            )
-        } else {
-            Icon(
-                painter = painterResource(id = R.drawable.check),
-                contentDescription = "Selecionar fornecedor",
-                tint = Color.Gray,
-                modifier = Modifier.size(37.dp)
-            )
-        }
-    }
-}
-
-
-// Componente do contador
-@Composable
-fun CountdownItem(value: String, label: String) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(text = value,
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.White)
-        Text(text = label,
-            fontSize = 14.sp,
-            color = Color.White)
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewWeddingCountdownScreen() {
-    WeddingCountdownScreen()
-}

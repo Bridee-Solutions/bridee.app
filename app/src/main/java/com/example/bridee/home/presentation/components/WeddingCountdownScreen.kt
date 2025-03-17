@@ -167,19 +167,19 @@ fun WeddingCountdownScreen() {
 
 
             val fornecedores = listOf(
-                Fornecedor("Assessor", "Buscar fornecedores", true, R.drawable.assessor),
-                Fornecedor("Local", "Buscar fornecedores", false, R.drawable.assessor),
-                Fornecedor("Florista", "Buscar fornecedores", false, R.drawable.assessor),
-                Fornecedor("Buffet e Gastronomia", "Buscar fornecedores", false, R.drawable.assessor),
-                Fornecedor("Vestido", "Buscar fornecedores", false, R.drawable.assessor),
-                Fornecedor("Fotógrafo", "Buscar fornecedores", false, R.drawable.assessor),
-                Fornecedor("Decoração", "Buscar fornecedores", false, R.drawable.assessor),
-                Fornecedor("Hospedagem", "Buscar fornecedores", false, R.drawable.assessor),
-                Fornecedor("Confeitaria", "Buscar fornecedores", false, R.drawable.assessor),
-                Fornecedor("Moda e Beleza", "Buscar fornecedores", false, R.drawable.assessor),
-                Fornecedor("Videógrafos", "Buscar fornecedores", false, R.drawable.assessor),
-                Fornecedor("Papelaria", "Buscar fornecedores", false, R.drawable.assessor),
-                Fornecedor("Entretenimento", "Buscar fornecedores", false, R.drawable.assessor)
+                Fornecedor("Assessor", "Buscar fornecedores", true, R.drawable.novoassessor),
+                Fornecedor("Local", "Buscar fornecedores", false, R.drawable.novoassessor),
+                Fornecedor("Florista", "Buscar fornecedores", false, R.drawable.novoassessor),
+                Fornecedor("Buffet e Gastronomia", "Buscar fornecedores", false, R.drawable.novoassessor),
+                Fornecedor("Vestido", "Buscar fornecedores", false, R.drawable.novoassessor),
+                Fornecedor("Fotógrafo", "Buscar fornecedores", false, R.drawable.novoassessor),
+                Fornecedor("Decoração", "Buscar fornecedores", false, R.drawable.novoassessor),
+                Fornecedor("Hospedagem", "Buscar fornecedores", false, R.drawable.novoassessor),
+                Fornecedor("Confeitaria", "Buscar fornecedores", false, R.drawable.novoassessor),
+                Fornecedor("Moda e Beleza", "Buscar fornecedores", false, R.drawable.novoassessor),
+                Fornecedor("Videógrafos", "Buscar fornecedores", false, R.drawable.novoassessor),
+                Fornecedor("Papelaria", "Buscar fornecedores", false, R.drawable.novoassessor),
+                Fornecedor("Entretenimento", "Buscar fornecedores", false, R.drawable.novoassessor)
             )
 
 
