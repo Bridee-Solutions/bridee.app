@@ -51,13 +51,6 @@ import com.example.bridee.ui.theme.pretoMedio
 import com.example.bridee.ui.theme.rosa
 import com.seuapp.presentation.components.CustomModal
 
-enum class Tool {
-    TAREFAS,
-    CALCULADORA,
-    CONVIDADOS
-}
-
-
 
 @Composable
 fun CalculadoraScreen(navController: NavController) {
