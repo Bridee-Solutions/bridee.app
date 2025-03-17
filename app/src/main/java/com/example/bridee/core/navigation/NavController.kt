@@ -33,6 +33,7 @@ import com.example.bridee.calculadora.presentation.screens.CategoriaDetalhesScre
 import com.example.bridee.servicos.presentation.screens.HomeScreen
 import com.example.bridee.servicos.presentation.screens.InspiracaoScreen
 import com.example.bridee.servicos.presentation.screens.ServicosScreen
+import com.example.bridee.lista_tarefas.presentation.screens.ListaTarefasScreen
 
 @Composable
 fun NavController(navController: NavHostController, paddingValues: PaddingValues){
@@ -118,6 +119,9 @@ fun NavController(navController: NavHostController, paddingValues: PaddingValues
             InspiracaoScreen(navController)
         }
 
+        composable(route = Screen.ListaTarefas.route) {
+            ListaTarefasScreen(navController);
+        }
     }
 }
 
