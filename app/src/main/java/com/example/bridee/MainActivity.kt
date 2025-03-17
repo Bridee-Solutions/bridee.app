@@ -16,7 +16,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setTheme(R.style.Theme_Bridee)
 
-        // msg para Ian: ativa a ocultação da barra de navegação e de status. acho q fica mais bonito sei la
         window.decorView.systemUiVisibility = (
                 View.SYSTEM_UI_FLAG_FULLSCREEN or
                         View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
