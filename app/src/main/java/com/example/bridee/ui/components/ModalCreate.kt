@@ -1,4 +1,3 @@
-// presentation/components/Modal.kt
 package com.seuapp.presentation.components
 
 import androidx.compose.foundation.layout.Arrangement
@@ -23,14 +22,13 @@ import androidx.compose.ui.window.Dialog
 
 
 @Composable
-fun CustomModal(
+fun CustomModalCreate(
     showModal: Boolean,
     onDismissRequest: () -> Unit,
     title: String,
     content: @Composable () -> Unit,
     onConfirm: () -> Unit,
-    onCancel: () -> Unit,
-    textConfirm : String = "Adicionar"
+    onCancel: () -> Unit
 ) {
     if (showModal) {
         Dialog(
@@ -39,7 +37,7 @@ fun CustomModal(
             Surface(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .fillMaxHeight(4.5f / 10)
+                    .fillMaxHeight(8.5f / 10)
                     .clip(RoundedCornerShape(12.dp)),
                 color = Color.White
             ) {
@@ -99,7 +97,7 @@ fun CustomModal(
                                 .weight(1f)
                                 .padding(start = 4.dp)
                         ) {
-                            Text(text = if (textConfirm != null) textConfirm else "Adicionar")
+                            Text("Criar")
                         }
                     }
                 }

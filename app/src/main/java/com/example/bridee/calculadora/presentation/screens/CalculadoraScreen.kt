@@ -42,6 +42,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.bridee.R
 import com.example.bridee.core.navigation.Screen
+import com.example.bridee.ui.components.Tool
 import com.example.bridee.ui.theme.BrideeTheme
 import com.example.bridee.ui.theme.cinza
 import com.example.bridee.ui.theme.pretoMedio
@@ -66,7 +67,7 @@ fun CalculadoraScreen(navController: NavController) {
             .background(Color.White)
             .verticalScroll(scrollState)
     ) {
-        FerramentasSection()
+        FerramentasSection(navController)
         Spacer(modifier = Modifier.height(10.dp))
         ControleDeGastoCard()
         Spacer(modifier = Modifier.height(10.dp))
@@ -76,7 +77,7 @@ fun CalculadoraScreen(navController: NavController) {
 data class CategoriaItem(val nome: String, val despesas: String, val valor: String, val icon: Int)
 
 @Composable
-fun FerramentasSection() {
+fun FerramentasSection(navController: NavController) {
     val selectedTool = remember { mutableStateOf(Tool.CALCULADORA) }
 
     Column(
@@ -99,25 +100,33 @@ fun FerramentasSection() {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
         ) {
-            FerramentaItem(
+            com.example.bridee.ui.components.FerramentaItem(
                 nome = "Tarefas",
                 iconeRes = R.drawable.ic_tarefas,
                 ativo = selectedTool.value == Tool.TAREFAS,
-                onClick = { selectedTool.value = Tool.TAREFAS }
+                onClick = {
+                    selectedTool.value = Tool.TAREFAS;
+                    navController.navigate(Screen.ListaTarefas.route) {
+                        launchSingleTop = true
+                        restoreState = true
+                    };
+                }
             )
 
             Spacer(modifier = Modifier.width(16.dp))
 
-            FerramentaItem(
+            com.example.bridee.ui.components.FerramentaItem(
                 nome = "Calculadora",
                 iconeRes = R.drawable.ic_calculadora,
                 ativo = selectedTool.value == Tool.CALCULADORA,
-                onClick = { selectedTool.value = Tool.CALCULADORA }
+                onClick = {
+                    selectedTool.value = Tool.CALCULADORA
+                }
             )
 
             Spacer(modifier = Modifier.width(16.dp))
 
-            FerramentaItem(
+            com.example.bridee.ui.components.FerramentaItem(
                 nome = "Convidados",
                 iconeRes = R.drawable.ic_convidados,
                 ativo = selectedTool.value == Tool.CONVIDADOS,
