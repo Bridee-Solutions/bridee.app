@@ -18,12 +18,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 
 
 @Composable
@@ -33,7 +29,8 @@ fun CustomModal(
     title: String,
     content: @Composable () -> Unit,
     onConfirm: () -> Unit,
-    onCancel: () -> Unit
+    onCancel: () -> Unit,
+    textConfirm : String = "Adicionar"
 ) {
     if (showModal) {
         Dialog(
@@ -102,7 +99,7 @@ fun CustomModal(
                                 .weight(1f)
                                 .padding(start = 4.dp)
                         ) {
-                            Text("Adicionar")
+                            Text(text = if (textConfirm != null) textConfirm else "Adicionar")
                         }
                     }
                 }
