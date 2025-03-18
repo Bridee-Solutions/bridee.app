@@ -29,8 +29,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.bridee.R
-import com.example.bridee.calculadora.presentation.screens.CategoriaScreen
-import com.example.bridee.calculadora.presentation.screens.ControleDeGastoCard
 import com.example.bridee.core.navigation.Screen
 import com.example.bridee.ui.theme.cinza
 
