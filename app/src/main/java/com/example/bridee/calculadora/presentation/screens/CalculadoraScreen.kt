@@ -14,7 +14,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.bridee.calculadora.presentation.components.Calculadora.CategoriaScreen
 import com.example.bridee.calculadora.presentation.components.Calculadora.ControleDeGastoCard
-import com.example.bridee.calculadora.presentation.components.Calculadora.FerramentasSection
+import com.example.bridee.ui.components.ferramentas_section.domain.Tool
+import com.example.bridee.ui.components.ferramentas_section.presentation.screens.FerramentasSection
 
 
 @Composable
@@ -27,7 +28,7 @@ fun CalculadoraScreen(navController: NavController) {
             .background(Color.White)
             .verticalScroll(scrollState)
     ) {
-        FerramentasSection()
+        FerramentasSection(navController, Tool.CALCULADORA);
         Spacer(modifier = Modifier.height(10.dp))
         ControleDeGastoCard()
         Spacer(modifier = Modifier.height(10.dp))

@@ -25,8 +25,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             BrideeTheme {
-                MainScreen()
-
+                MainScreen();
             }
         }
     }

@@ -1,9 +1,7 @@
 package com.example.bridee.lista_tarefas.presentation.screens
 
-import android.widget.Space
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,26 +16,17 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Warning
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
@@ -49,122 +38,21 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import java.time.format.TextStyle as TextStyleDate
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.bridee.ui.components.FerramentasSection;
-import com.example.bridee.ui.theme.cinza
-import com.example.bridee.ui.theme.pretoMedio
+import com.example.bridee.lista_tarefas.domain.Tarefa
+import com.example.bridee.lista_tarefas.presentation.components.AddTarefa
+import com.example.bridee.lista_tarefas.presentation.components.TarefaCard
+import com.example.bridee.ui.components.ferramentas_section.domain.Tool
+import com.example.bridee.ui.components.ferramentas_section.presentation.screens.FerramentasSection;
 import com.example.bridee.ui.theme.rosa
 import com.seuapp.presentation.components.CustomModal
 import com.seuapp.presentation.components.CustomModalCreate
 import java.time.LocalDate
 import java.util.Locale
-
-data class Tarefa(
-    val id: Int,
-    val titulo: String,
-    val data: LocalDate,
-    var concluida: Boolean = false
-)
-
-@Composable
-fun TarefaCard(
-    tarefa: Tarefa,
-    deleteTaskName: MutableState<String>,
-    onDeleteClick: () -> Unit,
-) {
-
-    val isChecked = remember { mutableStateOf(tarefa.concluida) }
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp, horizontal = 8.dp)
-            .border(2.dp, Color.LightGray, RoundedCornerShape(8.dp)),
-        colors = CardColors(
-            containerColor = Color.Transparent,
-            contentColor = Color.Gray,
-            disabledContentColor = Color.Black,
-            disabledContainerColor = Color.Red
-        )
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Checkbox(
-                checked = isChecked.value,
-                onCheckedChange = { newValue ->
-                    isChecked.value = newValue
-                }
-            )
-            Column(modifier = Modifier.padding(16.dp)) {
-                Text(text = tarefa.titulo)
-                Text(text = "Data: ${tarefa.data}")
-            }
-
-            IconButton(
-                onClick = {
-                    onDeleteClick()
-                    deleteTaskName.value = tarefa.titulo
-                },
-                modifier = Modifier.size(40.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Delete,
-                    contentDescription = "Deletar",
-                    tint = Color.Gray
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun AddTarefa(
-    showCreateModal: Boolean,
-    onAddClick: () -> Unit
-) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp, horizontal = 8.dp),
-        colors = CardColors(
-            containerColor = Color.Transparent,
-            contentColor = Color.Gray,
-            disabledContentColor = Color.Black,
-            disabledContainerColor = Color.Red
-        )
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable {
-                    onAddClick()
-                }
-                .padding(8.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Default.Add,
-                contentDescription = "Adicionar Tarefa",
-                tint = rosa,
-                modifier = Modifier.size(24.dp)
-            )
-            Spacer(modifier = Modifier.width(10.dp))
-            Text(
-                text = "Adicionar Item",
-                color = Color.Gray
-            )
-        }
-    }
-}
 
 @Composable
 fun ListaTarefasScreen(navController: NavController) {
@@ -204,13 +92,13 @@ fun ListaTarefasScreen(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .background(Color.White)
     ) {
-        FerramentasSection(navController);
+        FerramentasSection(navController, Tool.TAREFAS);
 
         Column(
             modifier = Modifier
-                .padding(horizontal = 6.dp)
+                .padding(horizontal = 22.dp, vertical = 16.dp)
         ) {
             Text("$concluidas de $total tarefas concluídas")
 
@@ -562,10 +450,4 @@ fun ListaTarefasScreen(navController: NavController) {
     )
 
 
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun ListaTarefaPreview() {
 }

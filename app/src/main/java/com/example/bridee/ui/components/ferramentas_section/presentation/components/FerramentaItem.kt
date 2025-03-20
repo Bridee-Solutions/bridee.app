@@ -1,4 +1,4 @@
-package com.example.bridee.calculadora.presentation.components.Calculadora
+package com.example.bridee.ui.components.ferramentas_section.presentation.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
