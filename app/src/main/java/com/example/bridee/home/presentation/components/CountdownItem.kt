@@ -1,4 +1,4 @@
-package com.example.bridee.home.presentation
+package com.example.bridee.home.presentation.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Text
