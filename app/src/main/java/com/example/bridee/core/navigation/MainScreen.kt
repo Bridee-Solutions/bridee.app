@@ -12,7 +12,6 @@ fun MainScreen() {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    // Função para verificar se o menu deve ser exibido
     fun shouldShowBottomBar(currentRoute: String?): Boolean {
         val routesWithoutBottomBar = listOf(
             Screen.Login.route,

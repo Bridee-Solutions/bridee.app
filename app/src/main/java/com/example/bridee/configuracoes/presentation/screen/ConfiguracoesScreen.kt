@@ -1,21 +1,31 @@
 package com.example.bridee.configuracoes.presentation.screen
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import com.example.bridee.home.presentation.components.ProfileCard
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.graphics.Color
+import com.example.bridee.configuracoes.presentation.components.AccountDetailsCard
+import com.example.bridee.configuracoes.presentation.components.ProfileCard
+import com.example.bridee.configuracoes.presentation.components.ProfileDetailsCard
+import com.example.bridee.configuracoes.presentation.components.WeddingDetailsCard
+import androidx.navigation.NavController
 
 @Composable
-fun ConfiguracoesScreen() {
+fun ConfiguracoesScreen(navController: NavController) {
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFFFFFFFF))
+            .verticalScroll(rememberScrollState())
     ) {
-        ProfileCard(
-            imageUrl = "https://avatars.githubusercontent.com/u/142369084?v=4",
-            names = "Amanda & Enzo",
-            daysCount = 350
-        )
+        ProfileCard(navController = navController)
+        WeddingDetailsCard()
+        ProfileDetailsCard()
+        AccountDetailsCard()
     }
 }

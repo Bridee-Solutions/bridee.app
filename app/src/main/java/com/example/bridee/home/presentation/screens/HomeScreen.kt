@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 @Composable
 fun HomeScreen(navController: NavController) {
     Column(modifier = Modifier.fillMaxSize()) {
-        WeddingHeader()
+        WeddingHeader(navController = navController)
         CountdownSection()
         SuppliersList()
     }}

@@ -1,7 +1,9 @@
-package com.example.bridee.home.presentation.components
+package com.example.bridee.configuracoes.presentation.components
 
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
@@ -12,42 +14,70 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.example.bridee.R
+import com.example.bridee.core.navigation.Screen
+import com.example.bridee.ui.theme.rosa
+
 
 @Composable
-fun ProfileCard(
-    imageUrl: String,
-    names: String,
-    daysCount: Int,
-    modifier: Modifier = Modifier
-) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-    ) {
-        AsyncImage(
-            model = imageUrl,
-            contentDescription = "Foto de Perfil",
+fun ProfileCard(navController: NavController) {
+    Box(modifier = Modifier.fillMaxWidth()) {
+
+
+        Column(
             modifier = Modifier
-                .size(100.dp)
-                .clip(CircleShape),
-            contentScale = ContentScale.Crop
-        )
+                .fillMaxWidth()
+                .padding(top = 32.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween 
+            ) {
 
-        Spacer(modifier = Modifier.height(8.dp))
+                Icon(
+                    painter = painterResource(id = R.drawable.arrow_back),
+                    contentDescription = "Voltar",
+                    modifier = Modifier
+                        .size(24.dp)
+                        .clickable { navController.navigate(Screen.Home.route) },
+                    tint = rosa
+                )
 
-        Text(text = names, fontSize = 20.sp, color = Color.Black)
 
-        Spacer(modifier = Modifier.height(4.dp))
+                Icon(
+                    painter = painterResource(id = R.drawable.edit),
+                    contentDescription = "Editar",
+                    modifier = Modifier
+                        .size(25.dp)
+                        .clickable { /* Ação de editar */ },
+                    tint = Color.Gray
+                )
+            }
 
-        Text(text = "$daysCount dias", fontSize = 14.sp, color = Color.Gray)
+            Image(
+                painter = painterResource(id = R.drawable.image_home),
+                contentDescription = "Foto do casal",
+                modifier = Modifier
+                    .size(180.dp)
+                    .background(Color.Gray, CircleShape)
+                    .clip(CircleShape),
+                contentScale = ContentScale.Crop
+            )
+
+
+            Spacer(modifier = Modifier.height(16.dp))
+            Text("Amanda & Enzo", style = MaterialTheme.typography.titleLarge)
+            Text("350 dias", style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.padding(bottom = 30.dp))
+        }
     }
 }
 
-@Composable
-fun AsyncImage(model: String, contentDescription: String, modifier: Modifier, contentScale: ContentScale) {
-
-}

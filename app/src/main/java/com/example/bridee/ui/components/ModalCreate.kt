@@ -47,14 +47,14 @@ fun CustomModalCreate(
                         .fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    // Título
+
                     Text(
                         text = title,
                         style = MaterialTheme.typography.titleMedium,
                     )
                     Spacer(modifier = Modifier.height(12.dp))
 
-                    // Divisor
+
                     Divider(
                         color = Color.LightGray,
                         thickness = 1.dp,
@@ -62,12 +62,12 @@ fun CustomModalCreate(
                     )
                     Spacer(modifier = Modifier.height(20.dp))
 
-                    // Conteúdo personalizado
+
                     content()
 
                     Spacer(modifier = Modifier.weight(1f))
 
-                    // Botões
+
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.Center

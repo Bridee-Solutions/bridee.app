@@ -30,6 +30,7 @@ import com.example.bridee.auth.presentation.registration.fases.fase6.Fase6Regist
 import com.example.bridee.auth.presentation.registration.fases.fase7.Fase7RegistrationScreen
 import com.example.bridee.calculadora.presentation.screens.CalculadoraScreen
 import com.example.bridee.calculadora.presentation.screens.CategoriaDetalhesScreen
+import com.example.bridee.configuracoes.presentation.screen.ConfiguracoesScreen
 import com.example.bridee.servicos.presentation.screens.HomeScreen
 import com.example.bridee.servicos.presentation.screens.InspiracaoScreen
 import com.example.bridee.servicos.presentation.screens.ServicosScreen
@@ -89,6 +90,10 @@ fun NavController(navController: NavHostController, paddingValues: PaddingValues
         }
         composable(route = Screen.EmailFailRegistration.route){
             EmailFailRegistrationScreen()
+        }
+
+        composable(Screen.Configuracoes.route) {
+            ConfiguracoesScreen(navController)
         }
 
         composable(route = Screen.Calculadora.route) {
