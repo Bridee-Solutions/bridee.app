@@ -11,10 +11,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.bridee.R
+import com.example.bridee.home.presentation.components.EditableText
 import com.example.bridee.ui.theme.rosa
 
 @Composable
-fun WeddingDetailsCard() {
+fun WeddingDetailsCard(isEditing: Boolean,
+                       weddingDate: String,
+                       onWeddingDateChange: (String) -> Unit,
+                       weddingLocation: String,
+                       onWeddingLocationChange: (String) -> Unit,
+                       numberOfGuests: String,
+                       onNumberOfGuestsChange: (String) -> Unit,
+                       budget: String,
+                       onBudgetChange: (String) -> Unit ) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Divider(
             color = Color.LightGray,
@@ -33,9 +42,12 @@ fun WeddingDetailsCard() {
                 tint = rosa,
                 modifier = Modifier.padding(start = 20.dp) )
             Spacer(modifier = Modifier.width(6.dp))
-            Text("11 de Fevereiro, 2026",
-                style = MaterialTheme.typography.bodyLarge
-                )
+            EditableText(
+                text = weddingDate,
+                onTextChange = onWeddingDateChange,
+                isEditing = isEditing,
+                textStyle = MaterialTheme.typography.bodyLarge
+            )
         }
         Spacer(modifier = Modifier.height(8.dp))
         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -45,7 +57,12 @@ fun WeddingDetailsCard() {
                 tint = rosa,
                 modifier = Modifier.padding(start = 20.dp).size(16.dp))
             Spacer(modifier = Modifier.width(6.dp))
-            Text("São Paulo - SP" )
+            EditableText(
+                text = weddingLocation,
+                onTextChange = onWeddingLocationChange,
+                isEditing = isEditing,
+                textStyle = MaterialTheme.typography.bodyLarge
+            )
         }
         Spacer(modifier = Modifier.height(20.dp))
 
@@ -61,7 +78,12 @@ fun WeddingDetailsCard() {
                 "Convidados", tint = rosa,
                 modifier = Modifier.padding(start = 20.dp))
             Spacer(modifier = Modifier.width(8.dp))
-            Text("100 Convidados" )
+            EditableText(
+                text = numberOfGuests,
+                onTextChange = onNumberOfGuestsChange,
+                isEditing = isEditing,
+                textStyle = MaterialTheme.typography.bodyLarge
+            )
         }
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -70,7 +92,12 @@ fun WeddingDetailsCard() {
                 "Orçamento", tint = rosa,
                 modifier = Modifier.padding(start = 20.dp))
             Spacer(modifier = Modifier.width(8.dp))
-            Text("R$100.000 Orçamento", )
+            EditableText(
+                text = budget,
+                onTextChange = onBudgetChange,
+                isEditing = isEditing,
+                textStyle = MaterialTheme.typography.bodyLarge
+            )
         }
         Spacer(modifier = Modifier.height(20.dp))
         Divider(

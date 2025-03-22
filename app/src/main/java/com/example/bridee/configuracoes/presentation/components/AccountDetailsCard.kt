@@ -21,11 +21,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.bridee.R
+import com.example.bridee.home.presentation.components.EditableText
 import com.example.bridee.ui.theme.rosa
 
 
 @Composable
-fun AccountDetailsCard() {
+fun AccountDetailsCard(isEditing: Boolean,
+                       email : String,
+                       onEmailChange : (String) -> Unit,
+                       ) {
 
     Column(
         modifier = Modifier
@@ -42,10 +46,15 @@ fun AccountDetailsCard() {
             "Endereço de e-mail",
             style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
             modifier = Modifier.padding(start = 20.dp) )
-        Text(
-            "amanda.sousa@sptech.school",
-            style = MaterialTheme.typography.bodyLarge.copy(color = Color.Gray),
-            modifier = Modifier.padding(start = 20.dp, bottom = 15.dp) )
+        EditableText(
+            text = email,
+            onTextChange = onEmailChange,
+            isEditing = isEditing,
+            textStyle = MaterialTheme.typography.bodyLarge,
+            modifier = Modifier.padding(start = 20.dp, bottom = 12.dp)
+        )
+
+
         Spacer(modifier = Modifier.height(10.dp))
         Divider(
             color = Color.LightGray,
