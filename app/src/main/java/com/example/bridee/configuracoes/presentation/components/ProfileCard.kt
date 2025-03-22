@@ -99,12 +99,24 @@ fun getFirstName(fullName: String): String {
 
 
                 Spacer(modifier = Modifier.height(16.dp))
-                Text(
-                    text = "${getFirstName(name)} & ${getFirstName(loveName)}",
-                    style = MaterialTheme.typography.titleLarge
-                )
-                Text("350 dias", style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier.padding(bottom = 30.dp))
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(bottom = 30.dp)
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.hour),
+                        contentDescription = "Relógio",
+                        tint = Color.LightGray,
+                        modifier = Modifier.size(20.dp)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(
+                        text = "350 dias",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = Color.LightGray
+                    )
+                }
+
             }
 
 
