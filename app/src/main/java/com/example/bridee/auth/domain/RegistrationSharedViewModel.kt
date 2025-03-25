@@ -11,4 +11,8 @@ class RegistrationSharedViewModel: ViewModel() {
         super.onCleared()
     }
 
+    fun salvarCasal(){
+
+    }
+
 }
