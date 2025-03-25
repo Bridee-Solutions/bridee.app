@@ -9,7 +9,7 @@ class ApiInstance {
 
     companion object{
         private val retrofitBuilder: Retrofit.Builder = Retrofit.Builder()
-            .baseUrl("http://localhost:8080")
+            .baseUrl("http://localhost:8080/api")
             .addConverterFactory(GsonConverterFactory.create())
     }
 
