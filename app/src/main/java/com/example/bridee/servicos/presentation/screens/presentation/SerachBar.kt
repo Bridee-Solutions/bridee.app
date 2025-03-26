@@ -29,12 +29,18 @@ import androidx.compose.ui.text.TextStyle
 fun SearchBar (modifier: Modifier = Modifier,
                searchText: String,
                onSearchTextChanged: (String) -> Unit,
-               placeholderText: String = "Pesquisar"){
-
+               placeholderText: String = "Pesquisar",
+               showMenuIcon: Boolean = true
+){
     Row (
         modifier = modifier
             .fillMaxWidth()
             .height(56.dp)
+            .border(
+                width = 1.dp,
+                color = Color(0xFFA9A8A8), // COR #A9A8A8
+                shape = RoundedCornerShape(12.dp)
+            )
             .clip(RoundedCornerShape(12.dp))
             .background(Color.White)
             .padding(horizontal = 8.dp),
@@ -67,15 +73,17 @@ fun SearchBar (modifier: Modifier = Modifier,
             )
         )
 
-        IconButton(
-            onClick = {},
-            modifier = Modifier.size(40.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Default.Menu,
-                contentDescription = "Filtrar",
-                tint = Color.Gray
-            )
+        if (showMenuIcon) {
+            IconButton(
+                onClick = {},
+                modifier = Modifier.size(40.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Menu,
+                    contentDescription = "Menu",
+                    tint = Color.Gray
+                )
+            }
         }
     }
 
