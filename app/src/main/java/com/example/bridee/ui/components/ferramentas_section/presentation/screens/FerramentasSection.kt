@@ -45,7 +45,7 @@ fun FerramentasSection(navController: NavController, selectedTool: Tool) {
         Text(
             text = "Ferramentas",
             fontSize = 24.sp,
-            style = MaterialTheme.typography.titleLarge,
+            style = MaterialTheme.typography.titleLarge.copy(color = Color.Black),
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
 
