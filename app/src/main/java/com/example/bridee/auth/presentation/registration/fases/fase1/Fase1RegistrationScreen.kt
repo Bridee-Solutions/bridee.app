@@ -17,7 +17,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,6 +25,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
@@ -34,7 +35,7 @@ import com.example.bridee.auth.presentation.registration.RegistrationState
 import com.example.bridee.core.navigation.Screen
 
 @Composable
-fun Fase1RegistrationScreen(registrationState: RegistrationState, navController: NavController){
+fun Fase1RegistrationScreen(registrationState: MutableState<RegistrationState>, navController: NavController){
 
     val windowWidthDp = LocalConfiguration.current.screenWidthDp.dp
     val windowHeightDp = LocalConfiguration.current.screenHeightDp.dp
@@ -100,9 +101,9 @@ fun Fase1RegistrationScreen(registrationState: RegistrationState, navController:
             modifier = Modifier.height(230.dp)
         ){
             Input(
-                state = registrationState.email.value,
+                state = registrationState.value.email,
                 onStateChange = {
-                    registrationState.email.value = it
+                    registrationState.value = registrationState.value.copy(email = it)
                 },
                 placeholder = {
                     Icon(
@@ -118,9 +119,9 @@ fun Fase1RegistrationScreen(registrationState: RegistrationState, navController:
                 }
             )
             Input(
-                state = registrationState.senha.value,
+                state = registrationState.value.senha,
                 onStateChange = {
-                    registrationState.senha.value = it
+                    registrationState.value = registrationState.value.copy(senha = it)
                 },
                 visualTransformation = PasswordVisualTransformation(),
                 placeholder = {
@@ -137,9 +138,9 @@ fun Fase1RegistrationScreen(registrationState: RegistrationState, navController:
                 }
             )
             Input(
-                state = registrationState.confirmarSenha.value,
+                state = registrationState.value.confirmarSenha,
                 onStateChange = {
-                    registrationState.confirmarSenha.value = it
+                    registrationState.value = registrationState.value.copy(confirmarSenha = it)
                 },
                 visualTransformation = PasswordVisualTransformation(),
                 placeholder = {

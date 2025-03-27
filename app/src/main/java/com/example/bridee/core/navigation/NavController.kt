@@ -2,6 +2,7 @@ package com.example.bridee.core.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -24,6 +25,7 @@ import com.example.bridee.auth.presentation.registration.fases.fase6.Fase6Regist
 import com.example.bridee.auth.presentation.registration.fases.fase7.Fase7RegistrationScreen
 
 @Composable
+@Preview(showBackground = true)
 fun NavController(){
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = Screen.Login.route){
@@ -65,7 +67,7 @@ fun NavController(){
             composable(route = Screen.Fase7Registration.route) {
                 val viewModel = it.sharedViewModel<RegistrationSharedViewModel>(navController)
                 val registrationState = viewModel.sharedRegistrationObject
-                Fase7RegistrationScreen(registrationState, navController)
+                Fase7RegistrationScreen(navController)
             }
         }
         composable(route = Screen.EmailRegistration.route){

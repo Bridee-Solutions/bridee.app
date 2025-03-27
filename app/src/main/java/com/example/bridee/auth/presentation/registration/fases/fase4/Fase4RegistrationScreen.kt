@@ -16,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,7 +30,7 @@ import com.example.bridee.auth.presentation.registration.RegistrationState
 import com.example.bridee.core.navigation.Screen
 
 @Composable
-fun Fase4RegistrationScreen(registrationState: RegistrationState, navController: NavController){
+fun Fase4RegistrationScreen(registrationState: MutableState<RegistrationState>, navController: NavController){
 
     val windowWidthDp = LocalConfiguration.current.screenWidthDp.dp
     val windowHeightDp = LocalConfiguration.current.screenHeightDp.dp
@@ -87,9 +88,10 @@ fun Fase4RegistrationScreen(registrationState: RegistrationState, navController:
                 text = "Ótimo! vamos adicionar ao seu plano."
             )
             Input(
-                state = registrationState.local.value,
+                state = registrationState.value.local,
                 onStateChange = {
-                    registrationState.local.value = it
+                    registrationState.value = registrationState
+                        .value.copy(local = it, isLocalReservado = isLocalReservado(it))
                 },
             )
         }
@@ -112,4 +114,8 @@ fun Fase4RegistrationScreen(registrationState: RegistrationState, navController:
 
     }
 
+}
+
+fun isLocalReservado(local: String): Boolean{
+    return local.isNotBlank()
 }

@@ -20,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -37,10 +38,14 @@ import com.example.bridee.auth.presentation.registration.RegistrationState
 import com.example.bridee.core.navigation.Screen
 
 @Composable
-fun Fase7RegistrationScreen(registrationState: RegistrationState,navController: NavController){
+fun Fase7RegistrationScreen(navController: NavController){
 
     var offset by remember {
         mutableStateOf(0f)
+    }
+
+    var isTermsApproved by remember {
+        mutableStateOf(false)
     }
 
     val windowWidthDp = LocalConfiguration.current.screenWidthDp.dp
@@ -93,8 +98,10 @@ fun Fase7RegistrationScreen(registrationState: RegistrationState,navController: 
         }
         Row {
             Checkbox(
-                checked = false,
-                onCheckedChange = {}
+                checked = isTermsApproved,
+                onCheckedChange = {
+                    isTermsApproved = it
+                }
             )
             Text(
                 text = "Li e concordo com os termos de uso e política de privacidade",
@@ -103,7 +110,9 @@ fun Fase7RegistrationScreen(registrationState: RegistrationState,navController: 
         }
         Button(
             onClick = {
-                navController.navigate(route = Screen.EmailRegistration.route)
+                if(isTermsApproved){
+                    navController.navigate(route = Screen.EmailRegistration.route)
+                }
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFFD86B67)

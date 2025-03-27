@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,7 +41,7 @@ import com.example.bridee.auth.presentation.registration.RegistrationState
 import com.example.bridee.core.navigation.Screen
 
 @Composable
-fun Fase5RegistrationScreen(registrationState: RegistrationState,navController: NavController){
+fun Fase5RegistrationScreen(registrationState: MutableState<RegistrationState>,navController: NavController){
 
     val windowWidthDp = LocalConfiguration.current.screenWidthDp.dp
     val windowHeightDp = LocalConfiguration.current.screenHeightDp.dp
@@ -74,14 +75,14 @@ fun Fase5RegistrationScreen(registrationState: RegistrationState,navController: 
                 modifier = Modifier.width(250.dp)
             )
             TextField(
-                value = registrationState.dataCasamento.value,
+                value = registrationState.value.dataCasamento,
                 onValueChange = {
-                    if(registrationState.dataCasamento.value.length < DateDefaults.DATE_LENGTH){
+                    if(registrationState.value.dataCasamento.length < DateDefaults.DATE_LENGTH){
                         isDeletingCharacter = false
                     }
-                    if((registrationState.dataCasamento.value.length < DateDefaults.DATE_LENGTH && it.isDigitsOnly()) ||
+                    if((registrationState.value.dataCasamento.length < DateDefaults.DATE_LENGTH && it.isDigitsOnly()) ||
                         isDeletingCharacter){
-                        registrationState.dataCasamento.value = it
+                        registrationState.value = registrationState.value.copy(dataCasamento = it)
                     }
                 },
                 visualTransformation = MaskVisualTransformation(DateDefaults.DATE_MASK),
