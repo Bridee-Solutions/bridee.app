@@ -26,7 +26,7 @@ import com.example.bridee.home.presentation.components.EditableText
 import com.example.bridee.ui.theme.rosa
 
 fun getFirstName(fullName: String): String {
-    return fullName.split(" ").firstOrNull() ?: fullName
+    return fullName.split(" ").firstOrNull()?.replaceFirstChar { it.uppercase() } ?: fullName
 }
 
 @Composable
@@ -87,6 +87,8 @@ fun getFirstName(fullName: String): String {
 
                 }
 
+
+                Spacer(modifier = Modifier.height(8.dp))
                 Image(
                     painter = painterResource(id = R.drawable.image_home),
                     contentDescription = "Foto do casal",
@@ -97,8 +99,13 @@ fun getFirstName(fullName: String): String {
                     contentScale = ContentScale.Crop
                 )
 
+                Text(
+                    text = "${getFirstName(name)} & ${getFirstName(loveName)}",
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(start = 20.dp)
+                )
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(6.dp))
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.padding(bottom = 30.dp)
