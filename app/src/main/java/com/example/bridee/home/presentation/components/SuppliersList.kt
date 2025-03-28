@@ -105,7 +105,7 @@ fun SuppliersList() {
                 }") },
                 shape = RoundedCornerShape(8.dp),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = Color(0xFFD77C8C),
+                    focusedBorderColor = Color.LightGray,
                     unfocusedBorderColor = Color.LightGray
                 ),
                 singleLine = true,
