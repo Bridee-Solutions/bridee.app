@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -23,7 +24,8 @@ fun CustomCheckbox(
     modifier: Modifier = Modifier,
     backgroundColor: Color = Color(0xFFF8F5F5),
     borderColor: Color = Color(0xFF8D8D8D),
-    checkColor: Color = Color(0xFFB55557)
+    checkColor: Color = Color(0xFFB55557),
+    checkSize: Dp = 24.dp,
 ) {
     Box(
         modifier = modifier
@@ -39,7 +41,7 @@ fun CustomCheckbox(
                 imageVector = Icons.Default.Check,
                 contentDescription = "Checked",
                 tint = checkColor,
-                modifier = Modifier.size(24.dp))
+                modifier = Modifier.size(checkSize))
         }
     }
 }

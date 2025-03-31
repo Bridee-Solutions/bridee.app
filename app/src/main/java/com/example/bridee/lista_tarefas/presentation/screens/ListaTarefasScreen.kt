@@ -2,11 +2,13 @@ package com.example.bridee.lista_tarefas.presentation.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -15,14 +17,23 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -43,8 +54,10 @@ import java.time.format.TextStyle as TextStyleDate
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.bridee.lista_tarefas.domain.FilterItem
 import com.example.bridee.lista_tarefas.domain.Tarefa
 import com.example.bridee.lista_tarefas.presentation.components.AddTarefa
+import com.example.bridee.lista_tarefas.presentation.components.FilterPanel
 import com.example.bridee.lista_tarefas.presentation.components.TarefaCard
 import com.example.bridee.ui.components.ferramentas_section.domain.Tool
 import com.example.bridee.ui.components.ferramentas_section.presentation.screens.FerramentasSection;
@@ -56,19 +69,53 @@ import java.util.Locale
 
 @Composable
 fun ListaTarefasScreen(navController: NavController) {
-    val tarefas = listOf(
-        Tarefa(1, "Experimentar bolo", LocalDate.of(2025, 3, 10), concluida = false),
-        Tarefa(2, "Visitar salão", LocalDate.of(2025, 3, 12), concluida = false),
-        Tarefa(3, "Experimentar vestido", LocalDate.of(2025, 3, 15), concluida = false),
-        Tarefa(4, "Enviar convites", LocalDate.of(2025, 3, 18), concluida = false),
-        Tarefa(5, "Ir a manicure", LocalDate.of(2025, 3, 20), concluida = true)
-    )
+    var tarefas by remember {
+        mutableStateOf(
+            listOf(
+                Tarefa(1, "Experimentar bolo", LocalDate.of(2025, 3, 10), concluida = false),
+                Tarefa(2, "Visitar salão", LocalDate.of(2026, 3, 12), concluida = false),
+                Tarefa(3, "Experimentar vestido", LocalDate.of(2026, 3, 15), concluida = false),
+                Tarefa(4, "Enviar convites", LocalDate.of(2026, 3, 18), concluida = false),
+                Tarefa(5, "Ir a manicure", LocalDate.of(2025, 3, 20), concluida = true)
+            )
+        )
+    }
 
+    var statusFilter by remember {
+        mutableStateOf(
+            listOf(
+                FilterItem("Concluída", false),
+                FilterItem("Em andamento", false)
+                )
+        )
+    }
+
+
+    var mesFilter by remember {
+        mutableStateOf(
+            listOf(
+                FilterItem("Janeiro", false),
+                FilterItem("Fevereiro", false),
+                FilterItem("Março", false),
+                FilterItem("Abril", false),
+                FilterItem("Maio", false),
+                FilterItem("Junho", false),
+                FilterItem("Julho", false),
+                FilterItem("Agosto", false),
+                FilterItem("Setembro", false),
+                FilterItem("Outubro", false),
+                FilterItem("Novembro", false),
+                FilterItem("Dezembro", false)
+            )
+        )
+    }
+
+    // Cálculos derivados
     val total = tarefas.size
     val concluidas = tarefas.count { it.concluida }
+    val progresso = remember(tarefas) { concluidas.toFloat() / total }
 
 
-    val progresso = if (total > 0) concluidas.toFloat() / total.toFloat() else 0f
     var searchText by remember { mutableStateOf("")}
     var nomeTaskText by remember { mutableStateOf("")}
     var descTaskText by remember { mutableStateOf("")}
@@ -80,8 +127,10 @@ fun ListaTarefasScreen(navController: NavController) {
     val checkedStates = remember { mutableStateMapOf<Int, Boolean>() }
     val deleteTaskName = remember { mutableStateOf("") }
 
+
     var showCreateModal by remember { mutableStateOf(false) }
     var showDeleteModal by remember { mutableStateOf(false) }
+    var showFilterPanel by remember { mutableStateOf(false) }
 
     val tarefasAgrupadas = tarefas.groupBy {
         if (it.data.isBefore(hoje)) "Atrasado"
@@ -100,7 +149,10 @@ fun ListaTarefasScreen(navController: NavController) {
             modifier = Modifier
                 .padding(horizontal = 22.dp, vertical = 16.dp)
         ) {
-            Text("$concluidas de $total tarefas concluídas")
+            Text(
+                text ="$concluidas de $total tarefas concluídas",
+                style = MaterialTheme.typography.bodyMedium
+            )
 
             Spacer(modifier = Modifier.height(10.dp))
 
@@ -112,10 +164,9 @@ fun ListaTarefasScreen(navController: NavController) {
                     .padding(1.dp)
             ) {
                 LinearProgressIndicator(
-                    progress = { progresso },
+                    progress = progresso,
                     modifier = Modifier
-                        .fillMaxSize()
-                        .background(Color.White),
+                        .fillMaxSize(),
                     color = rosa,
                     trackColor = Color.White
                 )
@@ -147,7 +198,7 @@ fun ListaTarefasScreen(navController: NavController) {
                     value = searchText,
                     onValueChange = { searchText = it },
                     placeholder = { Text("Pesquisar tarefas...") },
-                    textStyle = TextStyle(color = Color.Black),
+                    textStyle = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier
                         .weight(1f)
                         .background(Color.Transparent),
@@ -160,7 +211,7 @@ fun ListaTarefasScreen(navController: NavController) {
                 )
 
                 IconButton(
-                    onClick = {},
+                    onClick = {showFilterPanel = true},
                     modifier = Modifier.size(40.dp)
                 ) {
                     Icon(
@@ -176,37 +227,103 @@ fun ListaTarefasScreen(navController: NavController) {
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 tarefasAgrupadas["Atrasado"]?.let { listaTarefas ->
                     item {
-                        Text(text = "Atrasado", modifier = Modifier.padding(8.dp))
-                    }
-                    items(listaTarefas) { tarefa ->
-                        TarefaCard(
-                            tarefa = tarefa,
-                            onDeleteClick = {showDeleteModal = true},
-                            deleteTaskName = deleteTaskName
+                        Text(
+                            style = MaterialTheme.typography.titleMedium,
+                            text = "Atrasado",
+                            modifier = Modifier.padding(8.dp)
                         )
                     }
-                    // Card para adicionar nova tarefa na seção "Atrasado"
+
+                    item {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .border(2.dp, Color.LightGray, RoundedCornerShape(8.dp))
+                        ) {
+
+                            Column () {
+                                listaTarefas.forEachIndexed { index, tarefa ->
+                                    TarefaCard(
+                                        tarefa = tarefa,
+                                        onDeleteClick = { showDeleteModal = true },
+                                        deleteTaskName = deleteTaskName,
+                                        onCheckClick = { isChecked ->
+                                            tarefas = tarefas.map {
+                                                if (it.id == tarefa.id) it.copy(concluida = isChecked)
+                                                else it
+                                            }
+                                        }
+                                    )
+
+                                    if (index < listaTarefas.size - 1) {
+                                        Divider(
+                                            color = Color.LightGray,
+                                            thickness = 2.dp,
+                                            modifier = Modifier.fillMaxWidth()
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+
                     item {
                         AddTarefa(showCreateModal = showCreateModal, onAddClick = {showCreateModal = true })
                     }
                 }
 
+                var sectionIndex = 0
+
+                // Outras seções (exceto "Atrasado")
                 tarefasAgrupadas
                     .filterKeys { it != "Atrasado" }
                     .forEach { (tituloSeccao, listaTarefas) ->
                         item {
-                            Text(text = tituloSeccao, modifier = Modifier.padding(8.dp))
-                        }
-                        items(listaTarefas) { tarefa ->
-                            TarefaCard(
-                                tarefa = tarefa,
-                                onDeleteClick = {showDeleteModal = true},
-                                deleteTaskName = deleteTaskName
+                            Text(
+                                text = tituloSeccao,
+                                modifier = Modifier.padding(8.dp),
+                                style = MaterialTheme.typography.titleMedium
                             )
                         }
+
+                        item {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .border(2.dp, Color.LightGray, RoundedCornerShape(8.dp))
+                            ) {
+                                Column {
+                                    listaTarefas.forEachIndexed { index, tarefa ->
+                                        TarefaCard(
+                                            tarefa = tarefa,
+                                            onDeleteClick = { showDeleteModal = true },
+                                            deleteTaskName = deleteTaskName,
+                                            onCheckClick = { isChecked ->
+                                                tarefas = tarefas.map {
+                                                    if (it.id == tarefa.id) it.copy(concluida = isChecked)
+                                                    else it
+                                                }
+                                            }
+                                        )
+                                        // Adiciona um Divider apenas se não for o último item da seção
+                                        if (index < listaTarefas.size - 1) {
+                                            Divider(
+                                                color = Color.LightGray,
+                                                thickness = 2.dp,
+                                                modifier = Modifier.fillMaxWidth()
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
                         // Card para adicionar nova tarefa em cada seção
                         item {
-                            AddTarefa(showCreateModal = showCreateModal, onAddClick = {showCreateModal = true })
+                            AddTarefa(
+                                showCreateModal = showCreateModal,
+                                onAddClick = { showCreateModal = true }
+                            )
                         }
                     }
             }
@@ -226,7 +343,10 @@ fun ListaTarefasScreen(navController: NavController) {
             ) {
                 // Campo: Nome da Tarefa
                 Column {
-                    Text("Nome da Tarefa")
+                    Text(
+                        text ="Nome da Tarefa",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
                     Spacer(Modifier.height(8.dp))
                     Row(
                         modifier = Modifier
@@ -241,7 +361,7 @@ fun ListaTarefasScreen(navController: NavController) {
                         TextField(
                             value = nomeTaskText,
                             onValueChange = { nomeTaskText = it },
-                            textStyle = TextStyle(color = Color.Black),
+                            textStyle = MaterialTheme.typography.bodyMedium,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .background(Color.Transparent),
@@ -260,7 +380,10 @@ fun ListaTarefasScreen(navController: NavController) {
 
                 // Campo: Descrição da Tarefa
                 Column {
-                    Text("Descrição da tarefa personalizada")
+                    Text(
+                        text ="Descrição da tarefa personalizada",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
                     Spacer(Modifier.height(8.dp))
                     Row(
                         modifier = Modifier
@@ -275,7 +398,7 @@ fun ListaTarefasScreen(navController: NavController) {
                         TextField(
                             value = descTaskText,
                             onValueChange = { descTaskText = it },
-                            textStyle = TextStyle(color = Color.Black),
+                            textStyle = MaterialTheme.typography.bodyMedium,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .background(Color.Transparent),
@@ -294,7 +417,10 @@ fun ListaTarefasScreen(navController: NavController) {
 
                 // Campo: Notas
                 Column {
-                    Text("Notas")
+                    Text(
+                        text = "Notas",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
                     Spacer(Modifier.height(8.dp))
                     Row(
                         modifier = Modifier
@@ -310,7 +436,7 @@ fun ListaTarefasScreen(navController: NavController) {
                             value = notesTaskText,
                             onValueChange = { notesTaskText = it },
                             placeholder = { Text("Escreva algo aqui...") },
-                            textStyle = TextStyle(color = Color.Black),
+                            textStyle = MaterialTheme.typography.bodyMedium,
                             modifier = Modifier
                                 .fillMaxSize()
                                 .background(Color.Transparent),
@@ -333,7 +459,10 @@ fun ListaTarefasScreen(navController: NavController) {
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text("Data")
+                    Text(
+                        text ="Data",
+                        style = MaterialTheme.typography.bodyMedium
+                        )
                     Spacer(modifier = Modifier.width(8.dp))
                     Row(
                         modifier = Modifier
@@ -348,7 +477,7 @@ fun ListaTarefasScreen(navController: NavController) {
                         TextField(
                             value = dateTaskText,
                             onValueChange = { dateTaskText = it },
-                            textStyle = TextStyle(color = Color.Black),
+                            textStyle = MaterialTheme.typography.bodyMedium,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .background(Color.Transparent),
@@ -371,7 +500,10 @@ fun ListaTarefasScreen(navController: NavController) {
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text("Categoria")
+                    Text(
+                        text ="Categoria",
+                        style = MaterialTheme.typography.bodyMedium
+                        )
                     Spacer(modifier = Modifier.width(8.dp))
                     Row(
                         modifier = Modifier
@@ -386,7 +518,7 @@ fun ListaTarefasScreen(navController: NavController) {
                         TextField(
                             value = categoryTaskText,
                             onValueChange = { categoryTaskText = it },
-                            textStyle = TextStyle(color = Color.Black),
+                            textStyle = MaterialTheme.typography.bodyMedium,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .background(Color.Transparent),
@@ -411,6 +543,171 @@ fun ListaTarefasScreen(navController: NavController) {
         }
     )
 
+    FilterPanel(
+        isVisible = showFilterPanel,
+        onDismiss = { showFilterPanel = false },
+        content = {
+            Column {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = "Filtros",
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                }
+
+
+                Spacer(modifier = Modifier.height(10.dp))
+                Divider(
+                    color = Color.LightGray,
+                    thickness = 2.dp,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                Column(
+                    modifier = Modifier
+                        .fillMaxHeight() // Altura fixa
+                        .verticalScroll(rememberScrollState()) // Habilita rolagem
+                )
+                {
+                    Column {
+                        Text(
+                            text = "Status",
+                            style = MaterialTheme.typography.titleSmall
+                        )
+
+                        Spacer(modifier = Modifier.height(10.dp))
+
+                        statusFilter.forEachIndexed { index, status ->
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                                    .padding(vertical = 4.dp)
+                                    .clickable {
+                                        // Atualiza o estado quando clicado
+                                        statusFilter = statusFilter.toMutableList().apply {
+                                            this[index] =
+                                                this[index].copy(check = !this[index].check)
+                                        }
+                                    }
+                            ) {
+                                Checkbox(
+                                    checked = status.check,
+                                    onCheckedChange = { isChecked ->
+                                        statusFilter = statusFilter.map {
+                                            if (it.nome == status.nome) it.copy(check = isChecked)
+                                            else it
+                                        }
+                                    },
+                                    modifier = Modifier.size(24.dp)
+                                )
+                                Text(
+                                    text = status.nome,
+                                    modifier = Modifier.padding(start = 8.dp)
+                                )
+                            }
+
+                            Spacer(modifier = Modifier.height(8.dp))
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Divider(
+                        color = Color.LightGray,
+                        thickness = 2.dp,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    Column {
+                        Text(
+                            text = "Mês",
+                            style = MaterialTheme.typography.titleSmall
+                        )
+
+                        mesFilter.forEachIndexed { index, mes ->
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                                    .padding(vertical = 4.dp)
+                                    .clickable {
+                                        mesFilter = mesFilter.toMutableList().apply {
+                                            this[index] =
+                                                this[index].copy(check = !this[index].check)
+                                        }
+                                    }
+                            ) {
+                                Checkbox(
+                                    checked = mes.check,
+                                    onCheckedChange = { isChecked ->
+                                        mesFilter = mesFilter.map {
+                                            if (it.nome == mes.nome) it.copy(check = isChecked)
+                                            else it
+                                        }
+                                    },
+                                    modifier = Modifier.size(24.dp)
+                                )
+                                Text(
+                                    text = mes.nome,
+                                    modifier = Modifier.padding(start = 8.dp)
+                                )
+                            }
+                            Spacer(modifier = Modifier.height(8.dp))
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Divider(
+                        color = Color.LightGray,
+                        thickness = 2.dp,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Button(
+                            onClick = {
+                                showFilterPanel = false;
+                                statusFilter = statusFilter.map { it.copy(check = false) };
+                                mesFilter = mesFilter.map { it.copy(check = false) };
+                                      },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(0xFFEAEAEA),
+                                contentColor = Color(0xFF766F6F)
+                            ),
+                            shape = RoundedCornerShape(8.dp),
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(start = 4.dp)
+                        ) {
+                            Text("Limpar filtros")
+                        }
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Button(
+                            onClick = { showFilterPanel = false },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(0xFFD77C8C),
+                                contentColor = Color.White
+                            ),
+                            shape = RoundedCornerShape(8.dp),
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(start = 4.dp)
+                        ) {
+                            Text("Filtrar")
+                        }
+                    }
+
+                }
+            }
+        }
+    )
+
     CustomModal(
         showModal = showDeleteModal,
         onDismissRequest = { showDeleteModal = false },
@@ -427,14 +724,14 @@ fun ListaTarefasScreen(navController: NavController) {
                     .fillMaxWidth()
             ) {
                 Text(
-                    fontSize = 20.sp,
+                    style = MaterialTheme.typography.titleMedium,
                     textAlign = TextAlign.Center,
                     text = "Deseja remover a tarefa \"${deleteTaskName.value}\"?"
                 )
                 Spacer(Modifier.height(5.dp))
                 Text(
+                    style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
                     textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.Bold,
                     text="Você não poderá recuperá-lo novamente após a exclusão."
                 )
             }
@@ -448,6 +745,4 @@ fun ListaTarefasScreen(navController: NavController) {
         },
         textConfirm = "Deletar"
     )
-
-
 }
