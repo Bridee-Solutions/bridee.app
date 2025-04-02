@@ -3,6 +3,7 @@ package com.example.bridee.home.presentation.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
@@ -99,14 +100,14 @@ fun SuppliersList() {
                 onValueChange = { searchText = it },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-                placeholder = {  Text("Pesquisar ${
-                    selectedCategory.replaceFirstChar { it.lowercase() }
-                }") },
+                    .height(52.dp)
+                    .padding(horizontal = 2.dp),
+                placeholder = {  Text("Pesquisar ") },
                 shape = RoundedCornerShape(8.dp),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = Color.LightGray,
-                    unfocusedBorderColor = Color.LightGray
+                    unfocusedBorderColor = Color.LightGray,
+
                 ),
                 singleLine = true,
                 leadingIcon = {
