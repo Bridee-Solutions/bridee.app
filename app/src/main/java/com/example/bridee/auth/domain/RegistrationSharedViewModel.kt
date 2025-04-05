@@ -22,7 +22,7 @@ class RegistrationSharedViewModel: ViewModel() {
         super.onCleared()
     }
 
-    fun salvarCasal(){
+    fun saveCasal(){
         val createdCasal = usuarioService.createCasal(_state.value)
         createdCasal.enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {

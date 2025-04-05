@@ -109,7 +109,7 @@ fun Fase7RegistrationScreen(viewModel: RegistrationSharedViewModel,navController
         Button(
             onClick = {
                 if(isTermsApproved){
-                    viewModel.salvarCasal();
+                    viewModel.saveCasal();
                     navController.navigate(route = Screen.EmailRegistration.route)
                 }
             },

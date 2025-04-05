@@ -53,6 +53,10 @@ fun Fase5RegistrationScreen(viewModel: RegistrationSharedViewModel,navController
         mutableStateOf("")
     }
 
+    var isDateNotDefined by remember {
+        mutableStateOf(false)
+    }
+
     Column(
         modifier = Modifier.fillMaxWidth()
             .height(windowHeightDp - 150.dp),
@@ -87,6 +91,7 @@ fun Fase5RegistrationScreen(viewModel: RegistrationSharedViewModel,navController
                     if((dateString.length < DateDefaults.DATE_LENGTH && it.isDigitsOnly()) ||
                         isDeletingCharacter){
                         dateString = it
+                        isDateNotDefined = false
                     }
                 },
                 visualTransformation = MaskVisualTransformation(DateDefaults.DATE_MASK),
@@ -109,8 +114,13 @@ fun Fase5RegistrationScreen(viewModel: RegistrationSharedViewModel,navController
                 verticalAlignment = Alignment.CenterVertically
             ){
                 Checkbox(
-                    checked = false,
-                    onCheckedChange = {}
+                    checked = isDateNotDefined,
+                    onCheckedChange = {
+                        isDateNotDefined = it
+                        if(isDateNotDefined){
+                            dateString = ""
+                        }
+                    }
                 )
                 Text(
                     text = "Ainda não sabemos"
@@ -118,8 +128,10 @@ fun Fase5RegistrationScreen(viewModel: RegistrationSharedViewModel,navController
             }
             Button(
                 onClick = {
-                    if(dateString.length == DateDefaults.DATE_LENGTH){
-                        viewModel.updateDataCasamento(dateString)
+                    if(dateString.length == DateDefaults.DATE_LENGTH || isDateNotDefined){
+                        if(dateString.length == DateDefaults.DATE_LENGTH){
+                            viewModel.updateDataCasamento(dateString)
+                        }
                         navController.navigate(Screen.Fase6Registration.route)
                     }
                 },
