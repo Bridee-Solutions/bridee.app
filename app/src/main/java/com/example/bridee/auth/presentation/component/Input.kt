@@ -8,6 +8,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.input.VisualTransformation
@@ -19,10 +20,12 @@ fun Input(
     onStateChange: (String) -> Unit,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     placeholder: @Composable () -> Unit = {},
-    singleLine: Boolean = true
+    singleLine: Boolean = true,
+    isValid: Boolean = true
 ){
 
     val windowWidthDp = LocalConfiguration.current.screenWidthDp.dp
+    val color = if(isValid || state.isBlank()) Color(0xFF999999) else Color.Red
 
     TextField(
         value = state,
@@ -31,9 +34,11 @@ fun Input(
         placeholder = placeholder,
         modifier = Modifier.width(windowWidthDp - 45.dp)
             .border(
-                BorderStroke(width = 2.dp, color = Color(0xFF999999)),
+                BorderStroke(width = 2.dp, color = color),
                 shape = RoundedCornerShape(30)
-            ),
+            )
+            .onFocusEvent {
+            },
         colors = TextFieldDefaults.colors(
             unfocusedContainerColor = Color(0xFFF5F5F5),
             focusedContainerColor = Color(0xFFF5F5F5),

@@ -78,4 +78,27 @@ class RegistrationSharedViewModel: ViewModel() {
         _state.value.tamanhoCasamento = quantity
     }
 
+    fun isFase1Valid(): Boolean{
+        return isEmailValid() && passwordsMatches()
+    }
+
+    fun isEmailValid(): Boolean{
+        val emailRegex = Regex("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+\$")
+        val email = _state.value.email
+        return emailRegex.matches(email)
+    }
+
+    fun isPasswordValid(): Boolean{
+        val senhaRegex = Regex("^(?=(.*[a-z]))(?=(.*[A-Z]))(?=(.*\\d))(?=(.*[!@#\\\$%\\^&\\*]))[A-Za-z\\d!@#\\\$%\\^&\\*]{8,}\$")
+        val senha = _state.value.senha
+        return senhaRegex.matches(senha)
+    }
+
+    fun passwordsMatches(): Boolean{
+        val senhaRegex = Regex("^(?=(.*[a-z]))(?=(.*[A-Z]))(?=(.*\\d))(?=(.*[!@#\\\$%\\^&\\*]))[A-Za-z\\d!@#\\\$%\\^&\\*]{8,}\$")
+        val state = _state.value
+        return state.senha == state.confirmarSenha
+                && senhaRegex.matches(state.confirmarSenha)
+    }
+
 }

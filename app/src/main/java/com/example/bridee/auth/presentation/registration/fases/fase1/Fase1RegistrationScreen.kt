@@ -17,7 +17,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,15 +28,16 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.bridee.auth.domain.RegistrationSharedViewModel
 import com.example.bridee.auth.presentation.component.Input
-import com.example.bridee.auth.domain.RegistrationState
 import com.example.bridee.core.navigation.Screen
 
 @Composable
-fun Fase1RegistrationScreen(registrationState: MutableState<RegistrationState>, navController: NavController){
+fun Fase1RegistrationScreen(viewModel: RegistrationSharedViewModel, navController: NavController){
 
     val windowWidthDp = LocalConfiguration.current.screenWidthDp.dp
     val windowHeightDp = LocalConfiguration.current.screenHeightDp.dp
+    val registrationState = viewModel.sharedRegistrationObject
 
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -115,7 +115,8 @@ fun Fase1RegistrationScreen(registrationState: MutableState<RegistrationState>, 
                         modifier = Modifier.offset(x = 30.dp),
                         color = Color(0xFFC2C2C2)
                     )
-                }
+                },
+                isValid = viewModel.isEmailValid()
             )
             Input(
                 state = registrationState.value.senha,
@@ -134,7 +135,8 @@ fun Fase1RegistrationScreen(registrationState: MutableState<RegistrationState>, 
                         modifier = Modifier.offset(x = 30.dp),
                         color = Color(0xFFC2C2C2)
                     )
-                }
+                },
+                isValid = viewModel.isPasswordValid()
             )
             Input(
                 state = registrationState.value.confirmarSenha,
@@ -153,12 +155,17 @@ fun Fase1RegistrationScreen(registrationState: MutableState<RegistrationState>, 
                         modifier = Modifier.offset(x = 30.dp),
                         color = Color(0xFFC2C2C2)
                     )
-                }
+                },
+                isValid = viewModel.passwordsMatches()
             )
         }
         Button(
             onClick = {
-                navController.navigate(route = Screen.Fase2Registration.route)
+                if(viewModel.isFase1Valid()){
+                    navController.navigate(route = Screen.Fase2Registration.route)
+                }else{
+                    //TODO: Adicionar Toast
+                }
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFFD86B67)
