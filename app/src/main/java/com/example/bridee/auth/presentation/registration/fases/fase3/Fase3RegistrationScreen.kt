@@ -19,16 +19,18 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.bridee.auth.domain.RegistrationSharedViewModel
 import com.example.bridee.auth.presentation.component.Header
 import com.example.bridee.auth.presentation.component.Input
 import com.example.bridee.auth.domain.RegistrationState
 import com.example.bridee.core.navigation.Screen
 
 @Composable
-fun Fase3RegistrationScreen(registrationState: MutableState<RegistrationState>, navController: NavController){
+fun Fase3RegistrationScreen(viewModel: RegistrationSharedViewModel, navController: NavController){
 
     val windowWidthDp = LocalConfiguration.current.screenWidthDp.dp
     val windowHeightDp = LocalConfiguration.current.screenHeightDp.dp
+    val registrationState = viewModel.sharedRegistrationObject
 
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -59,7 +61,8 @@ fun Fase3RegistrationScreen(registrationState: MutableState<RegistrationState>, 
                     state = registrationState.value.nome,
                     onStateChange = {
                         registrationState.value = registrationState.value.copy(nome = it)
-                    }
+                    },
+                    isValid = viewModel.isNomeValid()
                 )
             }
             Text(
@@ -75,14 +78,19 @@ fun Fase3RegistrationScreen(registrationState: MutableState<RegistrationState>, 
                     state = registrationState.value.nomeParceiro,
                     onStateChange = {
                         registrationState.value = registrationState.value.copy(nomeParceiro = it)
-                    }
+                    },
+                    isValid = viewModel.isParceiroNomeValid()
                 )
             }
         }
 
         Button(
             onClick = {
-                navController.navigate(Screen.Fase4Registration.route)
+                if(viewModel.isFase2Valid()){
+                    navController.navigate(Screen.Fase4Registration.route)
+                }else{
+                    //TODO: adicionar toast
+                }
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFFD86B67)

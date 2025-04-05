@@ -101,4 +101,18 @@ class RegistrationSharedViewModel: ViewModel() {
                 && senhaRegex.matches(state.confirmarSenha)
     }
 
+    fun isFase2Valid(): Boolean{
+        return isNomeValid() && isParceiroNomeValid()
+    }
+
+    fun isNomeValid(): Boolean{
+        val nome = _state.value.nome
+        return nome.length >= 3
+    }
+
+    fun isParceiroNomeValid(): Boolean{
+        val nomeParceiro = _state.value.nomeParceiro
+        return nomeParceiro.length >= 3
+    }
+
 }
