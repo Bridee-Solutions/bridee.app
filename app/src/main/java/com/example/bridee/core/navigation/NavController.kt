@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
@@ -34,7 +33,7 @@ fun NavController(){
         }
         navigation(
             route = Screen.Cadastro.route,
-            startDestination = Screen.Fase1Registration.route
+            startDestination = Screen.Fase6Registration.route
         ){
             composable(route = Screen.Fase1Registration.route) {
                 val viewModel = it.sharedViewModel<RegistrationSharedViewModel>(navController)
@@ -56,18 +55,15 @@ fun NavController(){
             }
             composable(route = Screen.Fase5Registration.route) {
                 val viewModel = it.sharedViewModel<RegistrationSharedViewModel>(navController)
-                val registrationState = viewModel.sharedRegistrationObject
-                Fase5RegistrationScreen(registrationState, navController)
+                Fase5RegistrationScreen(viewModel, navController)
             }
             composable(route = Screen.Fase6Registration.route) {
                 val viewModel = it.sharedViewModel<RegistrationSharedViewModel>(navController)
-                val registrationState = viewModel.sharedRegistrationObject
-                Fase6RegistrationScreen(registrationState, navController)
+                Fase6RegistrationScreen(viewModel, navController)
             }
             composable(route = Screen.Fase7Registration.route) {
                 val viewModel = it.sharedViewModel<RegistrationSharedViewModel>(navController)
-                val registrationState = viewModel.sharedRegistrationObject
-                Fase7RegistrationScreen(navController)
+                Fase7RegistrationScreen(viewModel, navController)
             }
         }
         composable(route = Screen.EmailRegistration.route){

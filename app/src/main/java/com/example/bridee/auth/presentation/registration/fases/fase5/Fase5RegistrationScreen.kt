@@ -17,7 +17,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,18 +34,23 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.core.text.isDigitsOnly
 import androidx.navigation.NavController
+import com.example.bridee.auth.domain.RegistrationSharedViewModel
 import com.example.bridee.auth.presentation.component.Header
 import com.example.bridee.auth.presentation.component.MaskVisualTransformation
-import com.example.bridee.auth.presentation.registration.RegistrationState
 import com.example.bridee.core.navigation.Screen
 
 @Composable
-fun Fase5RegistrationScreen(registrationState: MutableState<RegistrationState>,navController: NavController){
+fun Fase5RegistrationScreen(viewModel: RegistrationSharedViewModel,navController: NavController){
 
     val windowWidthDp = LocalConfiguration.current.screenWidthDp.dp
     val windowHeightDp = LocalConfiguration.current.screenHeightDp.dp
+
     var isDeletingCharacter by remember {
         mutableStateOf(false)
+    }
+
+    var dateString by remember {
+        mutableStateOf("")
     }
 
     Column(
@@ -75,14 +79,14 @@ fun Fase5RegistrationScreen(registrationState: MutableState<RegistrationState>,n
                 modifier = Modifier.width(250.dp)
             )
             TextField(
-                value = registrationState.value.dataCasamento,
+                value = dateString,
                 onValueChange = {
-                    if(registrationState.value.dataCasamento.length < DateDefaults.DATE_LENGTH){
+                    if(dateString.length < DateDefaults.DATE_LENGTH){
                         isDeletingCharacter = false
                     }
-                    if((registrationState.value.dataCasamento.length < DateDefaults.DATE_LENGTH && it.isDigitsOnly()) ||
+                    if((dateString.length < DateDefaults.DATE_LENGTH && it.isDigitsOnly()) ||
                         isDeletingCharacter){
-                        registrationState.value = registrationState.value.copy(dataCasamento = it)
+                        dateString = it
                     }
                 },
                 visualTransformation = MaskVisualTransformation(DateDefaults.DATE_MASK),
@@ -114,7 +118,10 @@ fun Fase5RegistrationScreen(registrationState: MutableState<RegistrationState>,n
             }
             Button(
                 onClick = {
-                    navController.navigate(Screen.Fase6Registration.route)
+                    if(dateString.length == DateDefaults.DATE_LENGTH){
+                        viewModel.updateDataCasamento(dateString)
+                        navController.navigate(Screen.Fase6Registration.route)
+                    }
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFFD86B67)
@@ -129,5 +136,4 @@ fun Fase5RegistrationScreen(registrationState: MutableState<RegistrationState>,n
             }
         }
     }
-
 }

@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.bridee.auth.presentation.component.Header
 import com.example.bridee.auth.presentation.component.Input
-import com.example.bridee.auth.presentation.registration.RegistrationState
+import com.example.bridee.auth.domain.RegistrationState
 import com.example.bridee.core.navigation.Screen
 
 @Composable

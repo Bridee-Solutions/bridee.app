@@ -1,7 +1,10 @@
 package com.example.bridee.auth.presentation.registration.fases.fase6
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowColumn
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -12,29 +15,30 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.bridee.auth.domain.RegistrationSharedViewModel
 import com.example.bridee.auth.presentation.component.Header
-import com.example.bridee.auth.presentation.registration.RegistrationState
 import com.example.bridee.core.navigation.Screen
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun Fase6RegistrationScreen(registrationState: MutableState<RegistrationState> ,navController: NavController){
+fun Fase6RegistrationScreen(viewModel: RegistrationSharedViewModel, navController: NavController){
 
     val windowWidthDp = LocalConfiguration.current.screenWidthDp.dp
     val windowHeightDp = LocalConfiguration.current.screenHeightDp.dp
-
+    val context = LocalContext.current
     Column(
         modifier = Modifier.fillMaxWidth()
             .height(windowHeightDp - 150.dp),
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
+
         Header(
             navController = navController,
             fillPercentage = windowWidthDp - 150.dp,
@@ -44,100 +48,45 @@ fun Fase6RegistrationScreen(registrationState: MutableState<RegistrationState> ,
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceEvenly,
             modifier = Modifier.fillMaxWidth()
-                .height(300.dp)
+                .height(250.dp)
         ) {
             Text(
                 text = "Quantos convidados você acha que terá?"
             )
             Row (
-                modifier = Modifier.width(windowWidthDp - 100.dp)
+                modifier = Modifier.width(windowWidthDp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Column {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        RadioButton(
-                            selected = true,
-                            onClick = {}
-                        )
-                        Text(
-                            text = "0-50"
-                        )
-                    }
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        RadioButton(
-                            selected = true,
-                            onClick = {}
-                        )
-                        Text(
-                            text = "51-100"
-                        )
-                    }
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        RadioButton(
-                            selected = true,
-                            onClick = {}
-                        )
-                        Text(
-                            text = "101-150"
-                        )
-                    }
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        RadioButton(
-                            selected = true,
-                            onClick = {}
-                        )
-                        Text(
-                            text = "151-200"
-                        )
-                    }
-                }
-                Column {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        RadioButton(
-                            selected = true,
-                            onClick = {}
-                        )
-                        Text(
-                            text = "201-300"
-                        )
-                    }
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        RadioButton(
-                            selected = true,
-                            onClick = {}
-                        )
-                        Text(
-                            text = "300"
-                        )
-                    }
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        RadioButton(
-                            selected = true,
-                            onClick = {}
-                        )
-                        Text(
-                            text = "Ainda não temos certeza"
-                        )
+                FlowColumn(
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    viewModel.guestOptions.forEach {guestOption ->
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            RadioButton(
+                                selected = guestOption.selected,
+                                onClick = {
+                                    viewModel.updateGuestQuantity(guestOption)
+                                }
+                            )
+                            Text(
+                                text = guestOption.value
+                            )
+                        }
                     }
                 }
             }
         }
         Button(
             onClick = {
-                navController.navigate(route = Screen.Fase7Registration.route)
+                val guestOption = viewModel.guestOptions.filter { it.selected }
+                if(guestOption.isNotEmpty()){
+                    navController.navigate(route = Screen.Fase7Registration.route)
+                }else{
+                    Toast.makeText(context, "Selecione uma opção", Toast.LENGTH_LONG).show()
+                }
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFFD86B67)

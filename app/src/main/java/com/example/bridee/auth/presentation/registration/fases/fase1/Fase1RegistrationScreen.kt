@@ -25,13 +25,12 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.bridee.auth.presentation.component.Input
-import com.example.bridee.auth.presentation.registration.RegistrationState
+import com.example.bridee.auth.domain.RegistrationState
 import com.example.bridee.core.navigation.Screen
 
 @Composable
