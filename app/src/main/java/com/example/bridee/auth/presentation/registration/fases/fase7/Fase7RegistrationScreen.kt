@@ -42,10 +42,6 @@ fun Fase7RegistrationScreen(viewModel: RegistrationSharedViewModel,navController
         mutableStateOf(0f)
     }
 
-    var isTermsApproved by remember {
-        mutableStateOf(false)
-    }
-
     val windowWidthDp = LocalConfiguration.current.screenWidthDp.dp
     val windowHeightDp = LocalConfiguration.current.screenHeightDp.dp
 
@@ -96,9 +92,9 @@ fun Fase7RegistrationScreen(viewModel: RegistrationSharedViewModel,navController
         }
         Row {
             Checkbox(
-                checked = isTermsApproved,
+                checked = viewModel.isTermsApproved,
                 onCheckedChange = {
-                    isTermsApproved = it
+                    viewModel.isTermsApproved = it
                 }
             )
             Text(
@@ -108,9 +104,11 @@ fun Fase7RegistrationScreen(viewModel: RegistrationSharedViewModel,navController
         }
         Button(
             onClick = {
-                if(isTermsApproved){
+                if(viewModel.isTermsApproved){
                     viewModel.saveCasal();
                     navController.navigate(route = Screen.EmailRegistration.route)
+                }else{
+                    // TODO: adicionar toast
                 }
             },
             colors = ButtonDefaults.buttonColors(

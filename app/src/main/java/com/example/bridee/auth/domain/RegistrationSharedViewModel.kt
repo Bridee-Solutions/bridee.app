@@ -16,6 +16,7 @@ class RegistrationSharedViewModel: ViewModel() {
     private val _state = mutableStateOf(RegistrationState())
     val sharedRegistrationObject = _state
     val guestOptions = GuestOption().createGuestOptions()
+    var isTermsApproved by mutableStateOf(false)
 
     override fun onCleared() {
         super.onCleared()
