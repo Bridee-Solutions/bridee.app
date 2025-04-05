@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.example.bridee.ui.theme.rosa
 
 @Composable
-fun ControleGastoDetalhes() {
+fun ControleGastoDetalhes(modifier: Modifier = Modifier) {
     Box(
         modifier = Modifier
             .fillMaxWidth()

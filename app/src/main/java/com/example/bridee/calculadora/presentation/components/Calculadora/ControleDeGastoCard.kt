@@ -40,7 +40,7 @@ import com.example.bridee.ui.theme.rosa
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ControleDeGastoCard() {
+fun ControleDeGastoCard(  ) {
     var showEditModal by remember { mutableStateOf(false) }
     var novoOrcamento by remember { mutableStateOf("") }
     val orcamentoAtual = "R$90.000"

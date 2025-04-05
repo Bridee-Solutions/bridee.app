@@ -26,12 +26,14 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.bridee.R
+import com.example.bridee.core.navigation.Screen
 
 import com.example.bridee.ui.theme.rosa
 
 @Composable
-fun WeddingHeader() {
+fun WeddingHeader(navController: NavController) {
     Box(modifier = Modifier.height(250.dp)) {
         Image(
             painter = painterResource(id = R.drawable.image_home),
@@ -62,7 +64,7 @@ fun WeddingHeader() {
                 modifier = Modifier
                     .size(26.dp)
                     .align(Alignment.TopEnd)
-                    .clickable { /* Handle settings click */ },
+                    .clickable { navController.navigate(Screen.Configuracoes.route) },
                 tint = Color.White
             )
         }
