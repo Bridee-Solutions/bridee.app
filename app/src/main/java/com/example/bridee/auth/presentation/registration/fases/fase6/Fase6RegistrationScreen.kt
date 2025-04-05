@@ -33,6 +33,7 @@ fun Fase6RegistrationScreen(viewModel: RegistrationSharedViewModel, navControlle
     val windowWidthDp = LocalConfiguration.current.screenWidthDp.dp
     val windowHeightDp = LocalConfiguration.current.screenHeightDp.dp
     val context = LocalContext.current
+
     Column(
         modifier = Modifier.fillMaxWidth()
             .height(windowHeightDp - 150.dp),

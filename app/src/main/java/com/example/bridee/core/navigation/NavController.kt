@@ -44,13 +44,11 @@ fun NavController(){
             }
             composable(route = Screen.Fase3Registration.route){
                 val viewModel = it.sharedViewModel<RegistrationSharedViewModel>(navController)
-                val registrationState = viewModel.sharedRegistrationObject
-                Fase3RegistrationScreen(registrationState, navController)
+                Fase3RegistrationScreen(viewModel, navController)
             }
             composable(route = Screen.Fase4Registration.route) {
                 val viewModel = it.sharedViewModel<RegistrationSharedViewModel>(navController)
-                val registrationState = viewModel.sharedRegistrationObject
-                Fase4RegistrationScreen(registrationState, navController)
+                Fase4RegistrationScreen(viewModel, navController)
             }
             composable(route = Screen.Fase5Registration.route) {
                 val viewModel = it.sharedViewModel<RegistrationSharedViewModel>(navController)

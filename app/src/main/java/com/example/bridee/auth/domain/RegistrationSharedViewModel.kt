@@ -115,4 +115,15 @@ class RegistrationSharedViewModel: ViewModel() {
         return nomeParceiro.length >= 3
     }
 
+    fun isFase3Valid(): Boolean{
+        val state = _state.value
+        val local = state.local
+        return (state.isLocalReservado && local.isNotBlank())
+                || !state.isLocalReservado
+    }
+
+    fun isLocalReservado(local: String): Boolean{
+        return local.isNotBlank()
+    }
+
 }
