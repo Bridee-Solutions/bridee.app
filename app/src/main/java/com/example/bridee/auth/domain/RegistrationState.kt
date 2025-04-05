@@ -9,7 +9,7 @@ data class RegistrationState(
     var nome: String = "",
     var nomeParceiro: String = "",
     var local: String = "",
-    var dataCasamento: LocalDate? = null,
+    var dataCasamento: String = "",
     var isLocalReservado: Boolean = false,
     var quantidadeConvidados: Int = 0,
     var tamanhoCasamento: Int = 0

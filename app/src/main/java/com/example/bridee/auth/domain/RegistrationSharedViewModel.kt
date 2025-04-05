@@ -1,15 +1,14 @@
 package com.example.bridee.auth.domain
 
-import android.util.Log
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.bridee.auth.data.AuthEndpoints
 import com.example.bridee.core.api.ApiInstance
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.time.DateTimeException
-import java.time.LocalDate
 
 class RegistrationSharedViewModel: ViewModel() {
 
@@ -38,23 +37,12 @@ class RegistrationSharedViewModel: ViewModel() {
         })
     }
 
-    private fun convertStringToLocalDate(date: String): LocalDate?{
-        val day: Int = date.substring(0,2).toInt()
-        val month: Int = date.substring(2, 4).toInt()
-        val year: Int = date.substring(4).toInt()
-        return createLocalDate(year, month, day)
-    }
-
-    private fun createLocalDate(year: Int, month: Int, day: Int): LocalDate?{
-        var localDate: LocalDate? = null
-
-        try {
-            localDate = LocalDate.of(year, month, day)
-        }catch (e: DateTimeException){
-            Log.e("DATE", "Data inválida")
-        }
-
-        return localDate
+    private fun convertStringToLocalDate(date: String): String{
+        val day: String = date.substring(0,2)
+        val month: String = date.substring(2, 4)
+        val year: String = date.substring(4)
+        val invertedString: Array<String> = arrayOf(year, month, day)
+        return invertedString.joinToString("-")
     }
 
     fun updateDataCasamento(dateString: String){
