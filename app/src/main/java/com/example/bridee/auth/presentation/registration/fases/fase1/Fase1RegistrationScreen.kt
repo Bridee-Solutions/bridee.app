@@ -162,9 +162,14 @@ fun Fase1RegistrationScreen(viewModel: RegistrationSharedViewModel, navControlle
         Button(
             onClick = {
                 if(viewModel.isFase1Valid()){
-                    navController.navigate(route = Screen.Fase2Registration.route)
+                    viewModel.verifyEmail()
+                    if(!viewModel.isUserAlreadyRegistered){
+                        navController.navigate(route = Screen.Fase2Registration.route)
+                    }else{
+                        // TODO: adicionar toast informando que já existe usuário com esse e-mail
+                    }
                 }else{
-                    //TODO: Adicionar Toast
+                    //TODO: Adicionar Toast solicitando informações válidas
                 }
             },
             colors = ButtonDefaults.buttonColors(

@@ -19,7 +19,8 @@ class RegistrationSharedViewModel: ViewModel() {
     val guestOptions = GuestOption().createGuestOptions()
     var isTermsApproved by mutableStateOf(false)
     var isCoupleSavedSuccessfully by mutableStateOf(false)
-
+    var isUserAlreadyRegistered by mutableStateOf(false)
+    
     override fun onCleared() {
         super.onCleared()
     }
@@ -31,6 +32,23 @@ class RegistrationSharedViewModel: ViewModel() {
                 Log.i("CASAL","Chamada realizada com sucesso, status code ${response.code()}")
                 if(response.code() == 201){
                     isCoupleSavedSuccessfully = true
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Log.i("CASAL", "Chamada falhou com o seguinte erro: ${t.message}")
+            }
+
+        })
+    }
+    
+    fun verifyEmail(){
+        val verifyEmail = usuarioService.validateEmail(_state.value.email)
+        verifyEmail.enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                Log.i("CASAL","Chamada realizada com sucesso, status code ${response.code()}")
+                if(response.code() == 201){
+                    isUserAlreadyRegistered = true
                 }
             }
 
