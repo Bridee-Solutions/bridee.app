@@ -17,6 +17,7 @@ class AuthenticationViewModel: ViewModel() {
     private val _state = mutableStateOf(AuthenticationRequest())
     val loginState = _state
     var isEnabled by mutableStateOf(false)
+    var showDialog by mutableStateOf(false)
 
     fun authenticate() {
         val authenticateUser = usuarioService.authenticate(_state.value)
