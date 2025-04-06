@@ -198,19 +198,34 @@ fun Fase1RegistrationScreen(viewModel: RegistrationSharedViewModel, navControlle
                 )
             )
         }
-        if(!viewModel.isFase1Valid() && viewModel.showDialog){
-            ToastUtils.ErrorToast(
-                message = "Preencha os campos corretamente",
-                contentAlignment = Alignment.TopStart
-            )
-            viewModel.showDialog = false
-        }
-        if(viewModel.isUserAlreadyRegistered && viewModel.showDialog){
-            ToastUtils.ErrorToast(
-                message = "Já existe um usuário com esse e-mail",
-                contentAlignment = Alignment.TopStart
-            )
-            viewModel.showDialog = false
-        }
+        ShowToasts(viewModel)
+    }
+}
+
+@Composable
+fun ShowToasts(viewModel: RegistrationSharedViewModel){
+    InvalidInformation(viewModel)
+    InvalidUser(viewModel)
+}
+
+@Composable
+fun InvalidInformation(viewModel: RegistrationSharedViewModel){
+    if(!viewModel.isFase1Valid() && viewModel.showDialog){
+        ToastUtils.ErrorToast(
+            message = "Preencha os campos corretamente",
+            contentAlignment = Alignment.TopStart
+        )
+        viewModel.showDialog = false
+    }
+}
+
+@Composable
+fun InvalidUser(viewModel: RegistrationSharedViewModel) {
+    if(viewModel.isUserAlreadyRegistered && viewModel.showDialog){
+        ToastUtils.ErrorToast(
+            message = "Já existe um usuário com esse e-mail",
+            contentAlignment = Alignment.TopStart
+        )
+        viewModel.showDialog = false
     }
 }
