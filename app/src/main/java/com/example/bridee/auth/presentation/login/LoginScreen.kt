@@ -30,20 +30,14 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.bridee.auth.domain.AuthenticationViewModel
 import com.example.bridee.auth.presentation.component.Input
 import com.example.bridee.core.navigation.Screen
 
 @Composable
-fun LoginScreen(navController: NavController){
+fun LoginScreen(authenticationViewModel: AuthenticationViewModel,navController: NavController){
 
-    val loginState by remember {
-        mutableStateOf(
-            LoginState(
-                email = mutableStateOf(""),
-                senha = mutableStateOf("")
-            )
-        )
-    }
+    val loginState = authenticationViewModel.loginState
 
     val windowWidthDp = LocalConfiguration.current.screenWidthDp.dp
     val windowHeightDp = LocalConfiguration.current.screenHeightDp.dp
@@ -107,9 +101,9 @@ fun LoginScreen(navController: NavController){
             modifier = Modifier.height(200.dp)
         ){
             Input(
-                state = loginState.email.value,
+                state = loginState.value.email,
                 onStateChange = {
-                    loginState.email.value = it
+                    loginState.value = loginState.value.copy(email = it)
                 },
                 placeholder = {
                     Icon(
@@ -125,9 +119,9 @@ fun LoginScreen(navController: NavController){
                 }
             )
             Input(
-                state = loginState.senha.value,
+                state = loginState.value.senha,
                 onStateChange = {
-                    loginState.senha.value = it
+                    loginState.value = loginState.value.copy(senha = it)
                 },
                 visualTransformation = PasswordVisualTransformation(),
                 placeholder = {
@@ -149,7 +143,14 @@ fun LoginScreen(navController: NavController){
             )
         }
         Button(
-            onClick = {},
+            onClick = {
+                authenticationViewModel.authenticate()
+                if(authenticationViewModel.isEnabled){
+                    // TODO: redirecionar para a tela inicial
+                }else{
+                    // TODO: toast informando que as credenciais são inválidas
+                }
+            },
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFFD86B67)
             ),

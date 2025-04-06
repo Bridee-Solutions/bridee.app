@@ -11,6 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import com.example.bridee.auth.domain.AuthenticationViewModel
 import com.example.bridee.auth.domain.RegistrationSharedViewModel
 import com.example.bridee.auth.presentation.login.LoginScreen
 import com.example.bridee.auth.presentation.registration.email.EmailFailRegistrationScreen
@@ -29,7 +30,8 @@ fun NavController(){
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = Screen.Login.route){
         composable(route = Screen.Login.route) {
-            LoginScreen(navController)
+            val authenticationViewModel: AuthenticationViewModel = AuthenticationViewModel()
+            LoginScreen(authenticationViewModel, navController)
         }
         navigation(
             route = Screen.Cadastro.route,
