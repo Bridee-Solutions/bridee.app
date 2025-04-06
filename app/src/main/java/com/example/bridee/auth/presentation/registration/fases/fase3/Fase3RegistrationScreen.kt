@@ -16,21 +16,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.bridee.auth.domain.RegistrationSharedViewModel
 import com.example.bridee.auth.presentation.component.Header
 import com.example.bridee.auth.presentation.component.Input
-import com.example.bridee.auth.presentation.registration.RegistrationState
 import com.example.bridee.core.navigation.Screen
+import com.example.bridee.core.toast.ToastUtils
 
 @Composable
-fun Fase3RegistrationScreen(registrationState: RegistrationState, navController: NavController){
+fun Fase3RegistrationScreen(viewModel: RegistrationSharedViewModel, navController: NavController){
 
     val windowWidthDp = LocalConfiguration.current.screenWidthDp.dp
     val windowHeightDp = LocalConfiguration.current.screenHeightDp.dp
+    val registrationState = viewModel.sharedRegistrationObject
 
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -39,7 +39,7 @@ fun Fase3RegistrationScreen(registrationState: RegistrationState, navController:
     ){
         Header(
             navController = navController,
-            fillPercentage = windowWidthDp - 150.dp,
+            fillPercentage = (40*3).dp,
             previousFase = Screen.Fase2Registration.route
         )
         Column (
@@ -58,10 +58,11 @@ fun Fase3RegistrationScreen(registrationState: RegistrationState, navController:
                 Spacer(modifier = Modifier.height(5.dp))
 
                 Input(
-                    state = registrationState.nome.value,
+                    state = registrationState.value.nome,
                     onStateChange = {
-                        registrationState.nome.value = it
+                        registrationState.value = registrationState.value.copy(nome = it)
                     },
+                    isValid = viewModel.isNomeValid(),
                     height = 50.dp
                 )
             }
@@ -76,10 +77,11 @@ fun Fase3RegistrationScreen(registrationState: RegistrationState, navController:
                 Spacer(modifier = Modifier.height(5.dp))
 
                 Input(
-                    state = registrationState.nomeParceiro.value,
+                    state = registrationState.value.nomeParceiro,
                     onStateChange = {
-                        registrationState.nomeParceiro.value = it
+                        registrationState.value = registrationState.value.copy(nomeParceiro = it)
                     },
+                    isValid = viewModel.isParceiroNomeValid(),
                     height = 50.dp
                 )
             }
@@ -87,7 +89,11 @@ fun Fase3RegistrationScreen(registrationState: RegistrationState, navController:
 
         Button(
             onClick = {
-                navController.navigate(Screen.Fase4Registration.route)
+                viewModel.showDialog = true
+                if(viewModel.isFase3Valid()){
+                    viewModel.showDialog = false
+                    navController.navigate(Screen.Fase4Registration.route)
+                }
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFFD86B67)
@@ -100,5 +106,17 @@ fun Fase3RegistrationScreen(registrationState: RegistrationState, navController:
         ) {
             Text("Próximo")
         }
+        ShowToast(viewModel)
+    }
+}
+
+@Composable
+fun ShowToast(viewModel: RegistrationSharedViewModel){
+    if(!viewModel.isFase3Valid() && viewModel.showDialog){
+        ToastUtils.ErrorToast(
+            message = "Os nomes devem ter no mínimo 3 caracteres",
+            contentAlignment = Alignment.TopStart
+        )
+        viewModel.showDialog = false
     }
 }

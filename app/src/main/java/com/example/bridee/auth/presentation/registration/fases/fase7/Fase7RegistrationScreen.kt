@@ -21,7 +21,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,12 +33,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.bridee.auth.domain.RegistrationSharedViewModel
 import com.example.bridee.auth.presentation.component.Header
-import com.example.bridee.auth.presentation.registration.RegistrationState
 import com.example.bridee.core.navigation.Screen
 
 @Composable
-fun Fase7RegistrationScreen(registrationState: RegistrationState,navController: NavController){
+fun Fase7RegistrationScreen(viewModel: RegistrationSharedViewModel,navController: NavController){
 
     var offset by remember {
         mutableStateOf(0f)
@@ -55,7 +54,7 @@ fun Fase7RegistrationScreen(registrationState: RegistrationState,navController: 
     ) {
         Header(
             navController = navController,
-            fillPercentage = windowWidthDp - 150.dp,
+            fillPercentage = windowWidthDp,
             previousFase = Screen.Fase6Registration.route
         )
         Column (
@@ -96,8 +95,10 @@ fun Fase7RegistrationScreen(registrationState: RegistrationState,navController: 
         }
         Row {
             Checkbox(
-                checked = false,
-                onCheckedChange = {}
+                checked = viewModel.isTermsApproved,
+                onCheckedChange = {
+                    viewModel.isTermsApproved = it
+                }
             )
             Text(
                 text = "Li e concordo com os termos de uso e política de privacidade",
@@ -106,7 +107,14 @@ fun Fase7RegistrationScreen(registrationState: RegistrationState,navController: 
         }
         Button(
             onClick = {
-                navController.navigate(route = Screen.EmailRegistration.route)
+                if(viewModel.isTermsApproved){
+                    viewModel.saveCasal();
+                    if(viewModel.isCoupleSavedSuccessfully){
+                        navController.navigate(route = Screen.EmailRegistration.route)
+                    }
+                }else{
+                    // TODO: adicionar toast
+                }
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFFD86B67)

@@ -2,6 +2,8 @@ package com.example.bridee.auth.presentation.registration.fases.fase6
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowColumn
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,12 +14,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,28 +24,30 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.bridee.auth.domain.GuestOption
+import com.example.bridee.auth.domain.RegistrationSharedViewModel
 import com.example.bridee.auth.presentation.component.CustomCheckbox
-import com.example.bridee.auth.presentation.component.CustomRadioButton
 import com.example.bridee.auth.presentation.component.Header
-import com.example.bridee.auth.presentation.registration.RegistrationState
 import com.example.bridee.core.navigation.Screen
+import com.example.bridee.core.toast.ToastUtils
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun Fase6RegistrationScreen(registrationState: RegistrationState ,navController: NavController){
+fun Fase6RegistrationScreen(viewModel: RegistrationSharedViewModel, navController: NavController){
 
     val windowWidthDp = LocalConfiguration.current.screenWidthDp.dp
     val windowHeightDp = LocalConfiguration.current.screenHeightDp.dp
-
-    val (selectedOption, setSelectedOption) = remember { mutableStateOf<String?>(null) }
+    val guestOption = viewModel.guestOptions.filter { it.selected }
 
     Column(
         modifier = Modifier.fillMaxWidth()
             .height(windowHeightDp - 150.dp),
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
+
         Header(
             navController = navController,
-            fillPercentage = windowWidthDp - 150.dp,
+            fillPercentage = (40*6).dp,
             previousFase = Screen.Fase5Registration.route
         )
         Column (
@@ -68,122 +68,38 @@ fun Fase6RegistrationScreen(registrationState: RegistrationState ,navController:
             )
             Spacer(modifier = Modifier.height(20.dp))
             Row (
-                modifier = Modifier.width(windowWidthDp - 100.dp)
+                modifier = Modifier.width(windowWidthDp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Column {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    ) {
-                        CustomCheckbox(
-                            checked = selectedOption == "0-50",
-                            onCheckedChange = { isChecked ->
-                                if (isChecked) setSelectedOption("0-50") else setSelectedOption(null)
-                            } )
-                        Text(
-                            text = "0-50",
-                            modifier = Modifier.padding(end = 15.dp, start = 8.dp),
-                        )
-                    }
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    ) {
-                        CustomCheckbox(
-                            checked = selectedOption == "51-100",
-                            onCheckedChange = { isChecked ->
-                                if (isChecked) setSelectedOption("51-100") else setSelectedOption(null)
-                            }
-                        )
-                        Text(
-                            text = "51-100",
-                            modifier = Modifier.padding(end = 15.dp, start = 8.dp),
-                        )
-                    }
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    ) {
-                        CustomCheckbox(
-                            checked = selectedOption == "101-150",
-                            onCheckedChange = { isChecked ->
-                                if (isChecked) setSelectedOption("101-150") else setSelectedOption(null)
-                            }
-                        )
-                        Text(
-                            text = "101-150",
-                            modifier = Modifier.padding(end = 15.dp, start = 8.dp),
-                        )
-                    }
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    ) {
-                        CustomCheckbox(
-                            checked = selectedOption == "151-200",
-                            onCheckedChange = { isChecked ->
-                                if (isChecked) setSelectedOption("151-200") else setSelectedOption(null)
-                            }
-                        )
-                        Text(
-                            text = "151-200",
-                            modifier = Modifier.padding(end = 15.dp, start = 8.dp),
-                        )
-                    }
-                }
-                Column {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    ) {
-                        CustomCheckbox(
-                            checked = selectedOption == "201-300",
-                            onCheckedChange = { isChecked ->
-                                if (isChecked) setSelectedOption("201-300") else setSelectedOption(null)
-                            }
-                        )
-                        Text(
-                            text = "0-50",
-                            modifier = Modifier.padding(end = 15.dp, start = 8.dp),
-                        )
-                    }
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    ) {
-                        CustomCheckbox(
-                            checked = selectedOption == "300+",
-                            onCheckedChange = { isChecked ->
-                                if (isChecked) setSelectedOption("300+") else setSelectedOption(null)
-                            }
-                        )
-                        Text(
-                            text = "300",
-                            modifier = Modifier.padding(end = 15.dp, start = 8.dp),
-                        )
-                    }
-
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    ) {
-                        CustomCheckbox(
-                            checked = selectedOption == "Decidir depois",
-                            onCheckedChange = { isChecked ->
-                                if (isChecked) setSelectedOption("Decidir depois") else setSelectedOption(null)
-                            }
-                        )
-                        Text(
-                            text = "Decidir depois",
-                            modifier = Modifier.padding(end = 15.dp, start = 8.dp),
-                        )
+                FlowColumn(
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    viewModel.guestOptions.forEach {guestOption ->
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            CustomCheckbox(
+                                checked = guestOption.selected,
+                                onCheckedChange = {
+                                    viewModel.updateGuestQuantity(guestOption)
+                                }
+                            )
+                            Text(
+                                text = guestOption.value
+                            )
+                        }
                     }
                 }
             }
         }
         Button(
             onClick = {
-                navController.navigate(route = Screen.Fase7Registration.route)
+                viewModel.showDialog = true
+                if(guestOption.isNotEmpty()){
+                    viewModel.showDialog = false
+                    navController.navigate(route = Screen.Fase7Registration.route)
+                }
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFFD86B67)
@@ -196,5 +112,20 @@ fun Fase6RegistrationScreen(registrationState: RegistrationState ,navController:
         ) {
             Text("Próximo")
         }
+        ShowToast(viewModel, guestOption)
+    }
+}
+
+@Composable
+fun ShowToast(
+    viewModel: RegistrationSharedViewModel,
+    guestOption: List<GuestOption>
+){
+    if(guestOption.isEmpty() && viewModel.showDialog){
+        ToastUtils.ErrorToast(
+            message = "Selecione uma opção",
+            contentAlignment = Alignment.TopStart
+        )
+        viewModel.showDialog = false
     }
 }

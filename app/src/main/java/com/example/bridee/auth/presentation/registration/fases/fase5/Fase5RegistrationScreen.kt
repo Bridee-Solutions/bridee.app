@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -31,28 +30,34 @@ import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.text.isDigitsOnly
 import androidx.navigation.NavController
+import com.example.bridee.auth.domain.RegistrationSharedViewModel
 import com.example.bridee.auth.presentation.component.CustomCheckbox
 import com.example.bridee.auth.presentation.component.Header
 import com.example.bridee.auth.presentation.component.MaskVisualTransformation
-import com.example.bridee.auth.presentation.registration.RegistrationState
 import com.example.bridee.core.navigation.Screen
+import com.example.bridee.core.toast.ToastUtils
 
 @Composable
-fun Fase5RegistrationScreen(registrationState: RegistrationState,navController: NavController){
+fun Fase5RegistrationScreen(viewModel: RegistrationSharedViewModel,navController: NavController){
 
     val windowWidthDp = LocalConfiguration.current.screenWidthDp.dp
     val windowHeightDp = LocalConfiguration.current.screenHeightDp.dp
+
     var isDeletingCharacter by remember {
         mutableStateOf(false)
     }
 
-    val (isDateNotSet, setIsDateNotSet) = remember { mutableStateOf(false) }
+    var dateString by remember {
+        mutableStateOf("")
+    }
+
+    var isDateNotDefined by remember {
+        mutableStateOf(false)
+    }
 
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -61,7 +66,7 @@ fun Fase5RegistrationScreen(registrationState: RegistrationState,navController: 
     ) {
         Header(
             navController = navController,
-            fillPercentage = windowWidthDp - 150.dp,
+            fillPercentage = (40*5).dp,
             previousFase = Screen.Fase4Registration.route
         )
         Column(
@@ -77,19 +82,19 @@ fun Fase5RegistrationScreen(registrationState: RegistrationState,navController: 
                 modifier = Modifier.width(250.dp)
             )
             TextField(
-                value = registrationState.dataCasamento.value,
+                value = dateString,
                 onValueChange = {
-                    if(registrationState.dataCasamento.value.length < DateDefaults.DATE_LENGTH){
+                    if(dateString.length < DateDefaults.DATE_LENGTH){
                         isDeletingCharacter = false
                     }
-                    if((registrationState.dataCasamento.value.length < DateDefaults.DATE_LENGTH && it.isDigitsOnly()) ||
+                    if((dateString.length < DateDefaults.DATE_LENGTH && it.isDigitsOnly()) ||
                         isDeletingCharacter){
-                        registrationState.dataCasamento.value = it
+                        dateString = it
+                        isDateNotDefined = false
                     }
                 },
                 visualTransformation = MaskVisualTransformation(DateDefaults.DATE_MASK),
                 modifier = Modifier
-
                     .height(50.dp)
                     .onKeyEvent {
                     isDeletingCharacter = it.key.keyCode == Key.Backspace.keyCode
@@ -110,8 +115,13 @@ fun Fase5RegistrationScreen(registrationState: RegistrationState,navController: 
                 verticalAlignment = Alignment.CenterVertically
             ){
                 CustomCheckbox(
-                    checked = isDateNotSet,
-                    onCheckedChange = { setIsDateNotSet(it) }
+                    checked = isDateNotDefined,
+                    onCheckedChange = {
+                        isDateNotDefined = it
+                        if(isDateNotDefined){
+                            dateString = ""
+                        }
+                    }
                 )
                 Text(
                     text = "Ainda não sabemos",
@@ -120,7 +130,14 @@ fun Fase5RegistrationScreen(registrationState: RegistrationState,navController: 
             }
             Button(
                 onClick = {
-                    navController.navigate(Screen.Fase6Registration.route)
+                    viewModel.showDialog = true
+                    if(dateString.length == DateDefaults.DATE_LENGTH || isDateNotDefined){
+                        if(dateString.length == DateDefaults.DATE_LENGTH){
+                            viewModel.updateDataCasamento(dateString)
+                        }
+                        viewModel.showDialog = false
+                        navController.navigate(Screen.Fase6Registration.route)
+                    }
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFFD86B67)
@@ -134,6 +151,22 @@ fun Fase5RegistrationScreen(registrationState: RegistrationState,navController: 
                 Text("Próximo")
             }
         }
+        ShowToast(dateString, isDateNotDefined, viewModel)
     }
+}
 
+@Composable
+fun ShowToast(
+    dateString: String,
+    isDateNotDefined: Boolean,
+    viewModel: RegistrationSharedViewModel
+){
+    if(dateString.length != DateDefaults.DATE_LENGTH
+        && !isDateNotDefined && viewModel.showDialog){
+        ToastUtils.ErrorToast(
+            message = "Preencha a data corretamente",
+            contentAlignment = Alignment.TopStart
+        )
+        viewModel.showDialog = false
+    }
 }

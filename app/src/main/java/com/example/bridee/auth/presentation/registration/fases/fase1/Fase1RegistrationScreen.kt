@@ -20,12 +20,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
@@ -34,15 +32,17 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.bridee.auth.domain.RegistrationSharedViewModel
 import com.example.bridee.auth.presentation.component.Input
-import com.example.bridee.auth.presentation.registration.RegistrationState
 import com.example.bridee.core.navigation.Screen
+import com.example.bridee.core.toast.ToastUtils
 
 @Composable
-fun Fase1RegistrationScreen(registrationState: RegistrationState, navController: NavController){
+fun Fase1RegistrationScreen(viewModel: RegistrationSharedViewModel, navController: NavController){
 
     val windowWidthDp = LocalConfiguration.current.screenWidthDp.dp
     val windowHeightDp = LocalConfiguration.current.screenHeightDp.dp
+    val registrationState = viewModel.sharedRegistrationObject
 
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -89,9 +89,9 @@ fun Fase1RegistrationScreen(registrationState: RegistrationState, navController:
             modifier = Modifier.height(230.dp)
         ){
             Input(
-                state = registrationState.email.value,
+                state = registrationState.value.email,
                 onStateChange = {
-                    registrationState.email.value = it
+                    registrationState.value = registrationState.value.copy(email = it)
                 },
                 placeholder = {
                     Icon(
@@ -105,12 +105,12 @@ fun Fase1RegistrationScreen(registrationState: RegistrationState, navController:
                         color = Color(0xFFC2C2C2)
                     )
                 },
-
+                isValid = viewModel.isEmailValid()
             )
             Input(
-                state = registrationState.senha.value,
+                state = registrationState.value.senha,
                 onStateChange = {
-                    registrationState.senha.value = it
+                    registrationState.value = registrationState.value.copy(senha = it)
                 },
                 visualTransformation = PasswordVisualTransformation(),
                 placeholder = {
@@ -125,12 +125,12 @@ fun Fase1RegistrationScreen(registrationState: RegistrationState, navController:
                         color = Color(0xFFC2C2C2)
                     )
                 },
-
+                isValid = viewModel.isPasswordValid()
             )
             Input(
-                state = registrationState.confirmarSenha.value,
+                state = registrationState.value.confirmarSenha,
                 onStateChange = {
-                    registrationState.confirmarSenha.value = it
+                    registrationState.value = registrationState.value.copy(confirmarSenha = it)
                 },
                 visualTransformation = PasswordVisualTransformation(),
                 placeholder = {
@@ -145,12 +145,19 @@ fun Fase1RegistrationScreen(registrationState: RegistrationState, navController:
                         color = Color(0xFFC2C2C2)
                     )
                 },
-
+                isValid = viewModel.passwordsMatches()
             )
         }
         Button(
             onClick = {
-                navController.navigate(route = Screen.Fase2Registration.route)
+                viewModel.showDialog = true
+                if(viewModel.isFase1Valid()){
+                    viewModel.verifyEmail()
+                    if(!viewModel.isUserAlreadyRegistered){
+                        viewModel.showDialog = false
+                        navController.navigate(route = Screen.Fase2Registration.route)
+                    }
+                }
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFFD86B67)
@@ -172,5 +179,36 @@ fun Fase1RegistrationScreen(registrationState: RegistrationState, navController:
                     fontWeight = FontWeight.Bold),
             )
         }
+        ShowToasts(viewModel)
+    }
+}
+
+@Composable
+fun ShowToasts(viewModel: RegistrationSharedViewModel){
+    if(viewModel.showDialog){
+        InvalidInformation(viewModel)
+        InvalidUser(viewModel)
+    }
+}
+
+@Composable
+fun InvalidInformation(viewModel: RegistrationSharedViewModel){
+    if(!viewModel.isFase1Valid()){
+        ToastUtils.ErrorToast(
+            message = "Preencha os campos corretamente",
+            contentAlignment = Alignment.TopStart
+        )
+        viewModel.showDialog = false
+    }
+}
+
+@Composable
+fun InvalidUser(viewModel: RegistrationSharedViewModel) {
+    if(viewModel.isUserAlreadyRegistered){
+        ToastUtils.ErrorToast(
+            message = "Já existe um usuário com esse e-mail",
+            contentAlignment = Alignment.TopStart
+        )
+        viewModel.showDialog = false
     }
 }

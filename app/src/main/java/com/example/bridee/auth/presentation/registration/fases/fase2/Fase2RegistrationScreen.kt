@@ -42,7 +42,7 @@ fun Fase2RegistrationScreen(navController: NavController){
     ){
         Header(
             navController = navController,
-            fillPercentage = windowWidthDp - 150.dp,
+            fillPercentage = (40*2).dp,
             previousFase = Screen.Fase1Registration.route
         )
         Column (
