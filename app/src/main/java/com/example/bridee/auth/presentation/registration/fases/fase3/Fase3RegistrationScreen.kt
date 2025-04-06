@@ -87,6 +87,7 @@ fun Fase3RegistrationScreen(viewModel: RegistrationSharedViewModel, navControlle
             onClick = {
                 viewModel.showDialog = true
                 if(viewModel.isFase3Valid()){
+                    viewModel.showDialog = false
                     navController.navigate(Screen.Fase4Registration.route)
                 }
             },

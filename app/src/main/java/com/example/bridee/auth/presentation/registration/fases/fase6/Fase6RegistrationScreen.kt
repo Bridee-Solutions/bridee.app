@@ -84,6 +84,7 @@ fun Fase6RegistrationScreen(viewModel: RegistrationSharedViewModel, navControlle
             onClick = {
                 viewModel.showDialog = true
                 if(guestOption.isNotEmpty()){
+                    viewModel.showDialog = false
                     navController.navigate(route = Screen.Fase7Registration.route)
                 }
             },

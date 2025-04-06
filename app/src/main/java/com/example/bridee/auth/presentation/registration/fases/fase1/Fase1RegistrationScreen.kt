@@ -166,6 +166,7 @@ fun Fase1RegistrationScreen(viewModel: RegistrationSharedViewModel, navControlle
                 if(viewModel.isFase1Valid()){
                     viewModel.verifyEmail()
                     if(!viewModel.isUserAlreadyRegistered){
+                        viewModel.showDialog = false
                         navController.navigate(route = Screen.Fase2Registration.route)
                     }
                 }

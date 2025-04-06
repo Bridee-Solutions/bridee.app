@@ -134,6 +134,7 @@ fun Fase5RegistrationScreen(viewModel: RegistrationSharedViewModel,navController
                         if(dateString.length == DateDefaults.DATE_LENGTH){
                             viewModel.updateDataCasamento(dateString)
                         }
+                        viewModel.showDialog = false
                         navController.navigate(Screen.Fase6Registration.route)
                     }
                 },

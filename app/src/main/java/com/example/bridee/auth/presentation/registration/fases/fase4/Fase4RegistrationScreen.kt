@@ -103,6 +103,7 @@ fun Fase4RegistrationScreen(viewModel: RegistrationSharedViewModel, navControlle
             onClick = {
                 viewModel.showDialog = true
                 if(viewModel.isFase4Valid()){
+                    viewModel.showDialog = false
                     navController.navigate(Screen.Fase5Registration.route)
                 }
             },
