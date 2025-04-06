@@ -38,6 +38,7 @@ import com.example.bridee.auth.domain.RegistrationSharedViewModel
 import com.example.bridee.auth.presentation.component.Header
 import com.example.bridee.auth.presentation.component.MaskVisualTransformation
 import com.example.bridee.core.navigation.Screen
+import com.example.bridee.core.toast.ToastUtils
 
 @Composable
 fun Fase5RegistrationScreen(viewModel: RegistrationSharedViewModel,navController: NavController){
@@ -128,6 +129,7 @@ fun Fase5RegistrationScreen(viewModel: RegistrationSharedViewModel,navController
             }
             Button(
                 onClick = {
+                    viewModel.showDialog = true
                     if(dateString.length == DateDefaults.DATE_LENGTH || isDateNotDefined){
                         if(dateString.length == DateDefaults.DATE_LENGTH){
                             viewModel.updateDataCasamento(dateString)
@@ -147,5 +149,22 @@ fun Fase5RegistrationScreen(viewModel: RegistrationSharedViewModel,navController
                 Text("Próximo")
             }
         }
+        ShowToast(dateString, isDateNotDefined, viewModel)
+    }
+}
+
+@Composable
+fun ShowToast(
+    dateString: String,
+    isDateNotDefined: Boolean,
+    viewModel: RegistrationSharedViewModel
+){
+    if(dateString.length != DateDefaults.DATE_LENGTH
+        && !isDateNotDefined && viewModel.showDialog){
+        ToastUtils.ErrorToast(
+            message = "Preencha a data corretamente",
+            contentAlignment = Alignment.TopStart
+        )
+        viewModel.showDialog = false
     }
 }
