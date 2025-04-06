@@ -10,7 +10,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,8 +21,8 @@ import androidx.navigation.NavController
 import com.example.bridee.auth.domain.RegistrationSharedViewModel
 import com.example.bridee.auth.presentation.component.Header
 import com.example.bridee.auth.presentation.component.Input
-import com.example.bridee.auth.domain.RegistrationState
 import com.example.bridee.core.navigation.Screen
+import com.example.bridee.core.toast.ToastUtils
 
 @Composable
 fun Fase3RegistrationScreen(viewModel: RegistrationSharedViewModel, navController: NavController){
@@ -86,10 +85,9 @@ fun Fase3RegistrationScreen(viewModel: RegistrationSharedViewModel, navControlle
 
         Button(
             onClick = {
-                if(viewModel.isFase2Valid()){
+                viewModel.showDialog = true
+                if(viewModel.isFase3Valid()){
                     navController.navigate(Screen.Fase4Registration.route)
-                }else{
-                    //TODO: adicionar toast
                 }
             },
             colors = ButtonDefaults.buttonColors(
@@ -103,5 +101,17 @@ fun Fase3RegistrationScreen(viewModel: RegistrationSharedViewModel, navControlle
         ) {
             Text("Próximo")
         }
+        ShowToast(viewModel)
+    }
+}
+
+@Composable
+fun ShowToast(viewModel: RegistrationSharedViewModel){
+    if(!viewModel.isFase3Valid() && viewModel.showDialog){
+        ToastUtils.ErrorToast(
+            message = "Os nomes devem ter no mínimo 3 caracteres",
+            contentAlignment = Alignment.TopStart
+        )
+        viewModel.showDialog = false
     }
 }
