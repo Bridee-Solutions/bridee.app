@@ -34,6 +34,7 @@ import androidx.navigation.NavController
 import com.example.bridee.auth.domain.AuthenticationViewModel
 import com.example.bridee.auth.presentation.component.Input
 import com.example.bridee.core.navigation.Screen
+import com.example.bridee.core.toast.ToastUtils
 
 @Composable
 fun LoginScreen(authenticationViewModel: AuthenticationViewModel,navController: NavController){
@@ -130,11 +131,11 @@ fun LoginScreen(authenticationViewModel: AuthenticationViewModel,navController: 
         }
         Button(
             onClick = {
+                authenticationViewModel.showDialog = true
                 authenticationViewModel.authenticate()
                 if(authenticationViewModel.isEnabled){
+                    authenticationViewModel.showDialog = false
                     // TODO: redirecionar para a tela inicial
-                }else{
-                    // TODO: toast informando que as credenciais são inválidas
                 }
             },
             colors = ButtonDefaults.buttonColors(
@@ -157,5 +158,17 @@ fun LoginScreen(authenticationViewModel: AuthenticationViewModel,navController: 
                     fontWeight = FontWeight.Bold),
             )
         }
+        ShowToast(authenticationViewModel)
+    }
+}
+
+@Composable
+fun ShowToast(viewModel: AuthenticationViewModel){
+    if(viewModel.showDialog && !viewModel.isEnabled){
+        ToastUtils.ErrorToast(
+            message = "Usuário e/ou senha inválido(s)",
+            contentAlignment = Alignment.TopStart
+        )
+        viewModel.showDialog = false
     }
 }

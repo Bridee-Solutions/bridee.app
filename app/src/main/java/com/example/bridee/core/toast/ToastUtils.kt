@@ -122,7 +122,7 @@ object ToastUtils{
                             width = 2.dp
                         )
                         .padding(10.dp),
-                    horizontalArrangement = Arrangement.End,
+                    horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
