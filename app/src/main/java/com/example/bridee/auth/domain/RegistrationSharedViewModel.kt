@@ -20,6 +20,7 @@ class RegistrationSharedViewModel: ViewModel() {
     var isTermsApproved by mutableStateOf(false)
     var isCoupleSavedSuccessfully by mutableStateOf(false)
     var isUserAlreadyRegistered by mutableStateOf(false)
+    var showDialog by mutableStateOf(false)
     
     override fun onCleared() {
         super.onCleared()

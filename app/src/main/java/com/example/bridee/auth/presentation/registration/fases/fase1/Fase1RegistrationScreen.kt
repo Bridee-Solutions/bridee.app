@@ -31,6 +31,7 @@ import androidx.navigation.NavController
 import com.example.bridee.auth.domain.RegistrationSharedViewModel
 import com.example.bridee.auth.presentation.component.Input
 import com.example.bridee.core.navigation.Screen
+import com.example.bridee.core.toast.ToastUtils
 
 @Composable
 fun Fase1RegistrationScreen(viewModel: RegistrationSharedViewModel, navController: NavController){
@@ -161,15 +162,12 @@ fun Fase1RegistrationScreen(viewModel: RegistrationSharedViewModel, navControlle
         }
         Button(
             onClick = {
+                viewModel.showDialog = true
                 if(viewModel.isFase1Valid()){
                     viewModel.verifyEmail()
                     if(!viewModel.isUserAlreadyRegistered){
                         navController.navigate(route = Screen.Fase2Registration.route)
-                    }else{
-                        // TODO: adicionar toast informando que já existe usuário com esse e-mail
                     }
-                }else{
-                    //TODO: Adicionar Toast solicitando informações válidas
                 }
             },
             colors = ButtonDefaults.buttonColors(
@@ -199,6 +197,20 @@ fun Fase1RegistrationScreen(viewModel: RegistrationSharedViewModel, navControlle
                     )
                 )
             )
+        }
+        if(!viewModel.isFase1Valid() && viewModel.showDialog){
+            ToastUtils.ErrorToast(
+                message = "Preencha os campos corretamente",
+                contentAlignment = Alignment.TopStart
+            )
+            viewModel.showDialog = false
+        }
+        if(viewModel.isUserAlreadyRegistered && viewModel.showDialog){
+            ToastUtils.ErrorToast(
+                message = "Já existe um usuário com esse e-mail",
+                contentAlignment = Alignment.TopStart
+            )
+            viewModel.showDialog = false
         }
     }
 }
