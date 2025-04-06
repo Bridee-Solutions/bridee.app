@@ -64,7 +64,7 @@ fun Fase5RegistrationScreen(viewModel: RegistrationSharedViewModel,navController
     ) {
         Header(
             navController = navController,
-            fillPercentage = windowWidthDp - 150.dp,
+            fillPercentage = (40*5).dp,
             previousFase = Screen.Fase4Registration.route
         )
         Column(

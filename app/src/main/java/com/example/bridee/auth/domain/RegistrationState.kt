@@ -1,7 +1,5 @@
 package com.example.bridee.auth.domain
 
-import java.time.LocalDate
-
 data class RegistrationState(
     var email: String = "",
     var senha: String = "",
