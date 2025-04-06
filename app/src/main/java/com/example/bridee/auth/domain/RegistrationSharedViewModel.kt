@@ -1,5 +1,6 @@
 package com.example.bridee.auth.domain
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -17,6 +18,7 @@ class RegistrationSharedViewModel: ViewModel() {
     val sharedRegistrationObject = _state
     val guestOptions = GuestOption().createGuestOptions()
     var isTermsApproved by mutableStateOf(false)
+    var isCoupleSavedSuccessfully by mutableStateOf(false)
 
     override fun onCleared() {
         super.onCleared()
@@ -26,13 +28,14 @@ class RegistrationSharedViewModel: ViewModel() {
         val createdCasal = usuarioService.createCasal(_state.value)
         createdCasal.enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                print("Chamada realizada com sucesso, status code ${response.code()}")
-                if(call.isExecuted && response.code() == 201){
+                Log.i("CASAL","Chamada realizada com sucesso, status code ${response.code()}")
+                if(response.code() == 201){
+                    isCoupleSavedSuccessfully = true
                 }
             }
 
             override fun onFailure(call: Call<Void>, t: Throwable) {
-                print("Operação falhou")
+                Log.i("CASAL", "Chamada falhou com o seguinte erro: ${t.message}")
             }
 
         })

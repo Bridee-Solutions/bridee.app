@@ -106,7 +106,9 @@ fun Fase7RegistrationScreen(viewModel: RegistrationSharedViewModel,navController
             onClick = {
                 if(viewModel.isTermsApproved){
                     viewModel.saveCasal();
-                    navController.navigate(route = Screen.EmailRegistration.route)
+                    if(viewModel.isCoupleSavedSuccessfully){
+                        navController.navigate(route = Screen.EmailRegistration.route)
+                    }
                 }else{
                     // TODO: adicionar toast
                 }
