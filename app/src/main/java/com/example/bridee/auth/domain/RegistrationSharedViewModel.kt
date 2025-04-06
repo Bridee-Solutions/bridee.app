@@ -29,14 +29,16 @@ class RegistrationSharedViewModel: ViewModel() {
         val createdCasal = usuarioService.createCasal(_state.value)
         createdCasal.enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                Log.i("CASAL","Chamada realizada com sucesso, status code ${response.code()}")
+                Log.i("CADASTRO","""
+                    Chamada realizada para o cadastro de ${_state.value.email}, status code ${response.code()}
+                """.trimMargin())
                 if(response.code() == 201){
                     isCoupleSavedSuccessfully = true
                 }
             }
 
             override fun onFailure(call: Call<Void>, t: Throwable) {
-                Log.i("CASAL", "Chamada falhou com o seguinte erro: ${t.message}")
+                Log.i("CADASTRO", "Chamada falhou com o seguinte erro: ${t.message}")
             }
 
         })
