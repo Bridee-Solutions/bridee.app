@@ -1,6 +1,5 @@
 package com.example.bridee.auth.presentation.registration.fases.fase6
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -19,12 +18,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.bridee.auth.domain.GuestOption
 import com.example.bridee.auth.domain.RegistrationSharedViewModel
 import com.example.bridee.auth.presentation.component.Header
 import com.example.bridee.core.navigation.Screen
+import com.example.bridee.core.toast.ToastUtils
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -32,7 +32,7 @@ fun Fase6RegistrationScreen(viewModel: RegistrationSharedViewModel, navControlle
 
     val windowWidthDp = LocalConfiguration.current.screenWidthDp.dp
     val windowHeightDp = LocalConfiguration.current.screenHeightDp.dp
-    val context = LocalContext.current
+    val guestOption = viewModel.guestOptions.filter { it.selected }
 
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -82,11 +82,9 @@ fun Fase6RegistrationScreen(viewModel: RegistrationSharedViewModel, navControlle
         }
         Button(
             onClick = {
-                val guestOption = viewModel.guestOptions.filter { it.selected }
+                viewModel.showDialog = true
                 if(guestOption.isNotEmpty()){
                     navController.navigate(route = Screen.Fase7Registration.route)
-                }else{
-                    Toast.makeText(context, "Selecione uma opção", Toast.LENGTH_LONG).show()
                 }
             },
             colors = ButtonDefaults.buttonColors(
@@ -100,5 +98,20 @@ fun Fase6RegistrationScreen(viewModel: RegistrationSharedViewModel, navControlle
         ) {
             Text("Próximo")
         }
+        ShowToast(viewModel, guestOption)
+    }
+}
+
+@Composable
+fun ShowToast(
+    viewModel: RegistrationSharedViewModel,
+    guestOption: List<GuestOption>
+){
+    if(guestOption.isEmpty() && viewModel.showDialog){
+        ToastUtils.ErrorToast(
+            message = "Selecione uma opção",
+            contentAlignment = Alignment.TopStart
+        )
+        viewModel.showDialog = false
     }
 }

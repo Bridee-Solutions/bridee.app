@@ -204,13 +204,15 @@ fun Fase1RegistrationScreen(viewModel: RegistrationSharedViewModel, navControlle
 
 @Composable
 fun ShowToasts(viewModel: RegistrationSharedViewModel){
-    InvalidInformation(viewModel)
-    InvalidUser(viewModel)
+    if(viewModel.showDialog){
+        InvalidInformation(viewModel)
+        InvalidUser(viewModel)
+    }
 }
 
 @Composable
 fun InvalidInformation(viewModel: RegistrationSharedViewModel){
-    if(!viewModel.isFase1Valid() && viewModel.showDialog){
+    if(!viewModel.isFase1Valid()){
         ToastUtils.ErrorToast(
             message = "Preencha os campos corretamente",
             contentAlignment = Alignment.TopStart
@@ -221,7 +223,7 @@ fun InvalidInformation(viewModel: RegistrationSharedViewModel){
 
 @Composable
 fun InvalidUser(viewModel: RegistrationSharedViewModel) {
-    if(viewModel.isUserAlreadyRegistered && viewModel.showDialog){
+    if(viewModel.isUserAlreadyRegistered){
         ToastUtils.ErrorToast(
             message = "Já existe um usuário com esse e-mail",
             contentAlignment = Alignment.TopStart
