@@ -22,6 +22,7 @@ import com.example.bridee.auth.domain.RegistrationSharedViewModel
 import com.example.bridee.auth.presentation.component.Header
 import com.example.bridee.auth.presentation.component.Input
 import com.example.bridee.core.navigation.Screen
+import com.example.bridee.core.toast.ToastUtils
 
 @Composable
 fun Fase4RegistrationScreen(viewModel: RegistrationSharedViewModel, navController: NavController){
@@ -100,10 +101,9 @@ fun Fase4RegistrationScreen(viewModel: RegistrationSharedViewModel, navControlle
 
         Button(
             onClick = {
-                if(viewModel.isFase3Valid()){
+                viewModel.showDialog = true
+                if(viewModel.isFase4Valid()){
                     navController.navigate(Screen.Fase5Registration.route)
-                }else{
-                    // TODO: Adicionar toastwq
                 }
             },
             colors = ButtonDefaults.buttonColors(
@@ -117,7 +117,17 @@ fun Fase4RegistrationScreen(viewModel: RegistrationSharedViewModel, navControlle
         ) {
             Text("Próximo")
         }
-
+        ShowToast(viewModel)
     }
+}
 
+@Composable
+fun ShowToast(viewModel: RegistrationSharedViewModel){
+    if(!viewModel.isFase4Valid() && viewModel.showDialog){
+        ToastUtils.ErrorToast(
+            message = "Preencha as informações do local corretamente",
+            contentAlignment = Alignment.TopStart
+        )
+        viewModel.showDialog = false
+    }
 }

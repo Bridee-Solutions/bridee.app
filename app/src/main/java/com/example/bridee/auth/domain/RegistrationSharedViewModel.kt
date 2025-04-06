@@ -114,7 +114,7 @@ class RegistrationSharedViewModel: ViewModel() {
                 && senhaRegex.matches(state.confirmarSenha)
     }
 
-    fun isFase2Valid(): Boolean{
+    fun isFase3Valid(): Boolean{
         return isNomeValid() && isParceiroNomeValid()
     }
 
@@ -128,7 +128,7 @@ class RegistrationSharedViewModel: ViewModel() {
         return nomeParceiro.length >= 3
     }
 
-    fun isFase3Valid(): Boolean{
+    fun isFase4Valid(): Boolean{
         val state = _state.value
         val local = state.local
         return (state.isLocalReservado && local.isNotBlank())
