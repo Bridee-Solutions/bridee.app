@@ -29,6 +29,7 @@ import com.example.bridee.auth.presentation.registration.fases.fase7.Fase7Regist
 import com.example.bridee.calculadora.presentation.screens.CalculadoraScreen
 import com.example.bridee.calculadora.presentation.screens.CategoriaDetalhesScreen
 import com.example.bridee.configuracoes.presentation.screen.ConfiguracoesScreen
+import com.example.bridee.convidados.presentation.ConvidadoScreen
 import com.example.bridee.lista_tarefas.presentation.screens.ListaTarefasScreen
 import com.example.bridee.servicos.presentation.screens.HomeScreen
 import com.example.bridee.servicos.presentation.screens.InspiracaoScreen
@@ -37,9 +38,9 @@ import com.example.bridee.servicos.presentation.screens.ServicosScreen
 @Composable
 fun NavController(navController: NavHostController, paddingValues: PaddingValues){
 //    val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = Screen.Login.route){
+    NavHost(navController = navController, startDestination = Screen.Convidado.route){
         composable(route = Screen.Login.route) {
-            val authenticationViewModel: AuthenticationViewModel = AuthenticationViewModel()
+            val authenticationViewModel = AuthenticationViewModel()
             LoginScreen(authenticationViewModel, navController)
         }
         navigation(
@@ -112,9 +113,11 @@ fun NavController(navController: NavHostController, paddingValues: PaddingValues
         composable(route = Screen.Inspiracao.route) {
             InspiracaoScreen(navController)
         }
-
         composable(route = Screen.ListaTarefas.route) {
             ListaTarefasScreen(navController);
+        }
+        composable(route = Screen.Convidado.route) {
+            ConvidadoScreen(navController)
         }
     }
 }
