@@ -37,7 +37,7 @@ class CategoriasViewModel : ViewModel() {
                     )
                 ),
                 Categoria(
-                    id = 2,
+                    id = 3,
                     nome = "Fornecedores",
                     icone = Icons.Default.Home,
                     subcategorias = listOf(

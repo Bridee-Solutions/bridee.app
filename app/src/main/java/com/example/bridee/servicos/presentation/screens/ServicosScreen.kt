@@ -10,9 +10,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.bridee.servicos.presentation.components.CategoriaExpansivelItem
 import com.example.bridee.servicos.presentation.components.CategoriaExpansivelItemState
 import com.example.bridee.servicos.presentation.viewModel.CategoriasViewModel
 
@@ -35,7 +36,7 @@ import com.example.bridee.servicos.presentation.viewModel.CategoriasViewModel
 fun ServicosScreen(navController: NavController) {
     var searchText by remember { mutableStateOf("") }
     val viewModel: CategoriasViewModel = viewModel()
-    val categorias by remember { mutableStateOf(viewModel.categorias) }
+    val categorias = viewModel.categorias
 
     Column (modifier = Modifier
         .fillMaxSize()
@@ -69,5 +70,16 @@ fun ServicosScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        LazyColumn(modifier = Modifier.fillMaxSize()) {
+            items(categorias) { categoria ->
+                CategoriaExpansivelItem(
+                    categoria = categoria,
+                    navController = navController,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp)
+                )
+            }
+        }
     }
 }
