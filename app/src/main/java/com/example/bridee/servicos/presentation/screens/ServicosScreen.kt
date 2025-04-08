@@ -69,24 +69,5 @@ fun ServicosScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        LazyColumn(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            items(categorias) { categoria ->
-                CategoriaExpansivelItemState(
-                        categoria = categoria,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp)
-                    )
-
-                    if (categoria != categorias.last()) {
-                        Divider(
-                            modifier = Modifier.padding(horizontal = 16.dp),
-                            color = MaterialTheme.colors.onBackground.copy(alpha = 0.1f)
-                        )
-                    }
-            }
-        }
     }
 }
