@@ -5,11 +5,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.bridee.auth.data.AuthEndpoints
 import com.example.bridee.core.api.ApiInstance
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.launch
 
 class RegistrationSharedViewModel: ViewModel() {
 
@@ -27,39 +26,31 @@ class RegistrationSharedViewModel: ViewModel() {
     }
 
     fun saveCasal(){
-        val createdCasal = usuarioService.createCasal(_state.value)
-        createdCasal.enqueue(object : Callback<Void> {
-            override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                Log.i("CADASTRO","""
-                    Chamada realizada para o cadastro de ${_state.value.email}, status code ${response.code()}
-                """.trimMargin())
-                if(response.code() == 201){
-                    isCoupleSavedSuccessfully = true
-                }
+        viewModelScope.launch {
+            val createdCasal = usuarioService.createCasal(_state.value)
+            val statusCode = createdCasal.code()
+            if(statusCode == 201){
+                isCoupleSavedSuccessfully = true
+            }else{
+                Log.e("CADASTRO", "Cadastro não foi realizado com sucesso com o seguinte statusCode ${statusCode}")
             }
-
-            override fun onFailure(call: Call<Void>, t: Throwable) {
-                Log.i("CADASTRO", "Chamada falhou com o seguinte erro: ${t.message}")
-            }
-
-        })
+        }
     }
     
     fun verifyEmail(){
-        val verifyEmail = usuarioService.validateEmail(_state.value.email)
-        verifyEmail.enqueue(object : Callback<Void> {
-            override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                Log.i("CASAL","Chamada realizada com sucesso, status code ${response.code()}")
-                if(response.code() == 201){
+        viewModelScope.launch {
+            val email = _state.value.email
+            try {
+                val verifyEmail = usuarioService.validateEmail(email)
+                val statusCode = verifyEmail.code();
+                if(statusCode == 200){
                     isUserAlreadyRegistered = true
+                    Log.w("CADASTRO", "E-mail $email já cadastrado na plataforma")
                 }
+            }catch (e: Exception){
+                e.printStackTrace()
             }
-
-            override fun onFailure(call: Call<Void>, t: Throwable) {
-                Log.i("CASAL", "Chamada falhou com o seguinte erro: ${t.message}")
-            }
-
-        })
+        }
     }
 
     private fun convertStringToLocalDate(date: String): String{
