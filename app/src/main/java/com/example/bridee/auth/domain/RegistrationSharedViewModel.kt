@@ -39,10 +39,16 @@ class RegistrationSharedViewModel: ViewModel() {
     
     fun verifyEmail(){
         viewModelScope.launch {
-            val verifyEmail = usuarioService.validateEmail(_state.value.email)
-            val statusCode = verifyEmail.code();
-            if(statusCode == 200){
-                isUserAlreadyRegistered = true
+            val email = _state.value.email
+            try {
+                val verifyEmail = usuarioService.validateEmail(email)
+                val statusCode = verifyEmail.code();
+                if(statusCode == 200){
+                    isUserAlreadyRegistered = true
+                    Log.w("CADASTRO", "E-mail $email já cadastrado na plataforma")
+                }
+            }catch (e: Exception){
+                e.printStackTrace()
             }
         }
     }

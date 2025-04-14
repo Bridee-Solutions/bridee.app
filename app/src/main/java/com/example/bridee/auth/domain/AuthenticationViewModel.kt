@@ -9,9 +9,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.bridee.auth.data.AuthEndpoints
 import com.example.bridee.core.api.ApiInstance
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class AuthenticationViewModel: ViewModel() {
 
@@ -24,14 +21,20 @@ class AuthenticationViewModel: ViewModel() {
     fun authenticate() {
         viewModelScope.launch {
             val email = _state.value.email
-            val authenticateUser = usuarioService.authenticate(_state.value)
-            if(authenticateUser.code() == 200){
+            try {
+                val authenticateUser = usuarioService.authenticate(_state.value)
                 isEnabled = authenticateUser.body()?.enabled ?: false
-                Log.i("LOGIN", "Usuário $email autenticado com sucesso")
-            }else{
-                Log.e("LOGIN", "Credenciais inválidas para o usuário $email")
+                if(authenticateUser.code() == 200){
+                    Log.i("LOGIN", "Usuário $email autenticado com sucesso")
+                }else{
+                    Log.e("LOGIN", "Credenciais inválidas para o usuário $email")
+                }
+            }catch (e: Exception){
+                e.printStackTrace()
             }
+            showDialog = !isEnabled
         }
+
     }
 
 }

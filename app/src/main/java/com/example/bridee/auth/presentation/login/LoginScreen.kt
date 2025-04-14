@@ -17,9 +17,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -147,10 +144,7 @@ fun LoginScreen(authenticationViewModel: AuthenticationViewModel,navController: 
             onClick = {
                 authenticationViewModel.authenticate()
                 if(authenticationViewModel.isEnabled){
-                    authenticationViewModel.showDialog = false
                     // TODO: redirecionar para a tela inicial
-                }else{
-                    authenticationViewModel.showDialog = true
                 }
             },
             colors = ButtonDefaults.buttonColors(
