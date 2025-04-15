@@ -12,7 +12,6 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.bridee.auth.domain.AuthenticationViewModel
 import com.example.bridee.auth.domain.RegistrationSharedViewModel
@@ -29,7 +28,7 @@ import com.example.bridee.auth.presentation.registration.fases.fase7.Fase7Regist
 import com.example.bridee.calculadora.presentation.screens.CalculadoraScreen
 import com.example.bridee.calculadora.presentation.screens.CategoriaDetalhesScreen
 import com.example.bridee.configuracoes.presentation.screen.ConfiguracoesScreen
-import com.example.bridee.convidados.presentation.ConvidadoScreen
+import com.example.bridee.convidados.presentation.convidado.ConvidadoScreen
 import com.example.bridee.lista_tarefas.presentation.screens.ListaTarefasScreen
 import com.example.bridee.servicos.presentation.screens.HomeScreen
 import com.example.bridee.servicos.presentation.screens.InspiracaoScreen

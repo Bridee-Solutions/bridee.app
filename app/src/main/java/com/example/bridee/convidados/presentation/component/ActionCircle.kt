@@ -13,38 +13,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ActionCircle(){
-
-    Row (
-        modifier = Modifier
-            .width(70.dp)
-    ) {
-        Box(
-            modifier =  Modifier
-                .width(15.dp)
-                .height(15.dp)
-                .clip(shape = RoundedCornerShape(50))
-                .background(
-                    color = Color.Green
-                )
-        )
-        Box(
-            modifier =  Modifier
-                .width(15.dp)
-                .height(15.dp)
-                .clip(shape = RoundedCornerShape(50))
-                .background(
-                    color = Color.Yellow
-                )
-        )
-        Box(
-            modifier =  Modifier
-                .width(15.dp)
-                .height(15.dp)
-                .clip(shape = RoundedCornerShape(50))
-                .background(
-                    color = Color.Red
-                )
-        )
-    }
+fun ActionCircle(
+    color: Color
+){
+    Box(
+        modifier =  Modifier
+            .width(15.dp)
+            .height(15.dp)
+            .clip(shape = RoundedCornerShape(50))
+            .background(
+                color = color
+            )
+    )
 }
