@@ -22,7 +22,7 @@ fun LoadBar(fillPercentage: Dp){
             .clip(
                 shape = RoundedCornerShape(30)
             )
-            .background(Color(0xFFB55557))
+            .background(Color(0xFFD86B67))
     ) {
 
     }

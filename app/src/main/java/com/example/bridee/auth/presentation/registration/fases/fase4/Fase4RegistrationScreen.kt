@@ -67,7 +67,7 @@ fun Fase4RegistrationScreen(viewModel: RegistrationSharedViewModel, navControlle
                         CustomCheckbox(
                             checked = registrationState.value.isLocalReservado,
                             onCheckedChange = {
-                                registrationState.value = registrationState.value.copy(isLocalReservado = true)
+                                registrationState.value = registrationState.value.copy(isLocalReservado = true, local = "")
                             }
                         )
                         Text(
@@ -115,7 +115,7 @@ fun Fase4RegistrationScreen(viewModel: RegistrationSharedViewModel, navControlle
                 state = registrationState.value.local,
                 onStateChange = {
                     registrationState.value = registrationState
-                        .value.copy(local = it, isLocalReservado = viewModel.isLocalReservado(it))
+                        .value.copy(local = it)
                 },
                 height = 50.dp
             )
