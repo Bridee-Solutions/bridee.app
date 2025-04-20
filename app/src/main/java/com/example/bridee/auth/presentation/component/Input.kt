@@ -1,6 +1,7 @@
 package com.example.bridee.auth.presentation.component
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
@@ -28,7 +29,7 @@ fun Input(
 ){
 
     val windowWidthDp = LocalConfiguration.current.screenWidthDp.dp
-    val color = if(isValid || state.isBlank()) Color(0xFF999999) else Color.Red
+    val color = if(isValid || state.isBlank()) Color.LightGray else Color.Red
 
     TextField(
         value = state,
@@ -39,13 +40,17 @@ fun Input(
             .width(windowWidthDp - 45.dp)
             .then(height?.let {
                 Modifier.height(it) } ?: Modifier)
+            .background(
+                color = Color(0xFFF5F5F5),
+                shape = RoundedCornerShape(30)
+            )
             .border(
                 BorderStroke(width = 2.dp, color = color),
                 shape = RoundedCornerShape(30)
             ),
         colors = TextFieldDefaults.colors(
-            unfocusedContainerColor = Color(0xFFF5F5F5),
-            focusedContainerColor = Color(0xFFF5F5F5),
+            unfocusedContainerColor = Color.Transparent,
+            focusedContainerColor = Color.Transparent,
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent
         ),

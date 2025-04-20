@@ -139,13 +139,15 @@ fun LoginScreen(authenticationViewModel: AuthenticationViewModel,navController: 
                 }
             },
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFFD86B67)
+                containerColor = Color(0xFFD86B67),
+                contentColor = Color.White
+
             ),
             modifier = Modifier.height(50.dp)
                 .width(windowWidthDp - 120.dp),
             shape = RoundedCornerShape(25)
         ) {
-            Text("Entrar")
+            Text("Entrar", color = Color.White)
         }
         Row {
             Text(

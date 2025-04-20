@@ -35,8 +35,10 @@ fun Fase4RegistrationScreen(viewModel: RegistrationSharedViewModel, navControlle
     val registrationState = viewModel.sharedRegistrationObject
 
     Column(
-        modifier = Modifier.fillMaxWidth()
-            .height(windowHeightDp - 150.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(windowHeightDp - 150.dp)
+            .padding(top = 20.dp, start = 20.dp, end = 20.dp),
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
         Header(
@@ -137,7 +139,7 @@ fun Fase4RegistrationScreen(viewModel: RegistrationSharedViewModel, navControlle
                 .align(Alignment.CenterHorizontally),
             shape = RoundedCornerShape(25)
         ) {
-            Text("Próximo")
+            Text("Próximo", color = Color.White)
         }
         ShowToast(viewModel)
     }

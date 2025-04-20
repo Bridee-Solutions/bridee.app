@@ -48,8 +48,10 @@ fun Fase7RegistrationScreen(viewModel: RegistrationSharedViewModel,navController
     val windowHeightDp = LocalConfiguration.current.screenHeightDp.dp
 
     Column(
-        modifier = Modifier.fillMaxWidth()
-            .height(windowHeightDp - 150.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(windowHeightDp - 150.dp)
+            .padding(top = 20.dp, start = 20.dp, end = 20.dp),
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
         Header(

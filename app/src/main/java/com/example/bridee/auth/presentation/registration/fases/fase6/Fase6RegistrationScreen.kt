@@ -38,10 +38,13 @@ fun Fase6RegistrationScreen(viewModel: RegistrationSharedViewModel, navControlle
     val windowWidthDp = LocalConfiguration.current.screenWidthDp.dp
     val windowHeightDp = LocalConfiguration.current.screenHeightDp.dp
     val guestOption = viewModel.guestOptions.filter { it.selected }
-
+    val col1 = viewModel.guestOptions.take(viewModel.guestOptions.size / 2 + viewModel.guestOptions.size % 2)
+    val col2 = viewModel.guestOptions.takeLast(viewModel.guestOptions.size / 2)
     Column(
-        modifier = Modifier.fillMaxWidth()
-            .height(windowHeightDp - 150.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(windowHeightDp - 150.dp)
+            .padding(top = 20.dp, start = 20.dp, end = 20.dp),
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
 
@@ -110,7 +113,7 @@ fun Fase6RegistrationScreen(viewModel: RegistrationSharedViewModel, navControlle
                 .align(Alignment.CenterHorizontally),
             shape = RoundedCornerShape(25)
         ) {
-            Text("Próximo")
+            Text("Próximo", color = Color.White)
         }
         ShowToast(viewModel, guestOption)
     }
