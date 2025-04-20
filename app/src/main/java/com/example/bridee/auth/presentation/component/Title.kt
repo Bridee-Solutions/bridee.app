@@ -24,8 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun Title(fillPercentage: Dp){
-
+fun Title(fillPercentage: Dp = 0.dp) {
     val windowWidthDp = LocalConfiguration.current.screenWidthDp.dp
 
     Column(
