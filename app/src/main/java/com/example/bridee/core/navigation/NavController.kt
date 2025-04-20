@@ -28,6 +28,7 @@ import com.example.bridee.auth.presentation.registration.fases.fase7.Fase7Regist
 import com.example.bridee.calculadora.presentation.screens.CalculadoraScreen
 import com.example.bridee.calculadora.presentation.screens.CategoriaDetalhesScreen
 import com.example.bridee.configuracoes.presentation.screen.ConfiguracoesScreen
+import com.example.bridee.esqueceusenha.presentation.screens.EsqueceuSenhaScreen
 import com.example.bridee.lista_tarefas.presentation.screens.ListaTarefasScreen
 import com.example.bridee.servicos.presentation.screens.HomeScreen
 import com.example.bridee.servicos.presentation.screens.InspiracaoScreen
@@ -83,6 +84,9 @@ fun NavController(navController: NavHostController, paddingValues: PaddingValues
         composable(Screen.Configuracoes.route) {
             ConfiguracoesScreen(navController)
         }
+        composable(Screen.EsqueceuSenha.route) {
+            EsqueceuSenhaScreen()
+        }
 
         composable(route = Screen.Calculadora.route) {
             CalculadoraScreen(navController)
@@ -98,7 +102,7 @@ fun NavController(navController: NavHostController, paddingValues: PaddingValues
             val icon = backStackEntry.arguments?.getInt("icon") ?: 0
             CategoriaDetalhesScreen(nome, icon, navController = navController)
         }
-        // Rotas do menu
+
         composable(route = Screen.Home.route) {
             HomeScreen(navController)
         }

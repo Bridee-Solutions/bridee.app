@@ -169,17 +169,7 @@ fun Fase1RegistrationScreen(viewModel: RegistrationSharedViewModel, navControlle
         ) {
             Text("Próximo", color = Color.White)
         }
-        Row {
-            Text(
-                text = "Você é um assessor? ",
-                style = MaterialTheme.typography.titleSmall
-            )
-            Text(
-                text = "Clique aqui.",
-                style = MaterialTheme.typography.titleSmall.copy(color = Color(0xFFB55557),
-                    fontWeight = FontWeight.Bold),
-            )
-        }
+
         ShowToasts(viewModel)
     }
 }
