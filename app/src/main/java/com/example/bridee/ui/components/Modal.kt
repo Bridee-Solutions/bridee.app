@@ -93,7 +93,7 @@ fun CustomModal(
                         Button(
                             onClick = onConfirm,
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = Color(0xFFD77C8C),
+                                containerColor = Color(0xFFDD7B78),
                                 contentColor = Color.White
                             ),
                             shape = RoundedCornerShape(8.dp),

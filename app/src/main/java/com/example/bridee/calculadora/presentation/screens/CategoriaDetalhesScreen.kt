@@ -2,7 +2,9 @@ package com.example.bridee.calculadora.presentation.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -16,7 +18,7 @@ import com.example.bridee.calculadora.presentation.components.CategoriaDetalhes.
 
 
 @Composable
-fun CategoriaDetalhesScreen(nomeCategoria: String, icon: Int, navController: NavController) {
+fun CategoriaDetalhesScreen(nomeCategoria: String, icon: Int, navController: NavController, paddingValues: PaddingValues) {
 
     val scrollState = rememberScrollState()
 
@@ -24,6 +26,7 @@ fun CategoriaDetalhesScreen(nomeCategoria: String, icon: Int, navController: Nav
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
+            .padding(paddingValues)
 
     ) {
         tituloCategoria(nomeCategoria, icon, navController)

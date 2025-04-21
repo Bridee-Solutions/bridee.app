@@ -35,9 +35,8 @@ import com.example.bridee.servicos.presentation.screens.InspiracaoScreen
 import com.example.bridee.servicos.presentation.screens.ServicosScreen
 
 @Composable
-fun NavController(navController: NavHostController, paddingValues: PaddingValues){
-//    val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = Screen.Login.route){
+fun NavController(navController: NavHostController, paddingValues: PaddingValues) {
+    NavHost(navController = navController, startDestination = Screen.Login.route) {
         composable(route = Screen.Login.route) {
             val authenticationViewModel: AuthenticationViewModel = AuthenticationViewModel()
             LoginScreen(authenticationViewModel, navController)
@@ -45,7 +44,7 @@ fun NavController(navController: NavHostController, paddingValues: PaddingValues
         navigation(
             route = Screen.Cadastro.route,
             startDestination = Screen.Fase1Registration.route
-        ){
+        ) {
             composable(route = Screen.Fase1Registration.route) {
                 val viewModel = it.sharedViewModel<RegistrationSharedViewModel>(navController)
                 Fase1RegistrationScreen(viewModel, navController)
@@ -53,7 +52,7 @@ fun NavController(navController: NavHostController, paddingValues: PaddingValues
             composable(route = Screen.Fase2Registration.route) {
                 Fase2RegistrationScreen(navController)
             }
-            composable(route = Screen.Fase3Registration.route){
+            composable(route = Screen.Fase3Registration.route) {
                 val viewModel = it.sharedViewModel<RegistrationSharedViewModel>(navController)
                 Fase3RegistrationScreen(viewModel, navController)
             }
@@ -74,22 +73,20 @@ fun NavController(navController: NavHostController, paddingValues: PaddingValues
                 Fase7RegistrationScreen(viewModel, navController)
             }
         }
-        composable(route = Screen.EmailRegistration.route){
+        composable(route = Screen.EmailRegistration.route) {
             EmailRegistrationScreen()
         }
-        composable(route = Screen.EmailFailRegistration.route){
+        composable(route = Screen.EmailFailRegistration.route) {
             EmailFailRegistrationScreen()
         }
-
         composable(Screen.Configuracoes.route) {
             ConfiguracoesScreen(navController)
         }
         composable(Screen.EsqueceuSenha.route) {
             EsqueceuSenhaScreen()
         }
-
         composable(route = Screen.Calculadora.route) {
-            CalculadoraScreen(navController)
+            CalculadoraScreen(navController, paddingValues)
         }
         composable(
             route = Screen.CategoriaDetalhes.route,
@@ -100,33 +97,31 @@ fun NavController(navController: NavHostController, paddingValues: PaddingValues
         ) { backStackEntry ->
             val nome = backStackEntry.arguments?.getString("nome") ?: ""
             val icon = backStackEntry.arguments?.getInt("icon") ?: 0
-            CategoriaDetalhesScreen(nome, icon, navController = navController)
+            CategoriaDetalhesScreen(nome, icon, navController = navController, paddingValues)
         }
-
         composable(route = Screen.Home.route) {
-            HomeScreen(navController)
+            HomeScreen(navController, paddingValues)
         }
         composable(route = Screen.Ferramentas.route) {
-            CalculadoraScreen(navController)
+            CalculadoraScreen(navController, paddingValues)
         }
         composable(route = Screen.Servicos.route) {
             ServicosScreen(navController)
         }
         composable(route = Screen.Inspiracao.route) {
-            InspiracaoScreen(navController)
+            InspiracaoScreen(navController, paddingValues)
         }
-
         composable(route = Screen.ListaTarefas.route) {
-            ListaTarefasScreen(navController);
+            ListaTarefasScreen(navController, paddingValues)
         }
     }
 }
 
 @Composable
-inline fun <reified T: ViewModel> NavBackStackEntry.sharedViewModel(
+inline fun <reified T : ViewModel> NavBackStackEntry.sharedViewModel(
     navController: NavController
-): T{
-    val navGraphRoute = destination.parent?.route ?: viewModel()
+): T {
+    val navGraphRoute = destination.parent?.route ?: return viewModel()
     val parentEntry = remember(this) {
         navController.getBackStackEntry(navGraphRoute)
     }

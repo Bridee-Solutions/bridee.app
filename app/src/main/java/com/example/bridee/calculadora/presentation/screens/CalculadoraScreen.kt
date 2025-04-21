@@ -2,9 +2,11 @@ package com.example.bridee.calculadora.presentation.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -19,13 +21,14 @@ import com.example.bridee.ui.components.ferramentas_section.presentation.screens
 
 
 @Composable
-fun CalculadoraScreen(navController: NavController) {
+fun CalculadoraScreen(navController: NavController, paddingValues: PaddingValues) {
     val scrollState = rememberScrollState()
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
+            .padding(paddingValues)
             .verticalScroll(scrollState)
     ) {
         FerramentasSection(navController, Tool.CALCULADORA);

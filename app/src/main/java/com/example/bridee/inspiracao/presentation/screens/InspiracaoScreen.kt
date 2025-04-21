@@ -2,6 +2,7 @@ package com.example.bridee.servicos.presentation.screens
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -17,7 +18,7 @@ import androidx.navigation.NavController
 import com.example.bridee.inspiracao.presentation.components.Navegar
 
 @Composable
-fun InspiracaoScreen(navController: NavController) {
-   Navegar()
+fun InspiracaoScreen(navController: NavController, paddingValues: PaddingValues) {
+   Navegar(paddingValues)
 }
 

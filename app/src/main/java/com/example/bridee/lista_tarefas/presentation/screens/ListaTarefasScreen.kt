@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -28,6 +29,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -72,7 +74,7 @@ import java.time.LocalDate
 import java.util.Locale
 
 @Composable
-fun ListaTarefasScreen(navController: NavController) {
+fun ListaTarefasScreen(navController: NavController, paddingValues: PaddingValues) {
     var tarefas by remember {
         mutableStateOf(
             listOf(
@@ -146,6 +148,7 @@ fun ListaTarefasScreen(navController: NavController) {
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
+            .padding(paddingValues)
     ) {
         FerramentasSection(navController, Tool.TAREFAS);
 
@@ -577,7 +580,7 @@ fun ListaTarefasScreen(navController: NavController) {
                     Column {
                         Text(
                             text = "Status",
-                            style = MaterialTheme.typography.titleSmall
+                            style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
                         )
 
                         Spacer(modifier = Modifier.height(10.dp))
@@ -601,7 +604,12 @@ fun ListaTarefasScreen(navController: NavController) {
                                             else it
                                         }
                                     },
-                                    modifier = Modifier.size(24.dp)
+                                    modifier = Modifier.size(24.dp),
+                                    colors = CheckboxDefaults.colors(
+                                        checkedColor = Color(0xFFDD7B78), // Cor do botão de filtrar
+                                        uncheckedColor = Color.LightGray, // Cor da borda quando não marcado
+                                        checkmarkColor = Color.White // Cor do "check" (tic)
+                                    )
                                 )
                                 Text(
                                     text = status.nome,
@@ -620,11 +628,10 @@ fun ListaTarefasScreen(navController: NavController) {
                     )
                     Spacer(modifier = Modifier.height(10.dp))
 
-                    // Filtros de Mês
                     Column {
                         Text(
                             text = "Mês",
-                            style = MaterialTheme.typography.titleSmall
+                            style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
                         )
 
                         mesFilter.forEachIndexed { index, mes ->
@@ -646,7 +653,12 @@ fun ListaTarefasScreen(navController: NavController) {
                                             else it
                                         }
                                     },
-                                    modifier = Modifier.size(24.dp)
+                                    modifier = Modifier.size(24.dp),
+                                    colors = CheckboxDefaults.colors(
+                                        checkedColor = Color(0xFFDD7B78),
+                                        uncheckedColor = Color.LightGray,
+                                        checkmarkColor = Color.White
+                                    )
                                 )
                                 Text(
                                     text = mes.nome,
@@ -751,16 +763,3 @@ fun ListaTarefasScreen(navController: NavController) {
     )
 }
 
-@Preview(showBackground = false)
-@Composable
-fun ListaTarefasScreenPreview() {
-    BrideeTheme {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.White)
-        ) {
-            ListaTarefasScreen(navController = rememberNavController())
-        }
-    }
-}
