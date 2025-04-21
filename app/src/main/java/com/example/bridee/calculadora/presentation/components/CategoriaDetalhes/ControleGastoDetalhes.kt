@@ -66,7 +66,8 @@ fun ControleGastoDetalhes(modifier: Modifier = Modifier) {
                     .fillMaxWidth()
                     .height(30.dp)
                     .padding(vertical = 4.dp),
-                color = rosa
+                color = rosa,
+                trackColor = Color.White
             )
 
             Spacer(modifier = Modifier.height(20.dp))

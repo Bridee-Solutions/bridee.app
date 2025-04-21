@@ -40,7 +40,7 @@ android {
 }
 
 dependencies {
-
+    implementation("io.coil-kt:coil-compose:2.4.0")
     implementation (libs.retrofit)
     implementation (libs.converter.gson)
     implementation(libs.androidx.navigation.compose)
