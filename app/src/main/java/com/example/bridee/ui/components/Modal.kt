@@ -78,14 +78,16 @@ fun CustomModal(
                             onClick = onCancel,
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = Color(0xFFEAEAEA),
-                                contentColor = Color(0xFF766F6F)
+                                contentColor = Color.Black
+
                             ),
                             shape = RoundedCornerShape(8.dp),
                             modifier = Modifier
                                 .weight(1f)
                                 .padding(start = 4.dp)
                         ) {
-                            Text("Cancelar")
+                            Text("Cancelar",
+                                color = Color(0xFF766F6F))
                         }
                         Spacer(modifier = Modifier.width(8.dp))
                         Button(
@@ -99,7 +101,8 @@ fun CustomModal(
                                 .weight(1f)
                                 .padding(start = 4.dp)
                         ) {
-                            Text(text = if (textConfirm != null) textConfirm else "Adicionar")
+                            Text(text = if (textConfirm != null) textConfirm else "Adicionar",
+                                color = Color.White)
                         }
                     }
                 }

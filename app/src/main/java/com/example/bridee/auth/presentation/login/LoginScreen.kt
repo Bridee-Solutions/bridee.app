@@ -146,12 +146,13 @@ fun LoginScreen(authenticationViewModel: AuthenticationViewModel,navController: 
             )
         }
         Button(            onClick = {
-                authenticationViewModel.showDialog = true
-                authenticationViewModel.authenticate()
-                if(authenticationViewModel.isEnabled){
-                    authenticationViewModel.showDialog = false
-                    // TODO: redirecionar para a tela inicial
-                }
+               // authenticationViewModel.showDialog = true
+            // authenticationViewModel.authenticate()
+            // if(authenticationViewModel.isEnabled){
+            //      authenticationViewModel.showDialog = false
+            //      // TODO: redirecionar para a tela inicial
+            //  }
+            navController.navigate(Screen.Home.route)
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFFD86B67),
