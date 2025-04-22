@@ -1,19 +1,27 @@
 package com.example.bridee.convidados.presentation.convidado
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -28,13 +36,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.max
 import androidx.navigation.NavController
 import com.example.bridee.auth.presentation.component.Input
+import com.example.bridee.core.dropdown.DropdownMenu
 
 @Composable
 fun AdicionarConvidadoScreen(navController: NavController){
 
     val screenWidth = LocalConfiguration.current.screenWidthDp
+    var windowScroll = rememberScrollState()
     var nomeConvidado by remember {
         mutableStateOf("")
     }
@@ -45,9 +56,18 @@ fun AdicionarConvidadoScreen(navController: NavController){
         mutableStateOf("")
     }
 
+    var selectedCategoriaIndex by remember{
+        mutableStateOf(0)
+    }
+
+    var selectedConfirmacaoIndex by remember {
+        mutableStateOf(0)
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .verticalScroll(windowScroll)
     ) {
         Row (
             modifier = Modifier
@@ -105,6 +125,7 @@ fun AdicionarConvidadoScreen(navController: NavController){
                     singleLine = true,
                     modifier = Modifier
                         .width((screenWidth * 0.8).dp)
+                        .heightIn(max = 50.dp)
                 )
             }
             Column (
@@ -123,6 +144,7 @@ fun AdicionarConvidadoScreen(navController: NavController){
                     singleLine = true,
                     modifier = Modifier
                         .width((screenWidth * 0.8).dp)
+                        .heightIn(max = 50.dp)
                 )
             }
             Column (
@@ -133,14 +155,67 @@ fun AdicionarConvidadoScreen(navController: NavController){
                 Text(
                     text = "Categoria"
                 )
-                OutlinedTextField(
-                    value = categoria,
-                    onValueChange = {
-                        categoria = it
+                DropdownMenu(
+                    itemList = listOf("Familia da Noiva", "Familia do Noivo"),
+                    selectedIndex = selectedCategoriaIndex,
+                    onItemClick = {
+                        selectedCategoriaIndex = it
                     },
-                    singleLine = true,
+                    modifier = Modifier.border(
+                        width = 1.dp,
+                        color = Color(0x00000000),
+                        shape = RoundedCornerShape(10f)
+                    )
+                )
+            }
+            Column(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = "Faixa Etária"
+                )
+                Box (){
+                    Row {
+                        Row {
+                            Icon(
+                                imageVector = Icons.Default.Person,
+                                contentDescription = null
+                            )
+                            Text(
+                                text = "Adulto"
+                            )
+                        }
+                        Row {
+                            Text(
+                                text = "Criança"
+                            )
+                        }
+                    }
+                }
+            }
+
+            Column (
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                Text(
+                    text = "Confirmação de presença"
+                )
+                Text(
+                    text = "Status"
+                )
+                DropdownMenu(
+                    itemList = listOf("Não irá comparecer", "Confirmado"),
+                    selectedIndex = selectedConfirmacaoIndex,
+                    onItemClick = {
+                        selectedConfirmacaoIndex = it
+                    },
                     modifier = Modifier
-                        .width((screenWidth * 0.5).dp)
+                        .border(
+                            width = 1.dp,
+                            color = Color(0xFFFFFFFF),
+                            shape = RoundedCornerShape(10f)
+                        )
                 )
             }
         }

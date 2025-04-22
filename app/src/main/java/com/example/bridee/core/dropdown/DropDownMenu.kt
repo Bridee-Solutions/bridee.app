@@ -26,26 +26,25 @@ import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
 
 @Composable
-fun DropdownList(
+fun DropdownMenu(
     itemList: List<String>,
     selectedIndex: Int,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     onItemClick: (Int) -> Unit
 ) {
 
-    var showDropdown by rememberSaveable { mutableStateOf(true) }
+    var showDropdown by rememberSaveable { mutableStateOf(false) }
     val scrollState = rememberScrollState()
 
     Column(
-        modifier = Modifier,
+        modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center) {
 
         Box(
             modifier = modifier
-                .background(Color.Red)
-                .clickable { showDropdown = true },
-//            .clickable { showDropdown = !showDropdown },
+                .background(Color.White)
+            .clickable { showDropdown = !showDropdown },
             contentAlignment = Alignment.Center
         ) {
             Text(
@@ -53,7 +52,6 @@ fun DropdownList(
                 modifier = Modifier.padding(3.dp))
         }
 
-        // dropdown list
         Box() {
             if (showDropdown) {
                 Popup(
@@ -61,7 +59,6 @@ fun DropdownList(
                     properties = PopupProperties(
                         excludeFromSystemGesture = true,
                     ),
-                    // to dismiss on click outside
                     onDismissRequest = { showDropdown = false }
                 ) {
 
@@ -79,7 +76,7 @@ fun DropdownList(
                             }
                             Box(
                                 modifier = Modifier
-                                    .background(Color.Green)
+                                    .background(Color.White)
                                     .fillMaxWidth()
                                     .clickable {
                                         onItemClick(index)
@@ -90,7 +87,6 @@ fun DropdownList(
                                 Text(text = item,)
                             }
                         }
-
                     }
                 }
             }
