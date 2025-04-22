@@ -14,9 +14,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.MailOutline
@@ -46,6 +46,8 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.bridee.R
+import com.example.bridee.convidados.domain.Convidado
+import com.example.bridee.convidados.domain.Convite
 import com.example.bridee.convidados.presentation.component.ActionCircle
 import com.example.bridee.convidados.presentation.component.ActionReport
 import com.example.bridee.convidados.presentation.component.ActionSquare
@@ -60,615 +62,437 @@ fun ConvidadoScreen(navController: NavController){
     var searchState by remember {
         mutableStateOf("")
     }
+    val convidados = mutableListOf(
+        Convidado(
+            nome = "Ian",
+            tipo = "Familia Noivo",
+            status = "Pendente",
+            faixaEtaria = "Adulto"
+        ),
+        Convidado(
+            nome = "Ian",
+            tipo = "Familia Noivo",
+            status = "Pendente",
+            faixaEtaria = "Adulto",
+        ),
+        Convidado(
+            nome = "Ian",
+            tipo = "Familia Noivo",
+            status = "Pendente",
+            faixaEtaria = "Adulto",
+        ),
+        Convidado(
+            nome = "Ian",
+            tipo = "Familia Noivo",
+            status = "Pendente",
+            faixaEtaria = "Adulto",
+        )
+    )
+    val convites by remember {
+        mutableStateOf(
+            listOf(
+                Convite(
+                    nome = "Familia Martings",
+                    ano = "1920",
+                    convidados = convidados
+                ),
+                Convite(
+                    nome = "Familia Martings",
+                    ano = "1920",
+                    convidados = convidados
+                ),
+                Convite(
+                    nome = "Familia Martings",
+                    ano = "1920",
+                    convidados = convidados
+                )
+            )
+        )
+    }
 
-    Column(
+    LazyColumn (
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
-            .verticalScroll(scrollState)
     ) {
-        FerramentasSection(navController, Tool.CONVIDADOS)
+        item {
+            FerramentasSection(navController, Tool.CONVIDADOS)
 
-        ActionReport()
-        Spacer(Modifier.height(20.dp))
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
-        ) {
-           ActionSquare {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = "Ícone para adição de novo convite"
-                )
-                Text(
-                    text = "Adicionar convite",
-                    fontSize = TextUnit(
-                        type = TextUnitType.Sp,
-                        value = 16.0F
-                    )
-                )
-            }
-            VerticalDivider(modifier = Modifier.width(25.dp))
-            ActionSquare {
-                Icon(
-                    imageVector = Icons.Default.MailOutline,
-                    contentDescription = "Ícone para adição de novo convite"
-                )
-                Text(
-                    text = "Divulgar por WhatsApp",
-                    fontSize = TextUnit(
-                        type = TextUnitType.Sp,
-                        value = 16.0F
-                    )
-                )
-            }
-        }
-        Spacer(modifier = Modifier.width(20.dp))
-        Column (
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 20.dp, start = 35.dp),
-            horizontalAlignment = Alignment.Start
-        ) {
-            Row (
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.width(170.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ){
-                Icon(
-                    painter = painterResource(R.drawable.filter),
-                    contentDescription = "Ícone que acompanha o total de convidados"
-                )
-                Text(
-                    text = "Total de convidados",
-
-                )
-            }
-            Column(
+            ActionReport()
+            Spacer(Modifier.height(20.dp))
+            Row(
                 modifier = Modifier
-                    .padding(start = 5.dp, top = 10.dp)
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
             ) {
-                Row (
-                    verticalAlignment = Alignment.CenterVertically
-                ){
-                    Box(
-                        modifier = Modifier
-                            .background(
-                                color = Color(0xFFDD7B78)
-                            )
-                            .width(30.dp)
-                            .clip(shape = RoundedCornerShape(15f)),
-                    ) {
-                        Text(
-                            text = "10",
-                            color = Color.White,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                    }
-                    VerticalDivider(
-                        modifier = Modifier.width(5.dp)
-                    )
-                    Text(
-                        text = "Convidados"
-                    )
-                }
-
-                Row (
-                    verticalAlignment = Alignment.CenterVertically
-                ){
-                    Box (
-                        modifier = Modifier
-                            .background(
-                                color = Color(0xFFDD7B78)
-                            )
-                            .width(30.dp)
-                            .clip(shape = RoundedCornerShape(15f))
-                    ) {
-                        Text(
-                            text = "2",
-                            color = Color.White,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                    }
-                    VerticalDivider(
-                        modifier = Modifier.width(5.dp)
-                    )
-                    Text(
-                        text = "Convites"
-                    )
-                }
-
-                Row (
-                    verticalAlignment = Alignment.CenterVertically
-                ){
-                    Box (
-                        modifier = Modifier
-                            .background(
-                                color = Color(0xFFDD7B78)
-                            )
-                            .width(30.dp)
-                            .clip(shape = RoundedCornerShape(15f))
-                    ) {
-                        Text(
-                            text = "3",
-                            color = Color.White,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                    }
-                    VerticalDivider(
-                        modifier = Modifier.width(5.dp)
-                    )
-                    Text(
-                        text = "Adultos"
-                    )
-                }
-
-                Row (
-                    verticalAlignment = Alignment.CenterVertically
-                ){
-                    Box (
-                        modifier = Modifier
-                            .background(
-                                color = Color(0xFFDD7B78)
-                            )
-                            .width(30.dp)
-                            .clip(shape = RoundedCornerShape(15f))
-                    ) {
-                        Text(
-                            text = "3",
-                            color = Color.White,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                    }
-                    VerticalDivider(
-                        modifier = Modifier.width(5.dp)
-                    )
-                    Text(
-                        text = "Família da Amanda"
-                    )
-                }
-
-                Row (
-                    verticalAlignment = Alignment.CenterVertically
-                ){
-                    Box (
-                        modifier = Modifier
-                            .background(
-                                color = Color(0xFFDD7B78)
-                            )
-                            .width(30.dp)
-                            .clip(shape = RoundedCornerShape(15f))
-                    ) {
-                        Text(
-                            text = "3",
-                            color = Color.White,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                    }
-                    VerticalDivider(
-                        modifier = Modifier.width(5.dp)
-                    )
-                    Text(
-                        text = "Amigos"
-                    )
-                }
-
-                Row (
-                    verticalAlignment = Alignment.CenterVertically
-                ){
-                    Box (
-                        modifier = Modifier
-                            .background(
-                                color = Color(0xFFDD7B78)
-                            )
-                            .width(30.dp)
-                            .clip(shape = RoundedCornerShape(15f))
-                    ) {
-                        Text(
-                            text = "3",
-                            color = Color.White,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                    }
-                    VerticalDivider(
-                        modifier = Modifier.width(5.dp)
-                    )
-                    Text(
-                        text = "Colegas de trabalho"
-                    )
-                }
-            }
-        }
-
-        Row (
-            modifier = Modifier.fillMaxWidth()
-                .height(65.dp)
-                .background(
-                    color = Color(0xFFF5F1DF)
-                ),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            OutlinedTextField(
-                value = searchState,
-                onValueChange = { searchState = it },
-                singleLine = true,
-                placeholder = {
+                ActionSquare {
                     Icon(
-                        imageVector = Icons.Filled.Search,
-                        contentDescription = "Pesquisa",
-                        tint = Color(0xFF7E7E7E)
+                        imageVector = Icons.Default.Add,
+                        contentDescription = "Ícone para adição de novo convite"
                     )
                     Text(
-                        text = "Pesquisar",
-                        modifier = Modifier.offset(x = 25.dp, y = (-2).dp),
-                        color = Color(0xFF707070),
+                        text = "Adicionar convite",
+                        fontSize = TextUnit(
+                            type = TextUnitType.Sp,
+                            value = 16.0F
+                        )
                     )
-                },
-                modifier = Modifier
-                    .border(
-                        BorderStroke(width = 1.dp, color = Color(0xFF999999)),
-                        shape = RoundedCornerShape(30)
+                }
+                VerticalDivider(modifier = Modifier.width(25.dp))
+                ActionSquare {
+                    Icon(
+                        imageVector = Icons.Default.MailOutline,
+                        contentDescription = "Ícone para adição de novo convite"
                     )
-                    .width(240.dp)
-                    .height(50.dp),
-                colors = TextFieldDefaults.colors(
-                    unfocusedContainerColor = Color.White,
-                    focusedContainerColor = Color.White,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                ),
-                textStyle = TextStyle(
-                    lineHeight = TextUnit(
-                        value = 25f,
-                        type = TextUnitType.Sp
-                    ),
-                    fontSize = TextUnit(
-                        value = 14f,
-                        type = TextUnitType.Sp
+                    Text(
+                        text = "Divulgar por WhatsApp",
+                        fontSize = TextUnit(
+                            type = TextUnitType.Sp,
+                            value = 16.0F
+                        )
                     )
-                )
-            )
-            Column(
-                modifier = Modifier
-                    .background(
-                        color = Color.White
-                    )
-                    .height(40.dp)
-                    .width(40.dp)
-                    .clip(RoundedCornerShape(15.dp)),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ){
-                Icon(
-                    imageVector = Icons.Default.Menu,
-                    contentDescription = ""
-                )
-            }
-        }
-        Column (
-            modifier = Modifier
-                .border(
-                    width = 1.dp,
-                    color = Color(0xFF9B9B9B)
-                )
-                .fillMaxWidth()
-                .height(400.dp),
-            verticalArrangement = Arrangement.SpaceEvenly
-        ) {
-            Row (
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text("Família Martins")
-                Text("1920")
-                Button(
-                    onClick = {}
-                ) {
-                    Text("Ver convite ->")
                 }
             }
+            Spacer(modifier = Modifier.width(20.dp))
             Column (
-                verticalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier.height(300.dp)
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = 20.dp, start = 35.dp),
+                horizontalAlignment = Alignment.Start
             ) {
                 Row (
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                ) {
-                    Row (
-                        horizontalArrangement = Arrangement.Start,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.width((screenWidth * 0.5).dp)
-                            .padding(20.dp, 0.dp)
-                    ) {
-                        ActionCircle(
-                            color = Color.Green
-                        )
-                        Text(
-                            text = "Patricia Pereira",
-                            modifier = Modifier.padding(start = 5.dp)
-                        )
-                    }
-                    Row (
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.width((screenWidth * 0.5).dp)
-                            .padding(end = 12.dp)
-                    ) {
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.width(170.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    Icon(
+                        painter = painterResource(R.drawable.filter),
+                        contentDescription = "Ícone que acompanha o total de convidados"
+                    )
+                    Text(
+                        text = "Total de convidados",
 
-                        Text(
-                            text = "Família Amanda",
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(15f))
-                                .background(
-                                    color = Color(0xFFC1C1C1)
-                                )
-                                .padding(4.dp)
                         )
-
-                        Text(
-                            text = "Adulto",
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(15f))
-                                .background(
-                                    color = Color(0xFFEFEAEA)
-                                )
-                                .padding(4.dp)
-                        )
-                    }
                 }
-                Row (
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    verticalAlignment = Alignment.CenterVertically,
+
+                Column(
                     modifier = Modifier
-                        .fillMaxWidth()
+                        .padding(start = 5.dp, top = 10.dp),
+                    horizontalAlignment = Alignment.Start,
+                    verticalArrangement = Arrangement.Top
                 ) {
                     Row (
-                        horizontalArrangement = Arrangement.Start,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.width((screenWidth * 0.5).dp)
-                            .padding(20.dp, 0.dp)
-                    ) {
-                        ActionCircle(
-                            color = Color.Green
+                        verticalAlignment = Alignment.CenterVertically
+                    ){
+                        Spacer(modifier = Modifier.height(5.dp))
+                        Box(
+                            modifier = Modifier
+                                .background(
+                                    color = Color(0xFFDD7B78),
+                                    shape = RoundedCornerShape(10f)
+                                )
+                                .width(30.dp),
+                        ) {
+                            Text(
+                                text = "10",
+                                color = Color.White,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
+                        VerticalDivider(
+                            modifier = Modifier.width(5.dp)
                         )
                         Text(
-                            text = "Patricia Pereira",
-                            modifier = Modifier.padding(start = 5.dp)
+                            text = "Convidados"
                         )
                     }
+                    Spacer(modifier = Modifier.height(5.dp))
                     Row (
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.width((screenWidth * 0.5).dp)
-                            .padding(end = 12.dp)
-                    ) {
-
-                        Text(
-                            text = "Família Amanda",
+                        verticalAlignment = Alignment.CenterVertically
+                    ){
+                        Box (
                             modifier = Modifier
-                                .clip(RoundedCornerShape(15f))
                                 .background(
-                                    color = Color(0xFFC1C1C1)
+                                    color = Color(0xFFDD7B78),
+                                    shape = RoundedCornerShape(10f)
                                 )
-                                .padding(4.dp)
+                                .width(30.dp)
+                        ) {
+                            Text(
+                                text = "2",
+                                color = Color.White,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
+                        VerticalDivider(
+                            modifier = Modifier.width(5.dp)
                         )
-
                         Text(
-                            text = "Adulto",
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(15f))
-                                .background(
-                                    color = Color(0xFFEFEAEA)
-                                )
-                                .padding(4.dp)
+                            text = "Convites"
                         )
                     }
-                }
-                Row (
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                ) {
+
+                    Spacer(modifier = Modifier.height(5.dp))
                     Row (
-                        horizontalArrangement = Arrangement.Start,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.width((screenWidth * 0.5).dp)
-                            .padding(20.dp, 0.dp)
-                    ) {
-                        ActionCircle(
-                            color = Color.Green
+                        verticalAlignment = Alignment.CenterVertically
+                    ){
+                        Box (
+                            modifier = Modifier
+                                .background(
+                                    color = Color(0xFFDD7B78),
+                                    shape = RoundedCornerShape(10f)
+                                )
+                                .width(30.dp)
+                        ) {
+                            Text(
+                                text = "3",
+                                color = Color.White,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
+                        VerticalDivider(
+                            modifier = Modifier.width(5.dp)
                         )
                         Text(
-                            text = "Patricia Pereira",
-                            modifier = Modifier.padding(start = 5.dp)
+                            text = "Adultos"
                         )
                     }
+
+                    Spacer(modifier = Modifier.height(5.dp))
                     Row (
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.width((screenWidth * 0.5).dp)
-                            .padding(end = 12.dp)
-                    ) {
-
-                        Text(
-                            text = "Família Amanda",
+                        verticalAlignment = Alignment.CenterVertically
+                    ){
+                        Box (
                             modifier = Modifier
-                                .clip(RoundedCornerShape(15f))
                                 .background(
-                                    color = Color(0xFFC1C1C1)
+                                    color = Color(0xFFDD7B78),
+                                    shape = RoundedCornerShape(10f)
                                 )
-                                .padding(4.dp)
+                                .width(30.dp)
+                        ) {
+                            Text(
+                                text = "3",
+                                color = Color.White,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
+                        VerticalDivider(
+                            modifier = Modifier.width(5.dp)
                         )
-
                         Text(
-                            text = "Adulto",
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(15f))
-                                .background(
-                                    color = Color(0xFFEFEAEA)
-                                )
-                                .padding(4.dp)
+                            text = "Família da Amanda"
                         )
                     }
-                }
-                Row (
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                ) {
+
+                    Spacer(modifier = Modifier.height(5.dp))
                     Row (
-                        horizontalArrangement = Arrangement.Start,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.width((screenWidth * 0.5).dp)
-                            .padding(20.dp, 0.dp)
-                    ) {
-                        ActionCircle(
-                            color = Color.Green
+                        verticalAlignment = Alignment.CenterVertically
+                    ){
+                        Box (
+                            modifier = Modifier
+                                .background(
+                                    color = Color(0xFFDD7B78),
+                                    shape = RoundedCornerShape(10f)
+                                )
+                                .width(30.dp)
+                        ) {
+                            Text(
+                                text = "3",
+                                color = Color.White,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
+                        VerticalDivider(
+                            modifier = Modifier.width(5.dp)
                         )
                         Text(
-                            text = "Patricia Pereira",
-                            modifier = Modifier.padding(start = 5.dp)
+                            text = "Amigos"
                         )
                     }
+
+                    Spacer(modifier = Modifier.height(5.dp))
                     Row (
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.width((screenWidth * 0.5).dp)
-                            .padding(end = 12.dp)
-                    ) {
-
-                        Text(
-                            text = "Família Amanda",
+                        verticalAlignment = Alignment.CenterVertically
+                    ){
+                        Box (
                             modifier = Modifier
-                                .clip(RoundedCornerShape(15f))
                                 .background(
-                                    color = Color(0xFFC1C1C1)
+                                    color = Color(0xFFDD7B78),
+                                    shape = RoundedCornerShape(15f)
                                 )
-                                .padding(4.dp)
-                        )
-
-                        Text(
-                            text = "Adulto",
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(15f))
-                                .background(
-                                    color = Color(0xFFEFEAEA)
-                                )
-                                .padding(4.dp)
-                        )
-                    }
-                }
-                Row (
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                ) {
-                    Row (
-                        horizontalArrangement = Arrangement.Start,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.width((screenWidth * 0.5).dp)
-                            .padding(20.dp, 0.dp)
-                    ) {
-                        ActionCircle(
-                            color = Color.Green
+                                .width(30.dp)
+                        ) {
+                            Text(
+                                text = "3",
+                                color = Color.White,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
+                        VerticalDivider(
+                            modifier = Modifier.width(5.dp)
                         )
                         Text(
-                            text = "Patricia Pereira",
-                            modifier = Modifier.padding(start = 5.dp)
-                        )
-                    }
-                    Row (
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.width((screenWidth * 0.5).dp)
-                            .padding(end = 12.dp)
-                    ) {
-
-                        Text(
-                            text = "Família Amanda",
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(15f))
-                                .background(
-                                    color = Color(0xFFC1C1C1)
-                                )
-                                .padding(4.dp)
-                        )
-
-                        Text(
-                            text = "Adulto",
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(15f))
-                                .background(
-                                    color = Color(0xFFEFEAEA)
-                                )
-                                .padding(4.dp)
-                        )
-                    }
-                }
-                Row (
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                ) {
-                    Row (
-                        horizontalArrangement = Arrangement.Start,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.width((screenWidth * 0.5).dp)
-                            .padding(20.dp, 0.dp)
-                    ) {
-                        ActionCircle(
-                            color = Color.Green
-                        )
-                        Text(
-                            text = "Patricia Pereira",
-                            modifier = Modifier.padding(start = 5.dp)
-                        )
-                    }
-                    Row (
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.width((screenWidth * 0.5).dp)
-                            .padding(end = 12.dp)
-                    ) {
-
-                        Text(
-                            text = "Família Amanda",
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(15f))
-                                .background(
-                                    color = Color(0xFFC1C1C1)
-                                )
-                                .padding(4.dp)
-                        )
-
-                        Text(
-                            text = "Adulto",
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(15f))
-                                .background(
-                                    color = Color(0xFFEFEAEA)
-                                )
-                                .padding(4.dp)
+                            text = "Colegas de trabalho"
                         )
                     }
                 }
             }
+            Spacer(modifier = Modifier.height(20.dp))
+            Row (
+                modifier = Modifier.fillMaxWidth()
+                    .height(65.dp)
+                    .background(
+                        color = Color(0xFFF5F1DF)
+                    ),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                OutlinedTextField(
+                    value = searchState,
+                    onValueChange = { searchState = it },
+                    singleLine = true,
+                    placeholder = {
+                        Icon(
+                            imageVector = Icons.Filled.Search,
+                            contentDescription = "Pesquisa",
+                            tint = Color(0xFF7E7E7E)
+                        )
+                        Text(
+                            text = "Pesquisar",
+                            modifier = Modifier.offset(x = 25.dp, y = (-2).dp),
+                            color = Color(0xFF707070),
+                        )
+                    },
+                    modifier = Modifier
+                        .border(
+                            BorderStroke(width = 1.dp, color = Color(0xFF999999)),
+                            shape = RoundedCornerShape(30)
+                        )
+                        .width(240.dp)
+                        .height(50.dp),
+                    colors = TextFieldDefaults.colors(
+                        unfocusedContainerColor = Color.White,
+                        focusedContainerColor = Color.White,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                    ),
+                    textStyle = TextStyle(
+                        lineHeight = TextUnit(
+                            value = 25f,
+                            type = TextUnitType.Sp
+                        ),
+                        fontSize = TextUnit(
+                            value = 14f,
+                            type = TextUnitType.Sp
+                        )
+                    )
+                )
+                Column(
+                    modifier = Modifier
+                        .background(
+                            color = Color.White
+                        )
+                        .height(40.dp)
+                        .width(40.dp)
+                        .clip(RoundedCornerShape(15.dp)),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ){
+                    Icon(
+                        imageVector = Icons.Default.Menu,
+                        contentDescription = ""
+                    )
+                }
+            }
+            Column {
+                for(convite in convites) {
+                    Column (
+                        modifier = Modifier
+                            .border(
+                                width = 0.5.dp,
+                                color = Color(0xFF9B9B9B)
+                            )
+                    ) {
+                        Spacer(modifier = Modifier.height(10.dp))
+                        Row (
+                            horizontalArrangement = Arrangement.SpaceEvenly,
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text(convite.nome)
+                            Text(convite.ano)
+                            Button(
+                                onClick = {}
+                            ) {
+                                Text("Ver convite ->")
+                            }
+                        }
+                        Column (
+                            verticalArrangement = Arrangement.Top
+                        ) {
+                            convite.convidados.forEach {
+                                Spacer(modifier = Modifier.height(10.dp))
+                                Row (
+                                    horizontalArrangement = Arrangement.SpaceEvenly,
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                ) {
+                                    Row (
+                                        horizontalArrangement = Arrangement.Start,
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        modifier = Modifier.width((screenWidth * 0.5).dp)
+                                            .padding(20.dp, 0.dp)
+                                    ) {
+                                        ActionCircle(
+                                            color = Color.Green
+                                        )
+                                        Text(
+                                            text = it.nome,
+                                            modifier = Modifier.padding(start = 5.dp)
+                                        )
+                                    }
+                                    Row (
+                                        horizontalArrangement = Arrangement.SpaceBetween,
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        modifier = Modifier.width((screenWidth * 0.5).dp)
+                                            .padding(end = 12.dp)
+                                    ) {
+
+                                        Text(
+                                            text = it.tipo,
+                                            modifier = Modifier
+                                                .clip(RoundedCornerShape(15f))
+                                                .background(
+                                                    color = Color(0xFFC1C1C1)
+                                                )
+                                                .padding(4.dp)
+                                        )
+
+                                        Text(
+                                            text = it.faixaEtaria,
+                                            modifier = Modifier
+                                                .clip(RoundedCornerShape(15f))
+                                                .background(
+                                                    color = Color(0xFFEFEAEA)
+                                                )
+                                                .padding(4.dp)
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                        Spacer(modifier = Modifier.height(10.dp))
+                    }
+                }
+            }
+            Spacer(modifier = Modifier.height(90.dp))
         }
     }
 }
