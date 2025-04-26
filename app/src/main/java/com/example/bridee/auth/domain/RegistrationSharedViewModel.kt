@@ -1,5 +1,6 @@
 package com.example.bridee.auth.domain
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -12,7 +13,7 @@ import kotlinx.coroutines.launch
 
 class RegistrationSharedViewModel: ViewModel() {
 
-    private val usuarioService = ApiInstance().createService(AuthEndpoints::class.java)
+    private val usuarioService = ApiInstance.createService(AuthEndpoints::class.java)
     private val _state = mutableStateOf(RegistrationState())
     val sharedRegistrationObject = _state
     val guestOptions = GuestOption().createGuestOptions()

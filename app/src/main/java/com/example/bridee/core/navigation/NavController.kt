@@ -1,5 +1,6 @@
 package com.example.bridee.core.navigation
 
+import android.content.Context
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -25,6 +26,7 @@ import com.example.bridee.auth.presentation.registration.fases.fase4.Fase4Regist
 import com.example.bridee.auth.presentation.registration.fases.fase5.Fase5RegistrationScreen
 import com.example.bridee.auth.presentation.registration.fases.fase6.Fase6RegistrationScreen
 import com.example.bridee.auth.presentation.registration.fases.fase7.Fase7RegistrationScreen
+import com.example.bridee.calculadora.domain.CalculadoraViewModel
 import com.example.bridee.calculadora.presentation.screens.CalculadoraScreen
 import com.example.bridee.calculadora.presentation.screens.CategoriaDetalhesScreen
 import com.example.bridee.configuracoes.presentation.screen.ConfiguracoesScreen
@@ -34,11 +36,11 @@ import com.example.bridee.servicos.presentation.screens.InspiracaoScreen
 import com.example.bridee.servicos.presentation.screens.ServicosScreen
 
 @Composable
-fun NavController(navController: NavHostController, paddingValues: PaddingValues){
+fun NavController(navController: NavHostController, context: Context){
 //    val navController = rememberNavController()
     NavHost(navController = navController, startDestination = Screen.Login.route){
         composable(route = Screen.Login.route) {
-            val authenticationViewModel: AuthenticationViewModel = AuthenticationViewModel()
+            val authenticationViewModel: AuthenticationViewModel = AuthenticationViewModel(context)
             LoginScreen(authenticationViewModel, navController)
         }
         navigation(
@@ -85,7 +87,8 @@ fun NavController(navController: NavHostController, paddingValues: PaddingValues
         }
 
         composable(route = Screen.Calculadora.route) {
-            CalculadoraScreen(navController)
+            val calculadoraViewModel = CalculadoraViewModel()
+            CalculadoraScreen(calculadoraViewModel, navController)
         }
         composable(
             route = Screen.CategoriaDetalhes.route,
@@ -101,9 +104,6 @@ fun NavController(navController: NavHostController, paddingValues: PaddingValues
         // Rotas do menu
         composable(route = Screen.Home.route) {
             HomeScreen(navController)
-        }
-        composable(route = Screen.Ferramentas.route) {
-            CalculadoraScreen(navController)
         }
         composable(route = Screen.Servicos.route) {
             ServicosScreen(navController)

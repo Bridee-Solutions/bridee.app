@@ -70,7 +70,7 @@ fun BottomNavigationBar(navController: NavController) {
     ) {
         Row(modifier = Modifier.fillMaxWidth()) {
             NavigationItem(R.drawable.ic_home, "Home", Screen.Home.route, Modifier.weight(1f))
-            NavigationItem(R.drawable.ic_tools, "Ferramentas", Screen.Ferramentas.route, Modifier.weight(1f))
+            NavigationItem(R.drawable.ic_tools, "Ferramentas", Screen.Calculadora.route, Modifier.weight(1f))
             NavigationItem(R.drawable.ic_services, "Serviços", Screen.Servicos.route, Modifier.weight(1f))
             NavigationItem(R.drawable.ic_inspiration, "Inspiração", Screen.Inspiracao.route, Modifier.weight(1f))
         }
