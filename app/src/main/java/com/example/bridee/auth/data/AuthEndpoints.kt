@@ -3,6 +3,7 @@ package com.example.bridee.auth.data
 import com.example.bridee.auth.domain.AuthenticationRequest
 import com.example.bridee.auth.domain.AuthenticationResponse
 import com.example.bridee.auth.domain.RegistrationState
+//import okhttp3.Response
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
