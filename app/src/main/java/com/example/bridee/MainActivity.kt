@@ -5,11 +5,9 @@ import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.example.bridee.core.navigation.NavController
-import com.example.bridee.ui.theme.BrideeTheme
-import com.example.bridee.calculadora.presentation.screens.CalculadoraScreen
-import com.example.bridee.calculadora.presentation.screens.CategoriaDetalhesScreen
+import com.example.bridee.core.api.ApiInstance
 import com.example.bridee.core.navigation.MainScreen
+import com.example.bridee.ui.theme.BrideeTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,10 +20,11 @@ class MainActivity : ComponentActivity() {
                         View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                 )
 
+        ApiInstance.init(applicationContext)
         enableEdgeToEdge()
         setContent {
             BrideeTheme {
-                MainScreen();
+                MainScreen(applicationContext);
             }
         }
     }
