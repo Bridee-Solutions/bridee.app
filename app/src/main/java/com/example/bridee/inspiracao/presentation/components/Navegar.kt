@@ -26,11 +26,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-
+import com.example.bridee.inspiracao.domain.TelaInpiracaoViewModel
 
 
 @Composable
-fun Navegar() {
+fun Navegar(viewModel: TelaInpiracaoViewModel) {
     var selecionado by remember { mutableStateOf("Inspirações") }
 
     Column(
@@ -86,7 +86,7 @@ fun Navegar() {
                 .background(Color.White)
         ) {
             when (selecionado) {
-                "Inspirações" -> TelaInspiracao()
+                "Inspirações" -> TelaInspiracao(viewModel)
                 "Quadro de inspiração" -> TelaQuadroInspiracao()
             }
         }

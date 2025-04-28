@@ -30,6 +30,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,16 +38,22 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import coil.compose.AsyncImage
 import com.example.bridee.R
+import com.example.bridee.inspiracao.domain.TelaInpiracaoViewModel
 import com.example.bridee.ui.theme.rosa
 
 @Composable
-fun TelaInspiracao() {
-    val items = (1..10).toList()
+fun TelaInspiracao(viewModel: TelaInpiracaoViewModel) {
+    LaunchedEffect(true) {
+        viewModel.findPexelsImage("Casamento")
+    }
+    var photos = viewModel.pexelsInfo!!.photos
     var showFilterDialog by remember { mutableStateOf(false) }
 
     Column(
@@ -107,12 +114,18 @@ fun TelaInspiracao() {
             verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(items) { item ->
+            items(photos) { item ->
                 Box(
                     modifier = Modifier
                         .aspectRatio(1f)
                         .background(Color(0xFFE0E0E0))
                 ) {
+                    AsyncImage(
+                        model = item?.source?.medium,
+                        contentDescription = item.altText,
+                        modifier = Modifier.size(200.dp),
+                        contentScale = ContentScale.Crop
+                    )
                 }
             }
         }
@@ -157,6 +170,7 @@ fun TelaInspiracao() {
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .clickable {
+                                        viewModel.findPexelsImage("Casamento $estilo")
                                         showFilterDialog = false
                                     }
                                     .padding(vertical = 12.dp, horizontal = 16.dp),

@@ -28,6 +28,7 @@ import com.example.bridee.auth.presentation.registration.fases.fase7.Fase7Regist
 import com.example.bridee.calculadora.presentation.screens.CalculadoraScreen
 import com.example.bridee.calculadora.presentation.screens.CategoriaDetalhesScreen
 import com.example.bridee.configuracoes.presentation.screen.ConfiguracoesScreen
+import com.example.bridee.inspiracao.domain.TelaInpiracaoViewModel
 import com.example.bridee.lista_tarefas.presentation.screens.ListaTarefasScreen
 import com.example.bridee.servicos.presentation.screens.HomeScreen
 import com.example.bridee.servicos.presentation.screens.InspiracaoScreen
@@ -36,7 +37,7 @@ import com.example.bridee.servicos.presentation.screens.ServicosScreen
 @Composable
 fun NavController(navController: NavHostController, paddingValues: PaddingValues){
 //    val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = Screen.Login.route){
+    NavHost(navController = navController, startDestination = Screen.Inspiracao.route){
         composable(route = Screen.Login.route) {
             val authenticationViewModel: AuthenticationViewModel = AuthenticationViewModel()
             LoginScreen(authenticationViewModel, navController)
@@ -109,7 +110,8 @@ fun NavController(navController: NavHostController, paddingValues: PaddingValues
             ServicosScreen(navController)
         }
         composable(route = Screen.Inspiracao.route) {
-            InspiracaoScreen(navController)
+            val viewModel = TelaInpiracaoViewModel()
+            InspiracaoScreen(viewModel, navController)
         }
 
         composable(route = Screen.ListaTarefas.route) {
