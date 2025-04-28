@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 
 class TelaInpiracaoViewModel: ViewModel() {
 
-    val pexelsService = ApiInstance().createService(InpiracaoEndpoints::class.java)
+    val pexelsService = ApiInstance.createService(InpiracaoEndpoints::class.java)
     var pexelsInfo by mutableStateOf<PexelsResponseDto?>(PexelsResponseDto())
 
 

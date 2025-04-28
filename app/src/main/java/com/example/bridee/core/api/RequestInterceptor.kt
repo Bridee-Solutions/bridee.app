@@ -22,7 +22,7 @@ class RequestInterceptor(private val context: Context): Interceptor {
         val accessToken = runBlocking {
             TokenStore.getAccessToken(context).first()
         }
-        val requestUrl = chain.request().url()
+        val requestUrl = chain.request().url
         if(!accessToken.isNullOrBlank() && isNotAllowedUrl(requestUrl)){
             val newRequest = chain.request()
                 .newBuilder()
@@ -34,7 +34,7 @@ class RequestInterceptor(private val context: Context): Interceptor {
     }
 
     private fun isNotAllowedUrl(requestUrl: HttpUrl): Boolean {
-        val path = requestUrl.uri().path
+        val path = requestUrl.toUri().path
         return !allowedUris.contains(path)
     }
 

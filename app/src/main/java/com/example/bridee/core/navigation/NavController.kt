@@ -44,7 +44,7 @@ import java.net.URLDecoder
 @Composable
 fun NavController(navController: NavHostController, context: Context){
 //    val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = Screen.Inspiracao.route){
+    NavHost(navController = navController, startDestination = Screen.Login.route){
         composable(route = Screen.Login.route) {
             val authenticationViewModel: AuthenticationViewModel = AuthenticationViewModel(context)
             LoginScreen(authenticationViewModel, navController)
