@@ -7,8 +7,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import com.example.bridee.auth.data.AuthEndpoints
 import com.example.bridee.core.api.ApiInstance
+import com.example.bridee.core.navigation.Screen
 import com.example.bridee.core.store.TokenStore
 import kotlinx.coroutines.launch
 
@@ -20,7 +22,7 @@ class AuthenticationViewModel(val context: Context): ViewModel() {
     var isEnabled by mutableStateOf(false)
     var showDialog by mutableStateOf(false)
 
-    fun authenticate() {
+    fun authenticate(navController: NavController) {
         viewModelScope.launch {
             val email = _state.value.email
             try {
@@ -28,6 +30,7 @@ class AuthenticationViewModel(val context: Context): ViewModel() {
                 isEnabled = authenticateUser.body()?.enabled ?: false
                 if(authenticateUser.code() == 200){
                     TokenStore.saveAccessToken(context, authenticateUser.body()!!.accessToken)
+                    navController.navigate(Screen.Home.route)
                     Log.i("LOGIN", "Usuário $email autenticado com sucesso")
                 }else{
                     Log.e("LOGIN", "Credenciais inválidas para o usuário $email")

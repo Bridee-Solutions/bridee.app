@@ -29,22 +29,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.example.bridee.calculadora.domain.CalculadoraViewModel
+import com.example.bridee.calculadora.domain.ItemOrcamentoResponse
 import com.example.bridee.calculadora.domain.SubcategoriaItemData
 import com.example.bridee.ui.theme.cinza
 import com.example.bridee.ui.theme.pretoMedio
+import java.math.BigDecimal
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Subcategorias() {
-    val subcategoriasList = listOf(
-        SubcategoriaItemData("Vestido de madrinha", "R$500"),
-        SubcategoriaItemData("Sapato de madrinha",  "R$700"),
-        SubcategoriaItemData("Vestido de noiva", "R$6.000"),
-        SubcategoriaItemData("Maquiagem",  "R$1.200"),
-        SubcategoriaItemData("Acessórios",  "R$950")
-    )
+fun Subcategorias(
+    viewModel: CalculadoraViewModel,
+    item: ItemOrcamentoResponse
+) {
 
     var showAddSubcategoriaModal by remember { mutableStateOf(false) }
+    var addNewSubcategoria by remember { mutableStateOf("") }
+    var newPrice by remember { mutableStateOf("") }
+    val custosItem = viewModel.orcamentoResponse?.itemOrcamentos?.filter { item.id == it.id }
+        ?.map { it.custos }?.get(0)
 
     Column( //
         modifier = Modifier
@@ -80,8 +83,8 @@ fun Subcategorias() {
         LazyColumn(
             modifier = Modifier.fillMaxWidth()
         ) {
-            items(subcategoriasList) { item ->
-                SubcategoriaItem(item)
+            items(custosItem!!) { custo ->
+                SubcategoriaItem(viewModel, custo, item)
                 Spacer(modifier = Modifier.height(8.dp))
             }
         }
@@ -101,8 +104,8 @@ fun Subcategorias() {
             ) {
 
                 OutlinedTextField(
-                    value = "",
-                    onValueChange = {  },
+                    value = addNewSubcategoria,
+                    onValueChange = { addNewSubcategoria = it },
                     label = {
                         Text(
                             text = "Nome da Subcategoria",
@@ -122,8 +125,8 @@ fun Subcategorias() {
 
 
                 OutlinedTextField(
-                    value = "",
-                    onValueChange = { },
+                    value = newPrice,
+                    onValueChange = { newPrice = it},
                     label = {
                         Text(
                             text = "Orçamento",
@@ -151,8 +154,14 @@ fun Subcategorias() {
             }
         },
         onConfirm = {
-
-            println("Subcategoria salva!")
+            if(addNewSubcategoria.isNotBlank()){
+                viewModel.adicionarNovoCusto(
+                    item,
+                    addNewSubcategoria,
+                    BigDecimal(newPrice),
+                    null
+                )
+            }
             showAddSubcategoriaModal = false
         },
         onCancel = {

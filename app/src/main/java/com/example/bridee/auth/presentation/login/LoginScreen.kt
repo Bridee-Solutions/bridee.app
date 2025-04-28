@@ -131,10 +131,7 @@ fun LoginScreen(authenticationViewModel: AuthenticationViewModel,navController: 
         }
         Button(
             onClick = {
-                authenticationViewModel.authenticate()
-                if(authenticationViewModel.isEnabled){
-                   navController.navigate(Screen.Home.route)
-                }
+                authenticationViewModel.authenticate(navController)
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFFD86B67)

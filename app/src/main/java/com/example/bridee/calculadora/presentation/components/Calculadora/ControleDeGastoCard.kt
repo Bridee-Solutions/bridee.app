@@ -39,13 +39,14 @@ import com.example.bridee.ui.theme.cinza
 import com.example.bridee.ui.theme.pretoMedio
 import com.example.bridee.ui.theme.rosa
 import java.math.BigDecimal
+import java.math.RoundingMode
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ControleDeGastoCard(viewModel: CalculadoraViewModel) {
 
     val orcamento = viewModel.orcamentoResponse
-    val orcamentoTotal = orcamento?.orcamentoTotal ?: BigDecimal(0)
+    val orcamentoTotal = orcamento?.orcamentoTotal ?: BigDecimal(1)
     val orcamentoGasto = orcamento?.orcamentoGasto ?: BigDecimal(0)
     val orcamentoRestante = orcamentoTotal.minus(orcamentoGasto)
 
@@ -102,7 +103,11 @@ fun ControleDeGastoCard(viewModel: CalculadoraViewModel) {
 
 
             LinearProgressIndicator(
-                progress = 0.33f,
+                progress = "${orcamentoGasto.divide(
+                    orcamentoTotal, 
+                    2, 
+                    RoundingMode.UP
+                )}".toFloat(),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(30.dp)
@@ -127,9 +132,9 @@ fun ControleDeGastoCard(viewModel: CalculadoraViewModel) {
                 )
             }
 
-
+            val restantePercentage = orcamentoRestante.divide(orcamentoTotal, 2, RoundingMode.UP)
             LinearProgressIndicator(
-                progress = 0.66f,
+                progress = "${restantePercentage}".toFloat(),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(30.dp)
@@ -168,7 +173,7 @@ fun ControleDeGastoCard(viewModel: CalculadoraViewModel) {
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(
-                    text = "Orçamento atual: $orcamentoGasto",
+                    text = "Orçamento atual: $orcamentoTotal",
                     color = pretoMedio,
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier
@@ -207,7 +212,7 @@ fun ControleDeGastoCard(viewModel: CalculadoraViewModel) {
             }
         },
         onConfirm = {
-            println("Novo orçamento salvo: ${viewModel.novoOrcamento}")
+            viewModel.updateCasamentoOrcamento()
             viewModel.showEditDialog = false
         },
         onCancel = {

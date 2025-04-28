@@ -6,6 +6,6 @@ data class OrcamentoResponse(
     val orcamentoTotal: BigDecimal,
     val nomeCasal: String,
     val orcamentoGasto: BigDecimal,
-    val itemOrcamentos: List<ItemOrcamentoResponse>,
-    val orcamentoFornecedores: List<OrcamentoFornecedorResponse>
+    var itemOrcamentos: MutableList<ItemOrcamentoResponse>,
+    val orcamentoFornecedores: MutableList<OrcamentoFornecedorResponse>
 )

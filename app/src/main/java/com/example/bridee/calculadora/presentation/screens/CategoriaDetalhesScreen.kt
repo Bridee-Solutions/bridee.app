@@ -8,17 +8,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
+import com.example.bridee.calculadora.domain.CalculadoraViewModel
+import com.example.bridee.calculadora.domain.ItemOrcamentoResponse
 import com.example.bridee.calculadora.presentation.components.CategoriaDetalhes.ControleGastoDetalhes
 import com.example.bridee.calculadora.presentation.components.CategoriaDetalhes.Subcategorias
 import com.example.bridee.calculadora.presentation.components.CategoriaDetalhes.tituloCategoria
-
-
+import java.math.BigDecimal
 
 
 @Composable
-fun CategoriaDetalhesScreen(nomeCategoria: String, icon: Int, navController: NavController) {
-
-    val scrollState = rememberScrollState()
+fun CategoriaDetalhesScreen(
+    viewModel: CalculadoraViewModel,
+    item: ItemOrcamentoResponse,
+    navController: NavController
+) {
 
     Column(
         modifier = Modifier
@@ -26,9 +29,9 @@ fun CategoriaDetalhesScreen(nomeCategoria: String, icon: Int, navController: Nav
             .background(Color.White)
 
     ) {
-        tituloCategoria(nomeCategoria, icon, navController)
-        ControleGastoDetalhes()
-        Subcategorias()
+        tituloCategoria(item.tipo, item.defineIcon(), navController)
+        ControleGastoDetalhes(viewModel)
+        Subcategorias(viewModel, item)
     }
 }
 

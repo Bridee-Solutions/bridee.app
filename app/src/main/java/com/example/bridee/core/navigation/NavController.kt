@@ -27,6 +27,7 @@ import com.example.bridee.auth.presentation.registration.fases.fase5.Fase5Regist
 import com.example.bridee.auth.presentation.registration.fases.fase6.Fase6RegistrationScreen
 import com.example.bridee.auth.presentation.registration.fases.fase7.Fase7RegistrationScreen
 import com.example.bridee.calculadora.domain.CalculadoraViewModel
+import com.example.bridee.calculadora.domain.ItemOrcamentoResponse
 import com.example.bridee.calculadora.presentation.screens.CalculadoraScreen
 import com.example.bridee.calculadora.presentation.screens.CategoriaDetalhesScreen
 import com.example.bridee.configuracoes.presentation.screen.ConfiguracoesScreen
@@ -34,6 +35,10 @@ import com.example.bridee.lista_tarefas.presentation.screens.ListaTarefasScreen
 import com.example.bridee.servicos.presentation.screens.HomeScreen
 import com.example.bridee.servicos.presentation.screens.InspiracaoScreen
 import com.example.bridee.servicos.presentation.screens.ServicosScreen
+import com.google.gson.Gson
+import java.math.BigDecimal
+import java.net.URL
+import java.net.URLDecoder
 
 @Composable
 fun NavController(navController: NavHostController, context: Context){
@@ -86,20 +91,26 @@ fun NavController(navController: NavHostController, context: Context){
             ConfiguracoesScreen(navController)
         }
 
-        composable(route = Screen.Calculadora.route) {
-            val calculadoraViewModel = CalculadoraViewModel()
-            CalculadoraScreen(calculadoraViewModel, navController)
-        }
-        composable(
-            route = Screen.CategoriaDetalhes.route,
-            arguments = listOf(
-                navArgument("nome") { type = NavType.StringType },
-                navArgument("icon") { type = NavType.IntType }
-            )
-        ) { backStackEntry ->
-            val nome = backStackEntry.arguments?.getString("nome") ?: ""
-            val icon = backStackEntry.arguments?.getInt("icon") ?: 0
-            CategoriaDetalhesScreen(nome, icon, navController = navController)
+        navigation(
+            startDestination = Screen.Calculadora.route,
+            route = Screen.CalculadoraRoutes.route
+        ) {
+            composable(route=Screen.Calculadora.route) {
+                val viewModel = it.sharedViewModel<CalculadoraViewModel>(navController)
+                CalculadoraScreen(viewModel, navController)
+            }
+            composable(
+                route = Screen.CategoriaDetalhes.route
+            ) { backStackEntry ->
+                val viewModel = backStackEntry.sharedViewModel<CalculadoraViewModel>(navController)
+                val itemJson = backStackEntry.arguments?.getString("item")
+                val item = Gson().fromJson(URLDecoder.decode(itemJson, "UTF-8"), ItemOrcamentoResponse::class.java)
+                CategoriaDetalhesScreen(
+                    viewModel = viewModel,
+                    item = item,
+                    navController = navController
+                )
+            }
         }
         // Rotas do menu
         composable(route = Screen.Home.route) {
