@@ -30,6 +30,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -52,10 +53,28 @@ import coil.compose.AsyncImage
 
 @Composable
 fun TelaInspiracao(viewModel: InspiracoesViewModel = viewModel()) {
-
     val imagens by viewModel.images.collectAsState()
 
     var showFilterDialog by remember { mutableStateOf(false) }
+    var selectedFilter by remember { mutableStateOf("Todos os estilos") }
+
+
+    val filtros = listOf(
+        "Todos os estilos",
+        "Ar livre",
+        "Igrejas",
+        "Castelos",
+        "Espaços de eventos",
+        "Praias",
+        "Espaços Industriais",
+        "Hotéis",
+        "Sítios"
+    )
+
+
+    LaunchedEffect(selectedFilter) {
+        viewModel.searchImages(selectedFilter.toQuery())
+    }
 
     Column(
         modifier = Modifier
@@ -92,7 +111,7 @@ fun TelaInspiracao(viewModel: InspiracoesViewModel = viewModel()) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Todos os estilos",
+                        text = selectedFilter,
                         color = rosa,
                         fontSize = 14.sp
                     )
@@ -106,6 +125,7 @@ fun TelaInspiracao(viewModel: InspiracoesViewModel = viewModel()) {
                 }
             }
         }
+
 
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
@@ -128,6 +148,7 @@ fun TelaInspiracao(viewModel: InspiracoesViewModel = viewModel()) {
                 }
             }
         }
+
 
         if (showFilterDialog) {
             Dialog(
@@ -153,21 +174,12 @@ fun TelaInspiracao(viewModel: InspiracoesViewModel = viewModel()) {
                         Column(
                             modifier = Modifier.verticalScroll(rememberScrollState())
                         ) {
-                            listOf(
-                                "Todos os estilos",
-                                "Ar livre",
-                                "Igrejas",
-                                "Castelos",
-                                "Espaços de eventos",
-                                "Praias",
-                                "Espaços Industriais",
-                                "Hotéis",
-                                "Sítios"
-                            ).forEach { estilo ->
+                            filtros.forEach { estilo ->
                                 Row(
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .clickable {
+                                            selectedFilter = estilo
                                             showFilterDialog = false
                                         }
                                         .padding(vertical = 12.dp, horizontal = 16.dp),
@@ -177,7 +189,7 @@ fun TelaInspiracao(viewModel: InspiracoesViewModel = viewModel()) {
                                         text = estilo,
                                         modifier = Modifier.weight(1f)
                                     )
-                                    if (estilo == "Todos os estilos") {
+                                    if (estilo == selectedFilter) {
                                         Icon(
                                             imageVector = Icons.Default.Check,
                                             contentDescription = "Selecionado",
@@ -200,5 +212,20 @@ fun TelaInspiracao(viewModel: InspiracoesViewModel = viewModel()) {
                 }
             }
         }
+    }
+}
+
+fun String.toQuery(): String {
+    return when (this) {
+        "Todos os estilos" -> "wedding styles"
+        "Ar livre" -> "outdoor wedding"
+        "Igrejas" -> "church wedding"
+        "Castelos" -> "castle wedding"
+        "Espaços de eventos" -> "event space wedding"
+        "Praias" -> "beach wedding"
+        "Espaços Industriais" -> "industrial wedding"
+        "Hotéis" -> "hotel wedding"
+        "Sítios" -> "country wedding"
+        else -> "wedding styles"
     }
 }
