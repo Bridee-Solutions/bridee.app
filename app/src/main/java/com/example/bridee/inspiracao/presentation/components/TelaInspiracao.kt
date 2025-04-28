@@ -30,23 +30,31 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.bridee.R
+import com.example.bridee.auth.domain.InspiracoesViewModel
 import com.example.bridee.ui.theme.rosa
+import coil.compose.AsyncImage
 
 @Composable
-fun TelaInspiracao() {
-    val items = (1..10).toList()
+fun TelaInspiracao(viewModel: InspiracoesViewModel = viewModel()) {
+
+    val imagens by viewModel.images.collectAsState()
+
     var showFilterDialog by remember { mutableStateOf(false) }
 
     Column(
@@ -107,83 +115,87 @@ fun TelaInspiracao() {
             verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(items) { item ->
-                Box(
-                    modifier = Modifier
-                        .aspectRatio(1f)
-                        .background(Color(0xFFE0E0E0))
-                ) {
+            imagens?.photos?.let { photos ->
+                items(photos) { photo ->
+                    AsyncImage(
+                        model = photo.source.medium,
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .aspectRatio(1f)
+                            .clip(RoundedCornerShape(8.dp))
+                    )
                 }
             }
         }
-    }
 
-    if (showFilterDialog) {
-        Dialog(
-            onDismissRequest = { showFilterDialog = false }
-        ) {
-            Surface(
-                shape = RoundedCornerShape(8.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
+        if (showFilterDialog) {
+            Dialog(
+                onDismissRequest = { showFilterDialog = false }
             ) {
-                Column {
-                    Text(
-                        text = "Filtrar por estilo",
-                        style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier
-                            .padding(16.dp)
-                            .fillMaxWidth()
-                    )
+                Surface(
+                    shape = RoundedCornerShape(8.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                ) {
+                    Column {
+                        Text(
+                            text = "Filtrar por estilo",
+                            style = MaterialTheme.typography.titleMedium,
+                            modifier = Modifier
+                                .padding(16.dp)
+                                .fillMaxWidth()
+                        )
 
-                    Divider()
+                        Divider()
 
-                    Column(
-                        modifier = Modifier.verticalScroll(rememberScrollState())
-                    ) {
-                        listOf(
-                            "Todos os estilos",
-                            "Ar livre",
-                            "Igrejas",
-                            "Castelos",
-                            "Espaços de eventos",
-                            "Praias",
-                            "Espaços Industriais",
-                            "Hotéis",
-                            "Sítios"
-                        ).forEach { estilo ->
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .clickable {
-                                        showFilterDialog = false
-                                    }
-                                    .padding(vertical = 12.dp, horizontal = 16.dp),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Text(
-                                    text = estilo,
-                                    modifier = Modifier.weight(1f)
-                                )
-                                if (estilo == "Todos os estilos") {
-                                    Icon(
-                                        imageVector = Icons.Default.Check,
-                                        contentDescription = "Selecionado",
-                                        tint = rosa,
+                        Column(
+                            modifier = Modifier.verticalScroll(rememberScrollState())
+                        ) {
+                            listOf(
+                                "Todos os estilos",
+                                "Ar livre",
+                                "Igrejas",
+                                "Castelos",
+                                "Espaços de eventos",
+                                "Praias",
+                                "Espaços Industriais",
+                                "Hotéis",
+                                "Sítios"
+                            ).forEach { estilo ->
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .clickable {
+                                            showFilterDialog = false
+                                        }
+                                        .padding(vertical = 12.dp, horizontal = 16.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Text(
+                                        text = estilo,
+                                        modifier = Modifier.weight(1f)
                                     )
+                                    if (estilo == "Todos os estilos") {
+                                        Icon(
+                                            imageVector = Icons.Default.Check,
+                                            contentDescription = "Selecionado",
+                                            tint = rosa,
+                                        )
+                                    }
                                 }
                             }
                         }
-                    }
 
-                    Divider()
+                        Divider()
 
-                    TextButton(
-                        onClick = { showFilterDialog = false },
-                        modifier = Modifier.align(Alignment.End)
-                    ) {
-                        Text("OK", color = rosa)
+                        TextButton(
+                            onClick = { showFilterDialog = false },
+                            modifier = Modifier.align(Alignment.End)
+                        ) {
+                            Text("OK", color = rosa)
+                        }
                     }
                 }
             }

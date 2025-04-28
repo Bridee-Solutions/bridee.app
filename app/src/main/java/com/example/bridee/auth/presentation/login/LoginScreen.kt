@@ -31,10 +31,12 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.Navigation.findNavController
 import com.example.bridee.auth.domain.AuthenticationViewModel
 import com.example.bridee.auth.presentation.component.Input
 import com.example.bridee.core.navigation.Screen
 import com.example.bridee.core.toast.ToastUtils
+import com.example.bridee.servicos.presentation.screens.HomeScreen
 
 @Composable
 fun LoginScreen(authenticationViewModel: AuthenticationViewModel,navController: NavController){
@@ -131,10 +133,7 @@ fun LoginScreen(authenticationViewModel: AuthenticationViewModel,navController: 
         }
         Button(
             onClick = {
-                authenticationViewModel.authenticate()
-                if(authenticationViewModel.isEnabled){
-                    // TODO: redirecionar para a tela inicial
-                }
+                navController.navigate(Screen.Home.route)
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFFD86B67)
