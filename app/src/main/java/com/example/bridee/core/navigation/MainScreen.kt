@@ -1,5 +1,6 @@
 package com.example.bridee.core.navigation
 
+import android.content.Context
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -7,7 +8,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 
 @Composable
-fun MainScreen() {
+fun MainScreen(context: Context) {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -38,6 +39,6 @@ fun MainScreen() {
             }
         }
     ) { paddingValues ->
-        NavController(navController, paddingValues)
+        NavController(navController, context)
     }
 }

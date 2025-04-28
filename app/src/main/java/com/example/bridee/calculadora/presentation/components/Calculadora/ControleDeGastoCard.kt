@@ -33,17 +33,23 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.example.bridee.calculadora.domain.CalculadoraViewModel
 import com.example.bridee.calculadora.presentation.components.CategoriaDetalhes.CustomModal
 import com.example.bridee.ui.theme.cinza
 import com.example.bridee.ui.theme.pretoMedio
 import com.example.bridee.ui.theme.rosa
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ControleDeGastoCard(  ) {
-    var showEditModal by remember { mutableStateOf(false) }
-    var novoOrcamento by remember { mutableStateOf("") }
-    val orcamentoAtual = "R$90.000"
+fun ControleDeGastoCard(viewModel: CalculadoraViewModel) {
+
+    val orcamento = viewModel.orcamentoResponse
+    val orcamentoTotal = orcamento?.orcamentoTotal ?: BigDecimal(0)
+    val orcamentoGasto = orcamento?.orcamentoGasto ?: BigDecimal(0)
+    val orcamentoRestante = orcamentoTotal.minus(orcamentoGasto)
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -68,7 +74,7 @@ fun ControleDeGastoCard(  ) {
                     style = MaterialTheme.typography.titleSmall
                 )
                 IconButton(
-                    onClick = { showEditModal = true }
+                    onClick = { viewModel.showEditDialog = true }
                 ) {
                     Icon(
                         imageVector = Icons.Default.Edit,
@@ -90,14 +96,18 @@ fun ControleDeGastoCard(  ) {
                     style = MaterialTheme.typography.bodyLarge
                 )
                 Text(
-                    text = "R$30.000",
+                    text = "R$${orcamentoGasto}",
                     style = MaterialTheme.typography.bodyLarge
                 )
             }
 
-
+            val gastoPercentage = if(orcamentoTotal > BigDecimal(0)){
+                orcamentoGasto.divide(orcamentoTotal, 2, RoundingMode.UP)
+            }else{
+                BigDecimal(0)
+            }
             LinearProgressIndicator(
-                progress = 0.33f,
+                progress = "$gastoPercentage".toFloat(),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(30.dp)
@@ -117,14 +127,18 @@ fun ControleDeGastoCard(  ) {
                     style = MaterialTheme.typography.bodyLarge
                 )
                 Text(
-                    text = "R$60.000",
+                    text = "R$$orcamentoRestante",
                     style = MaterialTheme.typography.bodyLarge
                 )
             }
 
-
+            val restantePercentage = if(orcamentoTotal > BigDecimal(0)){
+                orcamentoRestante.divide(orcamentoTotal, 2, RoundingMode.UP)
+            }else{
+                BigDecimal(0)
+            }
             LinearProgressIndicator(
-                progress = 0.66f,
+                progress = "${restantePercentage}".toFloat(),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(30.dp)
@@ -143,7 +157,7 @@ fun ControleDeGastoCard(  ) {
                     style = MaterialTheme.typography.bodyLarge
                 )
                 Text(
-                    text = "R\$90.000",
+                    text = "R$$orcamentoTotal",
                     style = MaterialTheme.typography.bodyLarge
                 )
             }
@@ -152,8 +166,8 @@ fun ControleDeGastoCard(  ) {
 
 
     CustomModal(
-        showModal = showEditModal,
-        onDismissRequest = { showEditModal = false },
+        showModal = viewModel.showEditDialog,
+        onDismissRequest = { viewModel.showEditDialog = false },
         title = "Editar orçamento geral",
         content = {
 
@@ -163,16 +177,16 @@ fun ControleDeGastoCard(  ) {
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(
-                    text = "Orçamento atual: $orcamentoAtual",
+                    text = "Orçamento atual: $orcamentoTotal",
                     color = pretoMedio,
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier
                         .padding(bottom = 6.dp),
                 )
                 OutlinedTextField(
-                    value = novoOrcamento,
+                    value = viewModel.novoOrcamento,
                     onValueChange = { novoValor ->
-                        novoOrcamento = novoValor.filter { it.isDigit() }
+                        viewModel.novoOrcamento = novoValor.filter { it.isDigit() }
                     },
                     label = {
                         Text("Novo orçamento",
@@ -202,12 +216,12 @@ fun ControleDeGastoCard(  ) {
             }
         },
         onConfirm = {
-            println("Novo orçamento salvo: $novoOrcamento")
-            showEditModal = false
+            viewModel.updateCasamentoOrcamento()
+            viewModel.showEditDialog = false
         },
         onCancel = {
-            novoOrcamento = ""
-            showEditModal = false
+            viewModel.novoOrcamento = ""
+            viewModel.showEditDialog = false
         }
     )
 }

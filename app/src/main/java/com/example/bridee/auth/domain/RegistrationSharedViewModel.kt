@@ -1,18 +1,21 @@
 package com.example.bridee.auth.domain
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import com.example.bridee.auth.data.AuthEndpoints
 import com.example.bridee.core.api.ApiInstance
+import com.example.bridee.core.navigation.Screen
 import kotlinx.coroutines.launch
 
 class RegistrationSharedViewModel: ViewModel() {
 
-    private val usuarioService = ApiInstance().createService(AuthEndpoints::class.java)
+    private val usuarioService = ApiInstance.createService(AuthEndpoints::class.java)
     private val _state = mutableStateOf(RegistrationState())
     val sharedRegistrationObject = _state
     val guestOptions = GuestOption().createGuestOptions()
@@ -25,12 +28,13 @@ class RegistrationSharedViewModel: ViewModel() {
         super.onCleared()
     }
 
-    fun saveCasal(){
+    fun saveCasal(navController: NavController){
         viewModelScope.launch {
             val createdCasal = usuarioService.createCasal(_state.value)
             val statusCode = createdCasal.code()
             if(statusCode == 201){
                 isCoupleSavedSuccessfully = true
+                navController.navigate(Screen.EmailRegistration.route)
             }else{
                 Log.e("CADASTRO", "Cadastro não foi realizado com sucesso com o seguinte statusCode ${statusCode}")
             }

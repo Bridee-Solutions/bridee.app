@@ -19,10 +19,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.bridee.calculadora.domain.CalculadoraViewModel
 import com.example.bridee.ui.theme.rosa
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 @Composable
-fun ControleGastoDetalhes(modifier: Modifier = Modifier) {
+fun ControleGastoDetalhes(
+    viewModel: CalculadoraViewModel,
+    modifier: Modifier = Modifier
+) {
+
+    val totalGasto = viewModel.orcamentoResponse?.orcamentoGasto
+    val orcamentoTotal = viewModel.orcamentoResponse?.orcamentoTotal
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -54,19 +64,19 @@ fun ControleGastoDetalhes(modifier: Modifier = Modifier) {
                     style = MaterialTheme.typography.bodyLarge
                 )
                 Text(
-                    text = "R$30.000",
+                    text = "R$$totalGasto",
                     style = MaterialTheme.typography.bodyLarge
                 )
             }
 
             // Barra de progresso
             LinearProgressIndicator(
-                progress = 0.33f,
+                progress = { "${totalGasto?.divide(orcamentoTotal, 2, RoundingMode.UP)}".toFloat()},
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(30.dp)
                     .padding(vertical = 4.dp),
-                color = rosa
+                color = rosa,
             )
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -80,7 +90,7 @@ fun ControleGastoDetalhes(modifier: Modifier = Modifier) {
                     style = MaterialTheme.typography.bodyLarge
                 )
                 Text(
-                    text = "R\$90.000",
+                    text = "R$$orcamentoTotal",
                     style = MaterialTheme.typography.bodyLarge
                 )
             }

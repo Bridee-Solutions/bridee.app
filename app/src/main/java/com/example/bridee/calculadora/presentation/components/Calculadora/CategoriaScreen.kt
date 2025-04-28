@@ -28,17 +28,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.bridee.R
-import com.example.bridee.calculadora.domain.CategoriaItem
+import com.example.bridee.calculadora.domain.CalculadoraViewModel
 import com.example.bridee.calculadora.presentation.components.CategoriaDetalhes.CustomModal
 import com.example.bridee.core.navigation.Screen
+import com.google.gson.Gson
+import java.net.URLEncoder
 
 @Composable
-fun CategoriaScreen(navController: NavController) {
+fun CategoriaScreen(viewModel: CalculadoraViewModel, navController: NavController) {
     var showModal by remember { mutableStateOf(false) }
     var novaCategoria by remember {
         mutableStateOf(TextFieldValue(""))
     }
+    val categorias = viewModel.orcamentoResponse?.itemOrcamentos
+    val fornecedores = viewModel.orcamentoResponse?.orcamentoFornecedores
 
     Box(
         modifier = Modifier
@@ -70,27 +73,47 @@ fun CategoriaScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(15.dp))
 
-
-            val categorias = listOf(
-                CategoriaItem("Fornecedores", "10 despesas", "R$2.900", R.drawable.ic_fornecedores),
-                CategoriaItem("Moda e Beleza", "10 despesas", "R$1.900", R.drawable.ic_moda_beleza),
-                CategoriaItem("Decoração", "5 despesas", "R$5.600", R.drawable.ic_decoracao)
-            )
-
-            categorias.forEachIndexed { index, item ->
-                CategoriaCard(
-                    item = item,
-                    onClick = {
-                        navController.navigate(Screen.CategoriaDetalhes.createRoute(item.nome, item.icon))
-                    }
-                )
-
-                if (index < categorias.size - 1) {
-                    Divider(
-                        color = Color(0xFFE8E8E8),
-                        thickness = 1.dp,
-                        modifier = Modifier.padding(vertical = 8.dp)
+            if(!categorias.isNullOrEmpty()){
+                categorias.forEachIndexed { index, item ->
+                    val json = URLEncoder.encode(Gson().toJson(item), "UTF-8")
+                    CategoriaCard(
+                        item = item,
+                        openModal = {
+                            navController.navigate(
+                                Screen.CategoriaDetalhes.createRoute(json))
+                        },
+                        viewModel = viewModel
                     )
+
+                    if (index < categorias.size - 1) {
+                        Divider(
+                            color = Color(0xFFE8E8E8),
+                            thickness = 1.dp,
+                            modifier = Modifier.padding(vertical = 8.dp)
+                        )
+                    }
+                }
+            }else{
+                val defaultItens = viewModel.defaultItens()
+                defaultItens.forEachIndexed{ index, item ->
+                    val json = URLEncoder.encode(Gson().toJson(item), "UTF-8")
+                    CategoriaCard(
+                        item = item,
+                        openModal = {
+                            navController.navigate(
+                                Screen.CategoriaDetalhes.createRoute(json)
+                            )
+                        },
+                        viewModel = viewModel
+                    )
+
+                    if (index < defaultItens.size - 1) {
+                        Divider(
+                            color = Color(0xFFE8E8E8),
+                            thickness = 1.dp,
+                            modifier = Modifier.padding(vertical = 8.dp)
+                        )
+                    }
                 }
             }
         }
@@ -132,7 +155,7 @@ fun CategoriaScreen(navController: NavController) {
         },
         onConfirm = {
             if (novaCategoria.text.isNotBlank()) {
-                println("Nova categoria: ${novaCategoria.text}")
+                viewModel.adicionarNovaCategoria(null, novaCategoria.text)
                 showModal = false
                 novaCategoria = TextFieldValue("")
             }

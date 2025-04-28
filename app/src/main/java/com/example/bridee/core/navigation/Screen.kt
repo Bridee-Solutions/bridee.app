@@ -1,5 +1,7 @@
 package com.example.bridee.core.navigation
 
+import com.example.bridee.calculadora.domain.CalculadoraViewModel
+
 sealed class Screen (val route: String){
     object Login: Screen("login")
     object Cadastro: Screen("cadastro")
@@ -12,12 +14,14 @@ sealed class Screen (val route: String){
     object Fase7Registration: Screen("fase7_registration")
     object EmailRegistration: Screen("email_confirmation")
     object EmailFailRegistration: Screen("email_fail_confirmation")
+    object CalculadoraRoutes: Screen("calculadora-graph")
     object Calculadora : Screen("calculadora")
-    object CategoriaDetalhes : Screen("categoria_detalhes/{nome}/{icon}") {
-        fun createRoute(nome: String, icon: Int) = "categoria_detalhes/$nome/$icon"
+    object CategoriaDetalhes : Screen("categoria_detalhes/{item}") {
+        fun createRoute(
+            item: String
+        ) = "categoria_detalhes/$item"
     }
     object Home : Screen("home")
-    object Ferramentas : Screen("calculadora")
     object Servicos : Screen("servicos")
     object Inspiracao : Screen("inspiracao")
     object ListaTarefas : Screen("lista_tarefas")
