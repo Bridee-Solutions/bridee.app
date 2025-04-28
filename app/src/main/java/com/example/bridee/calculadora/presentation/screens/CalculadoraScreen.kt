@@ -23,7 +23,7 @@ import com.example.bridee.ui.components.ferramentas_section.presentation.screens
 @Composable
 fun CalculadoraScreen(viewModel: CalculadoraViewModel, navController: NavController) {
     val scrollState = rememberScrollState()
-    if(viewModel.orcamentoResponse == null){
+    LaunchedEffect(true) {
         viewModel.findCasamentoOrcamento()
     }
 

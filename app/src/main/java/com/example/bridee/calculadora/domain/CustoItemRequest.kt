@@ -5,7 +5,7 @@ import java.math.BigDecimal
 data class CustoItemRequest(
     val id: Int?,
     val nome: String,
-    val precoAtual: BigDecimal
+    var precoAtual: BigDecimal
 ){
 
     companion object{

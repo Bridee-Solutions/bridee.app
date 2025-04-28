@@ -45,6 +45,7 @@ fun CategoriaCard(
     viewModel: CalculadoraViewModel
 ) {
 
+    var showEditModal by remember { mutableStateOf(false) }
     var showModal by remember { mutableStateOf(false) }
     var nomeCategoria by remember { mutableStateOf(item.tipo) }
 
@@ -100,9 +101,24 @@ fun CategoriaCard(
             }
         }
     }
-    CustomModal (
+
+    OpcaoModal(
         showModal = showModal,
-        onDismissRequest = { showModal = false },
+        onDismissRequest = {showModal = false},
+        openEditModal = {
+            showEditModal = true
+            showModal = false
+        },
+        cancel = {showModal = false},
+        delete = {
+            viewModel.deleteCategoria(item.id!!)
+            showModal = false
+        }
+    )
+
+    CustomModal (
+        showModal = showEditModal,
+        onDismissRequest = { showEditModal = false },
         title = "Editar categoria",
         content = {
             TextField(
@@ -136,11 +152,11 @@ fun CategoriaCard(
         onConfirm = {
             if (item.tipo.isNotBlank()) {
                 viewModel.adicionarNovaCategoria(item, nomeCategoria)
-                showModal = false
+                showEditModal = false
             }
         },
         onCancel = {
-            showModal = false
+            showEditModal = false
         }
     )
 }

@@ -46,7 +46,7 @@ import java.math.RoundingMode
 fun ControleDeGastoCard(viewModel: CalculadoraViewModel) {
 
     val orcamento = viewModel.orcamentoResponse
-    val orcamentoTotal = orcamento?.orcamentoTotal ?: BigDecimal(1)
+    val orcamentoTotal = orcamento?.orcamentoTotal ?: BigDecimal(0)
     val orcamentoGasto = orcamento?.orcamentoGasto ?: BigDecimal(0)
     val orcamentoRestante = orcamentoTotal.minus(orcamentoGasto)
 
@@ -101,13 +101,13 @@ fun ControleDeGastoCard(viewModel: CalculadoraViewModel) {
                 )
             }
 
-
+            val gastoPercentage = if(orcamentoTotal > BigDecimal(0)){
+                orcamentoGasto.divide(orcamentoTotal, 2, RoundingMode.UP)
+            }else{
+                BigDecimal(0)
+            }
             LinearProgressIndicator(
-                progress = "${orcamentoGasto.divide(
-                    orcamentoTotal, 
-                    2, 
-                    RoundingMode.UP
-                )}".toFloat(),
+                progress = "$gastoPercentage".toFloat(),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(30.dp)
@@ -132,7 +132,11 @@ fun ControleDeGastoCard(viewModel: CalculadoraViewModel) {
                 )
             }
 
-            val restantePercentage = orcamentoRestante.divide(orcamentoTotal, 2, RoundingMode.UP)
+            val restantePercentage = if(orcamentoTotal > BigDecimal(0)){
+                orcamentoRestante.divide(orcamentoTotal, 2, RoundingMode.UP)
+            }else{
+                BigDecimal(0)
+            }
             LinearProgressIndicator(
                 progress = "${restantePercentage}".toFloat(),
                 modifier = Modifier

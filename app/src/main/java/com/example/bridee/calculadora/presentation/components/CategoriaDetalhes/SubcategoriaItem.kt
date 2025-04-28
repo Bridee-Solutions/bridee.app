@@ -34,6 +34,7 @@ import com.example.bridee.calculadora.domain.CalculadoraViewModel
 import com.example.bridee.calculadora.domain.CustoItemResponse
 import com.example.bridee.calculadora.domain.ItemOrcamentoResponse
 import com.example.bridee.calculadora.domain.SubcategoriaItemData
+import com.example.bridee.calculadora.presentation.components.Calculadora.OpcaoModal
 import com.example.bridee.ui.theme.cinza
 import com.example.bridee.ui.theme.pretoMedio
 import java.math.BigDecimal
@@ -48,6 +49,7 @@ fun SubcategoriaItem(
 
     var nomeCusto by remember { mutableStateOf(custo.nome) }
     var preco by remember { mutableStateOf(custo.precoAtual.toString()) }
+    var showEditModal by remember { mutableStateOf(false) }
     var showModal by remember { mutableStateOf(false) }
 
     Box(
@@ -92,9 +94,23 @@ fun SubcategoriaItem(
         }
     }
 
-    CustomModal (
+    OpcaoModal(
         showModal = showModal,
-        onDismissRequest = { showModal = false },
+        onDismissRequest = {showModal = false},
+        openEditModal = {
+            showEditModal = true
+            showModal = false
+        },
+        cancel = {showModal = false},
+        delete = {
+            viewModel.deleteCusto(item.id!!, custo.id)
+            showModal = false
+        }
+    )
+
+    CustomModal (
+        showModal = showEditModal,
+        onDismissRequest = { showEditModal = false },
         title = "Editar subcategoria",
         content = {
             Column(
@@ -164,10 +180,10 @@ fun SubcategoriaItem(
                     custo.id
                 )
             }
-            showModal = false
+            showEditModal = false
         },
         onCancel = {
-            showModal = false
+            showEditModal = false
         }
     )
 }

@@ -27,7 +27,7 @@ class CalculadoraViewModel: ViewModel() {
                 val response = calculadoraService.findOrcamento()
                 if(response.code() == 200){
                     orcamentoResponse = response.body()
-                    Log.i("ORCAMENTO", "Orcamento encontrado com sucesso! body: ${orcamentoResponse}")
+                    Log.i("ORCAMENTO", "Orcamento encontrado com sucesso!")
                 }else{
                     Log.e("ORCAMENTO", "Houve um erro ao buscar o orcamento!")
                 }
@@ -58,13 +58,17 @@ class CalculadoraViewModel: ViewModel() {
         val itensRequest = orcamentoResponse?.itemOrcamentos
             ?.map { ItemOrcamentoRequest.itemOrcamentoRequest(it) }?.toMutableList()
         val custos = item?.custos?.map { CustoItemRequest.custoItemRequest(it) }?.toMutableList()
-        itensRequest?.add(
-            ItemOrcamentoRequest(
-            id = item?.id,
-            tipo = novaCategoria,
-            custos = custos ?: mutableListOf()
-        )
-        )
+        if(Objects.nonNull(item?.id)){
+            itensRequest?.filter { it.id == item!!.id }?.get(0)?.tipo = novaCategoria
+        }else{
+            itensRequest?.add(
+                ItemOrcamentoRequest(
+                    id = item?.id,
+                    tipo = novaCategoria,
+                    custos = custos ?: mutableListOf()
+                )
+            )
+        }
         viewModelScope.launch {
             val response = calculadoraService.saveItensOrcamento(itensRequest!!)
             try {
@@ -102,13 +106,17 @@ class CalculadoraViewModel: ViewModel() {
         val custoRequest = itemOrcamentoResponse
             ?.custos?.map { CustoItemRequest.custoItemRequest(it) }?.toMutableList()
         val oldCusto = itemOrcamentoResponse.custos.filter { custoId == it.id }[0]
-        custoRequest?.add(
-            CustoItemRequest(
-                id = custoId,
-                nome = addNewSubcategoria,
-                precoAtual = newPrice
+        if(Objects.nonNull(custoId)){
+            custoRequest?.filter { it.id == custoId }?.get(0)?.precoAtual = newPrice
+        }else{
+            custoRequest?.add(
+                CustoItemRequest(
+                    id = custoId,
+                    nome = addNewSubcategoria,
+                    precoAtual = newPrice
+                )
             )
-        )
+        }
         val itens = orcamentoResponse?.itemOrcamentos
             ?.map { ItemOrcamentoRequest.itemOrcamentoRequest(it) }
         val itensRequest = itens?.filter {
@@ -129,6 +137,52 @@ class CalculadoraViewModel: ViewModel() {
                 }
             }catch (e: Exception){
                 Log.e("CALCULADORA", "Houve um erro ao cadastrar a categoria $addNewSubcategoria")
+            }
+        }
+    }
+
+    fun deleteCategoria(id: Int){
+        val itemOrcamentos = orcamentoResponse?.itemOrcamentos
+        val itemToBeDeleted = orcamentoResponse?.itemOrcamentos?.filter { it.id == id }?.get(0)
+        viewModelScope.launch {
+            try {
+                val response = calculadoraService.deleteById(id);
+                val custos = itemToBeDeleted!!.custos
+                    .map { it.precoAtual }
+                var custosToBeSubtracted = BigDecimal(0)
+                if(custos.isNotEmpty()){
+                    custosToBeSubtracted = custos.reduce{a, b -> a.plus(b)}
+                }
+                if(response.code() == 204){
+                    orcamentoResponse = orcamentoResponse?.copy(
+                        itemOrcamentos = itemOrcamentos!!.filter { it.id != id }.toMutableList(),
+                        orcamentoGasto = orcamentoResponse!!.orcamentoGasto.minus(custosToBeSubtracted)
+                    )
+                    Log.i("CALCULADORA", "item de id $id deletado com sucesso!")
+                }
+            }catch (e: Exception){
+                Log.e("CALCULADORA", "Não foi possível deletar o item, devido ao seguinte erro ${e.message}")
+            }
+        }
+    }
+
+    fun deleteCusto(itemId: Int, id: Int){
+        val itemOrcamentos = orcamentoResponse?.itemOrcamentos
+        val item = itemOrcamentos?.filter { it.id == itemId }?.toMutableList()?.get(0)
+        val custo = item?.custos?.filter { it.id == id }?.get(0)
+        item?.custos = item?.custos?.filter { it.id != id }!!.toMutableList()
+        viewModelScope.launch {
+            try {
+                val response = calculadoraService.deleteCustoById(id);
+                if(response.code() == 204){
+                    orcamentoResponse = orcamentoResponse?.copy(
+                        itemOrcamentos = itemOrcamentos!!.toMutableList(),
+                        orcamentoGasto = orcamentoResponse!!.orcamentoGasto.minus(custo!!.precoAtual)
+                    )
+                    Log.i("CALCULADORA", "item de id $id deletado com sucesso!")
+                }
+            }catch (e: Exception){
+                Log.e("CALCULADORA", "Não foi possível deletar o item, devido ao seguinte erro ${e.message}")
             }
         }
     }

@@ -2,7 +2,7 @@ package com.example.bridee.calculadora.domain
 
 data class ItemOrcamentoRequest(
     val id: Int?,
-    val tipo: String,
+    var tipo: String,
     var custos: MutableList<CustoItemRequest>
 ){
 
