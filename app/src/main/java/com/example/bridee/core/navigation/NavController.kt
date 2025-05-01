@@ -29,6 +29,7 @@ import com.example.bridee.calculadora.presentation.screens.CalculadoraScreen
 import com.example.bridee.calculadora.presentation.screens.CategoriaDetalhesScreen
 import com.example.bridee.configuracoes.presentation.screen.ConfiguracoesScreen
 import com.example.bridee.lista_tarefas.presentation.screens.ListaTarefasScreen
+import com.example.bridee.servicos.presentation.screens.GaleriaImagensScreen
 import com.example.bridee.servicos.presentation.screens.HomeScreen
 import com.example.bridee.servicos.presentation.screens.InspiracaoScreen
 import com.example.bridee.servicos.presentation.screens.ServicosDetalhesScreen
@@ -131,7 +132,9 @@ fun NavController(navController: NavHostController, paddingValues: PaddingValues
         composable(route = Screen.ServicosDetalhesScreen.route) {
             ServicosDetalhesScreen(navController,  paddingValues)
         }
-
+        composable(route = Screen.GaleriaImagens.route) {
+            GaleriaImagensScreen(navController, paddingValues)
+        }
 
         composable(route = Screen.Inspiracao.route) {
             InspiracaoScreen(navController)

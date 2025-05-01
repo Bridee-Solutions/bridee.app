@@ -1,6 +1,7 @@
 package com.example.bridee.servicos.presentation.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -33,6 +34,7 @@ fun ServicoHeader(
     localizacao: String,
     imagem: Int,
     onBackClick: () -> Unit,
+    onImageClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
@@ -40,6 +42,7 @@ fun ServicoHeader(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(250.dp)
+                .clickable(onClick = onImageClick)
         ) {
             Image(
                 painter = painterResource(id = imagem),
