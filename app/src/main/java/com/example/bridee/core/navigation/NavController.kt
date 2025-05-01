@@ -31,7 +31,10 @@ import com.example.bridee.configuracoes.presentation.screen.ConfiguracoesScreen
 import com.example.bridee.lista_tarefas.presentation.screens.ListaTarefasScreen
 import com.example.bridee.servicos.presentation.screens.HomeScreen
 import com.example.bridee.servicos.presentation.screens.InspiracaoScreen
+import com.example.bridee.servicos.presentation.screens.ServicosDetalhesScreen
 import com.example.bridee.servicos.presentation.screens.ServicosScreen
+import com.example.bridee.servicos.presentation.screens.ServicosSubcategoriaScreen
+import java.net.URLDecoder
 
 @Composable
 fun NavController(navController: NavHostController, paddingValues: PaddingValues){
@@ -108,6 +111,28 @@ fun NavController(navController: NavHostController, paddingValues: PaddingValues
         composable(route = Screen.Servicos.route) {
             ServicosScreen(navController)
         }
+
+        composable(
+            route = Screen.ServicosSubcategoriaScreen.route,
+            arguments = listOf(
+                navArgument("subcategoriaNome") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val subcategoriaNome = backStackEntry.arguments?.getString("subcategoriaNome")?.let {
+                URLDecoder.decode(it, "UTF-8")
+            } ?: ""
+
+            ServicosSubcategoriaScreen(
+                navController = navController,
+                subcategoriaNome = subcategoriaNome,  paddingValues = paddingValues
+            )
+        }
+
+        composable(route = Screen.ServicosDetalhesScreen.route) {
+            ServicosDetalhesScreen(navController,  paddingValues)
+        }
+
+
         composable(route = Screen.Inspiracao.route) {
             InspiracaoScreen(navController)
         }
@@ -115,6 +140,8 @@ fun NavController(navController: NavHostController, paddingValues: PaddingValues
         composable(route = Screen.ListaTarefas.route) {
             ListaTarefasScreen(navController);
         }
+
+
     }
 }
 
