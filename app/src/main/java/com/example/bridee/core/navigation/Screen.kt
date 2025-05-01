@@ -1,5 +1,7 @@
 package com.example.bridee.core.navigation
 
+import java.net.URLEncoder
+
 import com.example.bridee.calculadora.domain.CalculadoraViewModel
 
 sealed class Screen (val route: String){
@@ -23,8 +25,15 @@ sealed class Screen (val route: String){
     }
     object Home : Screen("home")
     object Servicos : Screen("servicos")
+    object ServicosSubcategoriaScreen : Screen("servicos_subcategoria/{subcategoriaNome}") {
+        fun createRoute(subcategoriaNome: String) = "servicos_subcategoria/${URLEncoder.encode(subcategoriaNome, "UTF-8")}"
+    }
+    object ServicosDetalhesScreen  : Screen("servicos_detalhes")
     object Inspiracao : Screen("inspiracao")
     object ListaTarefas : Screen("lista_tarefas")
     object Configuracoes : Screen("configuracoes")
     object EsqueceuSenha : Screen("esqueceu_senha")
+    object GaleriaImagens : Screen("galeria_imagens")
+
+
 }
