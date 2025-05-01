@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -28,6 +29,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -50,10 +52,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import java.time.format.TextStyle as TextStyleDate
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.bridee.auth.presentation.registration.fases.fase2.Fase2RegistrationScreen
 import com.example.bridee.lista_tarefas.domain.FilterItem
 import com.example.bridee.lista_tarefas.domain.Tarefa
 import com.example.bridee.lista_tarefas.presentation.components.AddTarefa
@@ -61,6 +66,7 @@ import com.example.bridee.lista_tarefas.presentation.components.FilterPanel
 import com.example.bridee.lista_tarefas.presentation.components.TarefaCard
 import com.example.bridee.ui.components.ferramentas_section.domain.Tool
 import com.example.bridee.ui.components.ferramentas_section.presentation.screens.FerramentasSection;
+import com.example.bridee.ui.theme.BrideeTheme
 import com.example.bridee.ui.theme.rosa
 import com.seuapp.presentation.components.CustomModal
 import com.seuapp.presentation.components.CustomModalCreate
@@ -68,7 +74,7 @@ import java.time.LocalDate
 import java.util.Locale
 
 @Composable
-fun ListaTarefasScreen(navController: NavController) {
+fun ListaTarefasScreen(navController: NavController, paddingValues: PaddingValues) {
     var tarefas by remember {
         mutableStateOf(
             listOf(
@@ -142,6 +148,7 @@ fun ListaTarefasScreen(navController: NavController) {
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
+            .padding(paddingValues)
     ) {
         FerramentasSection(navController, Tool.TAREFAS);
 
@@ -160,7 +167,7 @@ fun ListaTarefasScreen(navController: NavController) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(23.dp)
-                    .border(2.dp, Color.LightGray, RoundedCornerShape(4.dp))
+                    .border(1.dp, Color.LightGray, RoundedCornerShape(4.dp))
                     .padding(1.dp)
             ) {
                 LinearProgressIndicator(
@@ -238,7 +245,7 @@ fun ListaTarefasScreen(navController: NavController) {
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .border(2.dp, Color.LightGray, RoundedCornerShape(8.dp))
+                                .border(1.dp, Color.LightGray, RoundedCornerShape(8.dp))
                         ) {
 
                             Column () {
@@ -258,7 +265,7 @@ fun ListaTarefasScreen(navController: NavController) {
                                     if (index < listaTarefas.size - 1) {
                                         Divider(
                                             color = Color.LightGray,
-                                            thickness = 2.dp,
+                                            thickness = 1.dp,
                                             modifier = Modifier.fillMaxWidth()
                                         )
                                     }
@@ -274,7 +281,6 @@ fun ListaTarefasScreen(navController: NavController) {
 
                 var sectionIndex = 0
 
-                // Outras seções (exceto "Atrasado")
                 tarefasAgrupadas
                     .filterKeys { it != "Atrasado" }
                     .forEach { (tituloSeccao, listaTarefas) ->
@@ -290,7 +296,7 @@ fun ListaTarefasScreen(navController: NavController) {
                             Box(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .border(2.dp, Color.LightGray, RoundedCornerShape(8.dp))
+                                    .border(1.dp, Color.LightGray, RoundedCornerShape(8.dp))
                             ) {
                                 Column {
                                     listaTarefas.forEachIndexed { index, tarefa ->
@@ -305,11 +311,10 @@ fun ListaTarefasScreen(navController: NavController) {
                                                 }
                                             }
                                         )
-                                        // Adiciona um Divider apenas se não for o último item da seção
                                         if (index < listaTarefas.size - 1) {
                                             Divider(
                                                 color = Color.LightGray,
-                                                thickness = 2.dp,
+                                                thickness = 1.dp,
                                                 modifier = Modifier.fillMaxWidth()
                                             )
                                         }
@@ -318,7 +323,6 @@ fun ListaTarefasScreen(navController: NavController) {
                             }
                         }
 
-                        // Card para adicionar nova tarefa em cada seção
                         item {
                             AddTarefa(
                                 showCreateModal = showCreateModal,
@@ -333,15 +337,14 @@ fun ListaTarefasScreen(navController: NavController) {
     CustomModalCreate(
         showModal = showCreateModal,
         onDismissRequest = { showCreateModal = false },
-        title = "Criar nova tarefa",
+        title = "Criar tarefa",
         content = {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp), // Adiciona um padding geral ao formulário
-                horizontalAlignment = Alignment.Start // Alinha os filhos à esquerda
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.Start
             ) {
-                // Campo: Nome da Tarefa
                 Column {
                     Text(
                         text ="Nome da Tarefa",
@@ -351,8 +354,8 @@ fun ListaTarefasScreen(navController: NavController) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(48.dp) // Altura maior para melhor usabilidade
-                            .clip(RoundedCornerShape(8.dp)) // Bordas menos arredondadas
+                            .height(48.dp)
+                            .clip(RoundedCornerShape(8.dp))
                             .border(1.dp, Color.LightGray, RoundedCornerShape(8.dp))
                             .background(Color.White)
                             .padding(horizontal = 8.dp),
@@ -436,7 +439,7 @@ fun ListaTarefasScreen(navController: NavController) {
                             value = notesTaskText,
                             onValueChange = { notesTaskText = it },
                             placeholder = { Text("Escreva algo aqui...") },
-                            textStyle = MaterialTheme.typography.bodyMedium,
+                            textStyle = MaterialTheme.typography.bodySmall,
                             modifier = Modifier
                                 .fillMaxSize()
                                 .background(Color.Transparent),
@@ -547,7 +550,8 @@ fun ListaTarefasScreen(navController: NavController) {
         isVisible = showFilterPanel,
         onDismiss = { showFilterPanel = false },
         content = {
-            Column {
+            Column(modifier = Modifier.fillMaxSize()) {
+                // Cabeçalho
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center
@@ -558,24 +562,25 @@ fun ListaTarefasScreen(navController: NavController) {
                     )
                 }
 
-
                 Spacer(modifier = Modifier.height(10.dp))
                 Divider(
                     color = Color.LightGray,
-                    thickness = 2.dp,
+                    thickness = 1.dp,
                     modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(10.dp))
+
+                // Conteúdo scrollável (Status + Mês)
                 Column(
                     modifier = Modifier
-                        .fillMaxHeight() // Altura fixa
-                        .verticalScroll(rememberScrollState()) // Habilita rolagem
-                )
-                {
+                        .weight(1f) // Ocupa todo o espaço disponível
+                        .verticalScroll(rememberScrollState())
+                ) {
+                    // Filtros de Status
                     Column {
                         Text(
                             text = "Status",
-                            style = MaterialTheme.typography.titleSmall
+                            style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
                         )
 
                         Spacer(modifier = Modifier.height(10.dp))
@@ -586,10 +591,8 @@ fun ListaTarefasScreen(navController: NavController) {
                                 modifier = Modifier
                                     .padding(vertical = 4.dp)
                                     .clickable {
-                                        // Atualiza o estado quando clicado
                                         statusFilter = statusFilter.toMutableList().apply {
-                                            this[index] =
-                                                this[index].copy(check = !this[index].check)
+                                            this[index] = this[index].copy(check = !this[index].check)
                                         }
                                     }
                             ) {
@@ -601,14 +604,18 @@ fun ListaTarefasScreen(navController: NavController) {
                                             else it
                                         }
                                     },
-                                    modifier = Modifier.size(24.dp)
+                                    modifier = Modifier.size(24.dp),
+                                    colors = CheckboxDefaults.colors(
+                                        checkedColor = Color(0xFFDD7B78), // Cor do botão de filtrar
+                                        uncheckedColor = Color.LightGray, // Cor da borda quando não marcado
+                                        checkmarkColor = Color.White // Cor do "check" (tic)
+                                    )
                                 )
                                 Text(
                                     text = status.nome,
                                     modifier = Modifier.padding(start = 8.dp)
                                 )
                             }
-
                             Spacer(modifier = Modifier.height(8.dp))
                         }
                     }
@@ -616,7 +623,7 @@ fun ListaTarefasScreen(navController: NavController) {
                     Spacer(modifier = Modifier.height(10.dp))
                     Divider(
                         color = Color.LightGray,
-                        thickness = 2.dp,
+                        thickness = 1.dp,
                         modifier = Modifier.fillMaxWidth()
                     )
                     Spacer(modifier = Modifier.height(10.dp))
@@ -624,7 +631,7 @@ fun ListaTarefasScreen(navController: NavController) {
                     Column {
                         Text(
                             text = "Mês",
-                            style = MaterialTheme.typography.titleSmall
+                            style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
                         )
 
                         mesFilter.forEachIndexed { index, mes ->
@@ -634,8 +641,7 @@ fun ListaTarefasScreen(navController: NavController) {
                                     .padding(vertical = 4.dp)
                                     .clickable {
                                         mesFilter = mesFilter.toMutableList().apply {
-                                            this[index] =
-                                                this[index].copy(check = !this[index].check)
+                                            this[index] = this[index].copy(check = !this[index].check)
                                         }
                                     }
                             ) {
@@ -647,7 +653,12 @@ fun ListaTarefasScreen(navController: NavController) {
                                             else it
                                         }
                                     },
-                                    modifier = Modifier.size(24.dp)
+                                    modifier = Modifier.size(24.dp),
+                                    colors = CheckboxDefaults.colors(
+                                        checkedColor = Color(0xFFDD7B78),
+                                        uncheckedColor = Color.LightGray,
+                                        checkmarkColor = Color.White
+                                    )
                                 )
                                 Text(
                                     text = mes.nome,
@@ -657,11 +668,13 @@ fun ListaTarefasScreen(navController: NavController) {
                             Spacer(modifier = Modifier.height(8.dp))
                         }
                     }
+                }
 
-                    Spacer(modifier = Modifier.height(10.dp))
+                // Botões FIXOS na parte inferior
+                Column(modifier = Modifier.padding(top = 8.dp)) {
                     Divider(
                         color = Color.LightGray,
-                        thickness = 2.dp,
+                        thickness = 1.dp,
                         modifier = Modifier.fillMaxWidth()
                     )
                     Spacer(modifier = Modifier.height(10.dp))
@@ -672,10 +685,10 @@ fun ListaTarefasScreen(navController: NavController) {
                     ) {
                         Button(
                             onClick = {
-                                showFilterPanel = false;
-                                statusFilter = statusFilter.map { it.copy(check = false) };
-                                mesFilter = mesFilter.map { it.copy(check = false) };
-                                      },
+                                showFilterPanel = false
+                                statusFilter = statusFilter.map { it.copy(check = false) }
+                                mesFilter = mesFilter.map { it.copy(check = false) }
+                            },
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = Color(0xFFEAEAEA),
                                 contentColor = Color(0xFF766F6F)
@@ -685,13 +698,13 @@ fun ListaTarefasScreen(navController: NavController) {
                                 .weight(1f)
                                 .padding(start = 4.dp)
                         ) {
-                            Text("Limpar filtros")
+                            Text("Limpar filtros", color = Color(0xFF766F6F))
                         }
                         Spacer(modifier = Modifier.width(8.dp))
                         Button(
                             onClick = { showFilterPanel = false },
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = Color(0xFFD77C8C),
+                                containerColor = Color(0xFFDD7B78),
                                 contentColor = Color.White
                             ),
                             shape = RoundedCornerShape(8.dp),
@@ -699,10 +712,9 @@ fun ListaTarefasScreen(navController: NavController) {
                                 .weight(1f)
                                 .padding(start = 4.dp)
                         ) {
-                            Text("Filtrar")
+                            Text("Filtrar", color = Color.White)
                         }
                     }
-
                 }
             }
         }
@@ -714,26 +726,29 @@ fun ListaTarefasScreen(navController: NavController) {
         title = "Deletar tarefa",
         content = {
             Icon(
-                imageVector = Icons.Default.Warning, // Ícone de alerta
+                imageVector = Icons.Default.Warning,
                 contentDescription = "Ícone de alerta",
-                tint = rosa, // Cor do ícone (amarelo para alerta)
-                modifier = Modifier.size(104.dp) // Tamanho do ícone
+                tint = Color(0xFFFF5154),
+                modifier = Modifier.size(90.dp)
             )
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
                 Text(
-                    style = MaterialTheme.typography.titleMedium,
+                    style = MaterialTheme.typography.bodyLarge.copy(        fontWeight = FontWeight.Bold
+                    ),
                     textAlign = TextAlign.Center,
                     text = "Deseja remover a tarefa \"${deleteTaskName.value}\"?"
                 )
                 Spacer(Modifier.height(5.dp))
                 Text(
-                    style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
+                    style = MaterialTheme.typography.bodyMedium.copy(color = Color(0xFF6B6565)),
                     textAlign = TextAlign.Center,
                     text="Você não poderá recuperá-lo novamente após a exclusão."
                 )
+                Spacer(Modifier.height(18.dp))
+
             }
         },
         onConfirm = {
@@ -744,5 +759,7 @@ fun ListaTarefasScreen(navController: NavController) {
             showDeleteModal = false
         },
         textConfirm = "Deletar"
+
     )
 }
+

@@ -38,11 +38,14 @@ fun Fase6RegistrationScreen(viewModel: RegistrationSharedViewModel, navControlle
     val windowWidthDp = LocalConfiguration.current.screenWidthDp.dp
     val windowHeightDp = LocalConfiguration.current.screenHeightDp.dp
     val guestOption = viewModel.guestOptions.filter { it.selected }
-
+    val col1 = viewModel.guestOptions.take(viewModel.guestOptions.size / 2 + viewModel.guestOptions.size % 2)
+    val col2 = viewModel.guestOptions.takeLast(viewModel.guestOptions.size / 2)
     Column(
-        modifier = Modifier.fillMaxWidth()
-            .height(windowHeightDp - 150.dp),
-        verticalArrangement = Arrangement.SpaceEvenly
+        modifier = Modifier
+            .fillMaxWidth()
+
+            .padding(top = 20.dp, start = 20.dp, end = 20.dp),
+        verticalArrangement = Arrangement.SpaceBetween
     ) {
 
         Header(
@@ -54,7 +57,7 @@ fun Fase6RegistrationScreen(viewModel: RegistrationSharedViewModel, navControlle
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
             modifier = Modifier.fillMaxWidth()
-                .height(300.dp)
+                .height(400.dp)
 
         ) {
             Spacer(modifier = Modifier.height(30.dp))
@@ -67,32 +70,42 @@ fun Fase6RegistrationScreen(viewModel: RegistrationSharedViewModel, navControlle
                 textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(20.dp))
-            Row (
-                modifier = Modifier.width(windowWidthDp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                FlowColumn(
-                    horizontalArrangement = Arrangement.Center,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    viewModel.guestOptions.forEach {guestOption ->
+            Row(modifier = Modifier.fillMaxWidth()) {
+                Column(modifier = Modifier.weight(1f)) {
+                    viewModel.guestOptions.take(4).forEach { guestOption ->
                         Row(
-                            verticalAlignment = Alignment.CenterVertically
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.padding(vertical = 8.dp)
                         ) {
                             CustomCheckbox(
                                 checked = guestOption.selected,
-                                onCheckedChange = {
-                                    viewModel.updateGuestQuantity(guestOption)
-                                }
+                                onCheckedChange = { viewModel.updateGuestQuantity(guestOption) },
+                                modifier = Modifier.padding(end = 12.dp)
                             )
-                            Text(
-                                text = guestOption.value
+                            Text(text = guestOption.value)
+                        }
+                    }
+                }
+                Column(modifier = Modifier.weight(1f)) {
+                    viewModel.guestOptions.drop(4).forEach { guestOption ->
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.padding(vertical = 8.dp)
+                        ) {
+                            CustomCheckbox(
+                                checked = guestOption.selected,
+                                onCheckedChange = { viewModel.updateGuestQuantity(guestOption) },
+                                modifier = Modifier.padding(end = 12.dp)
                             )
+                            Text(text = guestOption.value)
                         }
                     }
                 }
             }
-        }
+
+
+
+    }
         Button(
             onClick = {
                 viewModel.showDialog = true
@@ -110,7 +123,7 @@ fun Fase6RegistrationScreen(viewModel: RegistrationSharedViewModel, navControlle
                 .align(Alignment.CenterHorizontally),
             shape = RoundedCornerShape(25)
         ) {
-            Text("Próximo")
+            Text("Próximo", color = Color.White)
         }
         ShowToast(viewModel, guestOption)
     }

@@ -10,7 +10,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -37,14 +39,13 @@ fun CustomModalCreate(
             Surface(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .fillMaxHeight(8.5f / 10)
                     .clip(RoundedCornerShape(12.dp)),
                 color = Color.White
             ) {
                 Column(
                     modifier = Modifier
                         .padding(16.dp)
-                        .fillMaxSize(),
+                        .verticalScroll(rememberScrollState()),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
 
@@ -83,13 +84,14 @@ fun CustomModalCreate(
                                 .weight(1f)
                                 .padding(start = 4.dp)
                         ) {
-                            Text("Cancelar")
+                            Text("Cancelar",
+                                color = Color(0xFF766F6F))
                         }
                         Spacer(modifier = Modifier.width(8.dp))
                         Button(
                             onClick = onConfirm,
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = Color(0xFFD77C8C),
+                                containerColor = Color(0xFFDD7B78),
                                 contentColor = Color.White
                             ),
                             shape = RoundedCornerShape(8.dp),
@@ -97,7 +99,7 @@ fun CustomModalCreate(
                                 .weight(1f)
                                 .padding(start = 4.dp)
                         ) {
-                            Text("Criar")
+                            Text("Criar", color = Color.White)
                         }
                     }
                 }

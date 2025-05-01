@@ -60,7 +60,7 @@ fun TarefaCard(
                 onCheckedChange = { isChecked ->
                     onCheckClick(isChecked)
                 },
-                checkColor = Color.Green,
+                checkColor = Color(0xFF30C023),
                 checkSize = 36.dp,
                 modifier = Modifier.size(40.dp)
             )

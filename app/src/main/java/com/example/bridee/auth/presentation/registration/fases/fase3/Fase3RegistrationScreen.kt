@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -33,10 +34,12 @@ fun Fase3RegistrationScreen(viewModel: RegistrationSharedViewModel, navControlle
     val registrationState = viewModel.sharedRegistrationObject
 
     Column(
-        modifier = Modifier.fillMaxWidth()
-            .height(windowHeightDp - 150.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(windowHeightDp - 150.dp)
+            .padding(top = 20.dp, start = 20.dp, end = 20.dp),
         verticalArrangement = Arrangement.SpaceEvenly
-    ){
+    ) {
         Header(
             navController = navController,
             fillPercentage = (40*3).dp,
@@ -104,7 +107,7 @@ fun Fase3RegistrationScreen(viewModel: RegistrationSharedViewModel, navControlle
                 .align(Alignment.CenterHorizontally),
             shape = RoundedCornerShape(25)
         ) {
-            Text("Próximo")
+            Text("Próximo", color = Color.White)
         }
         ShowToast(viewModel)
     }
@@ -120,3 +123,5 @@ fun ShowToast(viewModel: RegistrationSharedViewModel){
         viewModel.showDialog = false
     }
 }
+
+

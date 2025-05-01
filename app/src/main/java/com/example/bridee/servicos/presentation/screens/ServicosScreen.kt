@@ -34,52 +34,54 @@ import com.example.bridee.servicos.presentation.viewModel.CategoriasViewModel
 
 @Composable
 fun ServicosScreen(navController: NavController) {
-    var searchText by remember { mutableStateOf("") }
-    val viewModel: CategoriasViewModel = viewModel()
-    val categorias = viewModel.categorias
+/*   var searchText by remember { mutableStateOf("") }
+  val viewModel: CategoriasViewModel = viewModel()
+  val categorias = viewModel.categorias
 
-    Column (modifier = Modifier
-        .fillMaxSize()
-        .padding(16.dp)
-    ) {
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(
-                containerColor = Color.LightGray.copy(alpha = 0.2f)
-            ),
-            elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
-        ) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Text(
-                    text = "Serviços",
-                    style = MaterialTheme.typography.titleLarge,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 16.dp)
-                        .wrapContentWidth(Alignment.CenterHorizontally),
-                    textAlign = TextAlign.Center
-                )
-                SearchBar(
-                    searchText = searchText,
-                    onSearchTextChanged = { newText -> searchText = newText },
-                    placeholderText = "Buscar serviços",
-                    showMenuIcon = false
-                )
-            }
-        }
+  Column (modifier = Modifier
+      .fillMaxSize()
+      .padding(16.dp)
+  ) {
+      Card(
+          modifier = Modifier.fillMaxWidth(),
+          colors = CardDefaults.cardColors(
+              containerColor = Color.LightGray.copy(alpha = 0.2f)
+          ),
+          elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+      ) {
+          Column(modifier = Modifier.padding(16.dp)) {
+              Text(
+                  text = "Serviços",
+                  style = MaterialTheme.typography.titleLarge,
+                  modifier = Modifier
+                      .fillMaxWidth()
+                      .padding(bottom = 16.dp)
+                      .wrapContentWidth(Alignment.CenterHorizontally),
+                  textAlign = TextAlign.Center
+              )
+              SearchBar(
+                  searchText = searchText,
+                  onSearchTextChanged = { newText -> searchText = newText },
+                  placeholderText = "Buscar serviços",
+                  showMenuIcon = false
+              )
+          }
+      }
 
-        Spacer(modifier = Modifier.height(16.dp))
+      Spacer(modifier = Modifier.height(16.dp))
 
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
-            items(categorias) { categoria ->
-                CategoriaExpansivelItem(
-                    categoria = categoria,
-                    navController = navController,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 4.dp)
-                )
-            }
-        }
-    }
+      LazyColumn(modifier = Modifier.fillMaxSize()) {
+          items(categorias) { categoria ->
+              CategoriaExpansivelItem(
+                  categoria = categoria,
+                  navController = navController,
+                  modifier = Modifier
+                      .fillMaxWidth()
+                      .padding(vertical = 4.dp)
+              )
+          }
+      }
+  }
+  */
+
 }

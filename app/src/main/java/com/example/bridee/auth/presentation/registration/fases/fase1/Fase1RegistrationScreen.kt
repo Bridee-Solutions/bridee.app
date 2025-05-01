@@ -160,25 +160,16 @@ fun Fase1RegistrationScreen(viewModel: RegistrationSharedViewModel, navControlle
                 }
             },
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFFD86B67)
+                containerColor = Color(0xFFD86B67),
+                contentColor = Color.White
             ),
             modifier = Modifier.height(50.dp)
                 .width(windowWidthDp - 120.dp),
             shape = RoundedCornerShape(25)
         ) {
-            Text("Próximo")
+            Text("Próximo", color = Color.White)
         }
-        Row {
-            Text(
-                text = "Você é um assessor? ",
-                style = MaterialTheme.typography.titleSmall
-            )
-            Text(
-                text = "Clique aqui.",
-                style = MaterialTheme.typography.titleSmall.copy(color = Color(0xFFB55557),
-                    fontWeight = FontWeight.Bold),
-            )
-        }
+
         ShowToasts(viewModel)
     }
 }

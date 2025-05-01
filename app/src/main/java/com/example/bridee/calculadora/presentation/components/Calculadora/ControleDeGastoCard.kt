@@ -112,7 +112,8 @@ fun ControleDeGastoCard(viewModel: CalculadoraViewModel) {
                     .fillMaxWidth()
                     .height(30.dp)
                     .padding(vertical = 4.dp),
-                color = rosa
+                color = rosa,
+                trackColor = Color(0xFFE1DCDC)
             )
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -143,7 +144,9 @@ fun ControleDeGastoCard(viewModel: CalculadoraViewModel) {
                     .fillMaxWidth()
                     .height(30.dp)
                     .padding(vertical = 4.dp),
-                color = rosa
+                color = rosa,
+                trackColor = Color(0xFFE1DCDC)
+
             )
 
             Spacer(modifier = Modifier.height(20.dp))

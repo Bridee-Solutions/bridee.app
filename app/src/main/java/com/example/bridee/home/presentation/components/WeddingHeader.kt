@@ -69,50 +69,56 @@ fun WeddingHeader(navController: NavController) {
             )
         }
 
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            contentAlignment = Alignment.Center
         ) {
-            Text(
-                text = "Amanda & Enzo",
-                style = MaterialTheme.typography.titleLarge.copy(Color.White, fontSize = 35.sp)
-            )
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center // Alinha o conteúdo verticalmente no centro
             ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.calendario),
-                    contentDescription = "Ícone de data",
-                    modifier = Modifier.size(17.dp),
-                    tint = rosa
-                )
                 Text(
-                    text = "11 de Fevereiro, 2026",
-                    fontSize = 16.sp,
-                    color = Color.White,
-                    modifier = Modifier.padding(start = 8.dp)
+                    text = "Amanda & Enzo",
+                    style = MaterialTheme.typography.titleLarge.copy(Color.White, fontSize = 35.sp),
+                    modifier = Modifier.align(Alignment.CenterHorizontally) // Garante que o texto estará centralizado
                 )
 
-                Spacer(modifier = Modifier.width(16.dp))
+                Spacer(modifier = Modifier.height(8.dp))
 
-                Icon(
-                    painter = painterResource(id = R.drawable.place),
-                    contentDescription = "Ícone de local",
-                    modifier = Modifier.size(17.dp),
-                    tint = rosa
-                )
-                Text(
-                    text = "São Paulo",
-                    fontSize = 16.sp,
-                    color = Color.White,
-                    modifier = Modifier.padding(start = 8.dp)
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center // Alinha os itens da row no centro
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.calendario),
+                        contentDescription = "Ícone de data",
+                        modifier = Modifier.size(17.dp),
+                        tint = rosa
+                    )
+                    Text(
+                        text = "11 de Fevereiro, 2026",
+                        fontSize = 16.sp,
+                        color = Color.White,
+                        modifier = Modifier.padding(start = 8.dp)
+                    )
+
+                    Spacer(modifier = Modifier.width(16.dp))
+
+                    Icon(
+                        painter = painterResource(id = R.drawable.place),
+                        contentDescription = "Ícone de local",
+                        modifier = Modifier.size(17.dp),
+                        tint = rosa
+                    )
+                    Text(
+                        text = "São Paulo",
+                        fontSize = 16.sp,
+                        color = Color.White,
+                        modifier = Modifier.padding(start = 8.dp)
+                    )
+                }
             }
         }
     }

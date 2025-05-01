@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
@@ -46,10 +47,12 @@ fun CategoriaScreen(viewModel: CalculadoraViewModel, navController: NavControlle
     Box(
         modifier = Modifier
             .fillMaxWidth()
+            .wrapContentHeight()
             .background(Color.White)
             .border(1.dp, Color(0xFFD9D9D9), RoundedCornerShape(1.dp))
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(modifier = Modifier.padding(16.dp)
+        ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
