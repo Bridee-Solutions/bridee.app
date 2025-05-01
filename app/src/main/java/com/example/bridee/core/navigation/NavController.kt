@@ -9,9 +9,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import androidx.navigation.navArgument
 import com.example.bridee.auth.domain.AuthenticationViewModel
 import com.example.bridee.auth.domain.RegistrationSharedViewModel
 import com.example.bridee.auth.presentation.login.LoginScreen
@@ -31,9 +33,12 @@ import com.example.bridee.calculadora.presentation.screens.CategoriaDetalhesScre
 import com.example.bridee.configuracoes.presentation.screen.ConfiguracoesScreen
 import com.example.bridee.inspiracao.domain.TelaInpiracaoViewModel
 import com.example.bridee.lista_tarefas.presentation.screens.ListaTarefasScreen
+import com.example.bridee.servicos.presentation.screens.GaleriaImagensScreen
 import com.example.bridee.servicos.presentation.screens.HomeScreen
 import com.example.bridee.servicos.presentation.screens.InspiracaoScreen
+import com.example.bridee.servicos.presentation.screens.ServicosDetalhesScreen
 import com.example.bridee.servicos.presentation.screens.ServicosScreen
+import com.example.bridee.servicos.presentation.screens.ServicosSubcategoriaScreen
 import com.google.gson.Gson
 import java.net.URLDecoder
 
@@ -118,6 +123,30 @@ fun NavController(
         composable(route = Screen.Servicos.route) {
             ServicosScreen(navController)
         }
+
+        composable(
+            route = Screen.ServicosSubcategoriaScreen.route,
+            arguments = listOf(
+                navArgument("subcategoriaNome") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val subcategoriaNome = backStackEntry.arguments?.getString("subcategoriaNome")?.let {
+                URLDecoder.decode(it, "UTF-8")
+            } ?: ""
+
+            ServicosSubcategoriaScreen(
+                navController = navController,
+                subcategoriaNome = subcategoriaNome,  paddingValues = paddingValues
+            )
+        }
+
+        composable(route = Screen.ServicosDetalhesScreen.route) {
+            ServicosDetalhesScreen(navController,  paddingValues)
+        }
+        composable(route = Screen.GaleriaImagens.route) {
+            GaleriaImagensScreen(navController, paddingValues)
+        }
+
         composable(route = Screen.Inspiracao.route) {
             val viewModel = TelaInpiracaoViewModel()
             InspiracaoScreen(viewModel, navController, paddingValues)
