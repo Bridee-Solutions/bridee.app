@@ -8,9 +8,11 @@ import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -30,11 +32,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.bridee.auth.domain.RegistrationSharedViewModel
+import com.example.bridee.auth.presentation.component.CustomCheckbox
 import com.example.bridee.auth.presentation.component.Header
+import com.example.bridee.auth.presentation.component.SmallCheckbox
 import com.example.bridee.core.navigation.Screen
 
 @Composable
@@ -48,8 +53,10 @@ fun Fase7RegistrationScreen(viewModel: RegistrationSharedViewModel,navController
     val windowHeightDp = LocalConfiguration.current.screenHeightDp.dp
 
     Column(
-        modifier = Modifier.fillMaxWidth()
-            .height(windowHeightDp - 150.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(windowHeightDp - 150.dp)
+            .padding(top = 20.dp, start = 20.dp, end = 20.dp),
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
         Header(
@@ -63,6 +70,7 @@ fun Fase7RegistrationScreen(viewModel: RegistrationSharedViewModel,navController
             modifier = Modifier.fillMaxWidth()
                 .height(300.dp)
         ) {
+            Spacer(modifier = Modifier.height(20.dp))
             Text(
                 text = "Termos de uso e política de privacidade",
                 textAlign = TextAlign.Center,
@@ -94,17 +102,21 @@ fun Fase7RegistrationScreen(viewModel: RegistrationSharedViewModel,navController
             )
         }
         Row {
-            Checkbox(
+            SmallCheckbox(
                 checked = viewModel.isTermsApproved,
                 onCheckedChange = {
                     viewModel.isTermsApproved = it
-                }
+                },
+                modifier = Modifier.padding(end = 5.dp, top = 5.dp)
             )
             Text(
                 text = "Li e concordo com os termos de uso e política de privacidade",
-                textAlign = TextAlign.Start
+                textAlign = TextAlign.Start,
+                style = MaterialTheme.typography.bodySmall.copy(fontSize = 15.sp),
             )
         }
+        Spacer(modifier = Modifier.height(20.dp))
+
         Button(
             onClick = {
                 if(viewModel.isTermsApproved){
@@ -122,8 +134,12 @@ fun Fase7RegistrationScreen(viewModel: RegistrationSharedViewModel,navController
                 .align(Alignment.CenterHorizontally),
             shape = RoundedCornerShape(25)
         ) {
-            Text("Próximo")
+            Text("Próximo", color = Color.White)
         }
+
     }
 
 }
+
+
+

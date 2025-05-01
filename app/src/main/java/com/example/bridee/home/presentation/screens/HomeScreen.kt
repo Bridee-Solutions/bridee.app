@@ -3,6 +3,7 @@ package com.example.bridee.servicos.presentation.screens
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -20,8 +21,12 @@ import com.example.bridee.calculadora.presentation.components.Calculadora.Contro
 
 
 @Composable
-fun HomeScreen(navController: NavController) {
-    Column(modifier = Modifier.fillMaxSize()) {
+fun HomeScreen(navController: NavController, paddingValues: PaddingValues) {
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .padding(paddingValues)
+
+    ) {
         WeddingHeader(navController = navController)
         CountdownSection()
         SuppliersList()

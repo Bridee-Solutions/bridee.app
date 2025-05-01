@@ -25,7 +25,8 @@ fun MainScreen(context: Context) {
             Screen.Fase6Registration.route,
             Screen.Fase7Registration.route,
             Screen.EmailRegistration.route,
-            Screen.EmailFailRegistration.route
+            Screen.EmailFailRegistration.route,
+            Screen.EsqueceuSenha.route
         )
 
         return currentRoute !in routesWithoutBottomBar
@@ -39,6 +40,6 @@ fun MainScreen(context: Context) {
             }
         }
     ) { paddingValues ->
-        NavController(navController, context)
+        NavController(navController, context, paddingValues)
     }
 }

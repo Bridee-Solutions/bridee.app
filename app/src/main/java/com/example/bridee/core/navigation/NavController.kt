@@ -9,11 +9,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import androidx.navigation.navArgument
 import com.example.bridee.auth.domain.AuthenticationViewModel
 import com.example.bridee.auth.domain.RegistrationSharedViewModel
 import com.example.bridee.auth.presentation.login.LoginScreen
@@ -37,12 +35,13 @@ import com.example.bridee.servicos.presentation.screens.HomeScreen
 import com.example.bridee.servicos.presentation.screens.InspiracaoScreen
 import com.example.bridee.servicos.presentation.screens.ServicosScreen
 import com.google.gson.Gson
-import java.math.BigDecimal
-import java.net.URL
 import java.net.URLDecoder
 
 @Composable
-fun NavController(navController: NavHostController, context: Context){
+fun NavController(
+    navController: NavHostController,
+    context: Context,
+    paddingValues: PaddingValues){
 //    val navController = rememberNavController()
     NavHost(navController = navController, startDestination = Screen.Login.route){
         composable(route = Screen.Login.route) {
@@ -52,7 +51,7 @@ fun NavController(navController: NavHostController, context: Context){
         navigation(
             route = Screen.Cadastro.route,
             startDestination = Screen.Fase1Registration.route
-        ){
+        ) {
             composable(route = Screen.Fase1Registration.route) {
                 val viewModel = it.sharedViewModel<RegistrationSharedViewModel>(navController)
                 Fase1RegistrationScreen(viewModel, navController)
@@ -60,7 +59,7 @@ fun NavController(navController: NavHostController, context: Context){
             composable(route = Screen.Fase2Registration.route) {
                 Fase2RegistrationScreen(navController)
             }
-            composable(route = Screen.Fase3Registration.route){
+            composable(route = Screen.Fase3Registration.route) {
                 val viewModel = it.sharedViewModel<RegistrationSharedViewModel>(navController)
                 Fase3RegistrationScreen(viewModel, navController)
             }
@@ -81,13 +80,12 @@ fun NavController(navController: NavHostController, context: Context){
                 Fase7RegistrationScreen(viewModel, navController)
             }
         }
-        composable(route = Screen.EmailRegistration.route){
+        composable(route = Screen.EmailRegistration.route) {
             EmailRegistrationScreen()
         }
-        composable(route = Screen.EmailFailRegistration.route){
+        composable(route = Screen.EmailFailRegistration.route) {
             EmailFailRegistrationScreen()
         }
-
         composable(Screen.Configuracoes.route) {
             ConfiguracoesScreen(navController)
         }
@@ -98,7 +96,7 @@ fun NavController(navController: NavHostController, context: Context){
         ) {
             composable(route=Screen.Calculadora.route) {
                 val viewModel = it.sharedViewModel<CalculadoraViewModel>(navController)
-                CalculadoraScreen(viewModel, navController)
+                CalculadoraScreen(viewModel, navController, paddingValues)
             }
             composable(
                 route = Screen.CategoriaDetalhes.route
@@ -109,33 +107,32 @@ fun NavController(navController: NavHostController, context: Context){
                 CategoriaDetalhesScreen(
                     viewModel = viewModel,
                     item = item,
-                    navController = navController
+                    navController = navController,
+                    paddingValues = paddingValues
                 )
             }
         }
-        // Rotas do menu
         composable(route = Screen.Home.route) {
-            HomeScreen(navController)
+            HomeScreen(navController, paddingValues)
         }
         composable(route = Screen.Servicos.route) {
             ServicosScreen(navController)
         }
         composable(route = Screen.Inspiracao.route) {
             val viewModel = TelaInpiracaoViewModel()
-            InspiracaoScreen(viewModel, navController)
+            InspiracaoScreen(viewModel, navController, paddingValues)
         }
-
         composable(route = Screen.ListaTarefas.route) {
-            ListaTarefasScreen(navController);
+            ListaTarefasScreen(navController, paddingValues)
         }
     }
 }
 
 @Composable
-inline fun <reified T: ViewModel> NavBackStackEntry.sharedViewModel(
+inline fun <reified T : ViewModel> NavBackStackEntry.sharedViewModel(
     navController: NavController
-): T{
-    val navGraphRoute = destination.parent?.route ?: viewModel()
+): T {
+    val navGraphRoute = destination.parent?.route ?: return viewModel()
     val parentEntry = remember(this) {
         navController.getBackStackEntry(navGraphRoute)
     }

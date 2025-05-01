@@ -23,7 +23,6 @@ import androidx.navigation.NavController
 fun ConfiguracoesScreen(navController: NavController) {
     var isEditing by remember { mutableStateOf(false) }
 
-    // Estados para armazenar os textos editáveis (não tem back-end pronto)
 
     var weddingDate by remember { mutableStateOf("11 de Fevereiro, 2026") }
     var weddingLocation by remember { mutableStateOf("São Paulo - SP") }

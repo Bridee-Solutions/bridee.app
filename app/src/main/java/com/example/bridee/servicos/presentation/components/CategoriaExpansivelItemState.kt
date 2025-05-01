@@ -17,11 +17,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.bridee.servicos.domain.Categoria
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.clickable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import com.example.bridee.servicos.domain.Categoria
 
 
 class CategoriaExpansivelItemState (

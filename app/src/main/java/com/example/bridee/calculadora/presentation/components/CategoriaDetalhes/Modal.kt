@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 
 
@@ -51,7 +52,7 @@ fun CustomModal(
                     // Título
                     Text(
                         text = title,
-                        style = MaterialTheme.typography.titleMedium,
+                        style = MaterialTheme.typography.titleMedium.copy(fontSize = 22.sp),
                     )
                     Spacer(modifier = Modifier.height(12.dp))
 
@@ -84,7 +85,7 @@ fun CustomModal(
                                 .weight(1f)
                                 .padding(start = 4.dp)
                         ) {
-                            Text("Cancelar")
+                            Text("Cancelar", color = Color(0xFF766F6F))
                         }
                         Spacer(modifier = Modifier.width(8.dp))
                         Button(
@@ -98,7 +99,7 @@ fun CustomModal(
                                 .weight(1f)
                                 .padding(start = 4.dp)
                         ) {
-                            Text("Adicionar")
+                            Text("Adicionar", color = Color.White)
                         }
                     }
                 }
