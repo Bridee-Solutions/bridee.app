@@ -54,31 +54,44 @@ class CalculadoraViewModel: ViewModel() {
     }
 
     fun adicionarNovaCategoria(item: ItemOrcamentoResponse?, novaCategoria: String){
-        val itensRequest = orcamentoResponse?.itemOrcamentos
-            ?.map { ItemOrcamentoRequest.itemOrcamentoRequest(it) }?.toMutableList()
-        val custos = item?.custos?.map { CustoItemRequest.custoItemRequest(it) }?.toMutableList()
-        if(Objects.nonNull(item?.id)){
-            itensRequest?.filter { it.id == item!!.id }?.get(0)?.tipo = novaCategoria
-        }else{
-            itensRequest?.add(
-                ItemOrcamentoRequest(
-                    id = item?.id,
-                    tipo = novaCategoria,
-                    custos = custos ?: mutableListOf()
-                )
-            )
-        }
+        val itensRequest = buildItensRequest(item, novaCategoria)
         viewModelScope.launch {
             val response = calculadoraService.saveItensOrcamento(itensRequest!!)
             try {
                 if(response.code() == 200){
-                    orcamentoResponse = orcamentoResponse?.copy(itemOrcamentos = response.body()!!)
+                    orcamentoResponse = orcamentoResponse?.copy(
+                        itemOrcamentos = response.body()!!
+                    )
                     Log.i("CALCULADORA", "Categoria $novaCategoria inserida com sucesso")
                 }
             }catch (e: Exception){
                 Log.e("CALCULADORA", "Houve um erro ao cadastrar a categoria $novaCategoria")
             }
         }
+    }
+
+    private fun buildItensRequest(
+        item: ItemOrcamentoResponse?,
+        novaCategoria: String
+    ): List<ItemOrcamentoRequest>? {
+
+        val itensRequest = orcamentoResponse?.itemOrcamentos
+            ?.map { ItemOrcamentoRequest.itemOrcamentoRequest(it) }?.toMutableList()
+        val custos = item?.custos?.map { CustoItemRequest.custoItemRequest(it) }?.toMutableList()
+
+        if(Objects.nonNull(item?.id)){
+            itensRequest?.filter { it.id == item!!.id }?.get(0)?.tipo = novaCategoria
+            return itensRequest
+        }
+
+        itensRequest?.add(
+            ItemOrcamentoRequest(
+                id = item?.id,
+                tipo = novaCategoria,
+                custos = custos ?: mutableListOf()
+            )
+        )
+        return itensRequest
     }
 
     fun defaultItens(): List<ItemOrcamentoResponse>{
@@ -102,25 +115,19 @@ class CalculadoraViewModel: ViewModel() {
         newPrice: BigDecimal,
         custoId: Int?
     ) {
-        val custoRequest = itemOrcamentoResponse
-            ?.custos?.map { CustoItemRequest.custoItemRequest(it) }?.toMutableList()
-        val oldCusto = itemOrcamentoResponse.custos.filter { custoId == it.id }[0]
-        if(Objects.nonNull(custoId)){
-            custoRequest?.filter { it.id == custoId }?.get(0)?.precoAtual = newPrice
-        }else{
-            custoRequest?.add(
-                CustoItemRequest(
-                    id = custoId,
-                    nome = addNewSubcategoria,
-                    precoAtual = newPrice
-                )
-            )
-        }
+        val custoRequest = buildCustoRequest(
+            itemOrcamentoResponse,
+            addNewSubcategoria,
+            newPrice,
+            custoId
+        )
         val itens = orcamentoResponse?.itemOrcamentos
             ?.map { ItemOrcamentoRequest.itemOrcamentoRequest(it) }
         val itensRequest = itens?.filter {
             it.id == itemOrcamentoResponse.id
         }
+
+        val oldCusto = itemOrcamentoResponse.custos.filter { custoId == it.id }[0]
         if (custoRequest != null) {
             itensRequest?.get(0)?.custos = custoRequest
         }
@@ -130,7 +137,10 @@ class CalculadoraViewModel: ViewModel() {
                 if(response.code() == 200){
                     orcamentoResponse = orcamentoResponse?.copy(
                         itemOrcamentos = response.body()!!,
-                        orcamentoGasto = orcamentoResponse?.orcamentoGasto?.plus(newPrice)?.minus(oldCusto.precoAtual) ?: BigDecimal(0)
+                        orcamentoGasto = orcamentoResponse?.orcamentoGasto
+                            ?.plus(newPrice)
+                            ?.minus(oldCusto.precoAtual)
+                            ?: BigDecimal(0)
                     )
                     Log.i("CALCULADORA", "Categoria $addNewSubcategoria inserida com sucesso")
                 }
@@ -140,18 +150,36 @@ class CalculadoraViewModel: ViewModel() {
         }
     }
 
+    private fun buildCustoRequest(
+        itemOrcamentoResponse: ItemOrcamentoResponse,
+        addNewSubcategoria: String,
+        newPrice: BigDecimal,
+        custoId: Int?
+    ): MutableList<CustoItemRequest>?{
+        val custoRequest = itemOrcamentoResponse
+            ?.custos?.map { CustoItemRequest.custoItemRequest(it) }?.toMutableList()
+
+        if(Objects.nonNull(custoId)){
+            custoRequest?.filter { it.id == custoId }?.get(0)?.precoAtual = newPrice
+            return custoRequest
+        }
+        custoRequest?.add(
+            CustoItemRequest(
+                id = custoId,
+                nome = addNewSubcategoria,
+                precoAtual = newPrice
+            )
+        )
+        return custoRequest
+    }
+
     fun deleteCategoria(id: Int){
         val itemOrcamentos = orcamentoResponse?.itemOrcamentos
         val itemToBeDeleted = orcamentoResponse?.itemOrcamentos?.filter { it.id == id }?.get(0)
         viewModelScope.launch {
             try {
                 val response = calculadoraService.deleteById(id);
-                val custos = itemToBeDeleted!!.custos
-                    .map { it.precoAtual }
-                var custosToBeSubtracted = BigDecimal(0)
-                if(custos.isNotEmpty()){
-                    custosToBeSubtracted = custos.reduce{a, b -> a.plus(b)}
-                }
+                val custosToBeSubtracted = findCustosToBeSubtracted(itemToBeDeleted)
                 if(response.code() == 204){
                     orcamentoResponse = orcamentoResponse?.copy(
                         itemOrcamentos = itemOrcamentos!!.filter { it.id != id }.toMutableList(),
@@ -165,18 +193,27 @@ class CalculadoraViewModel: ViewModel() {
         }
     }
 
+    private fun findCustosToBeSubtracted(itemToBeDeleted: ItemOrcamentoResponse?): BigDecimal{
+        val custos = itemToBeDeleted!!.custos
+            .map { it.precoAtual }
+        var custosToBeSubtracted = BigDecimal(0)
+        if(custos.isNotEmpty()){
+            custosToBeSubtracted = custos.reduce{a, b -> a.plus(b)}
+        }
+        return custosToBeSubtracted
+    }
+
     fun deleteCusto(itemId: Int, id: Int){
         val itemOrcamentos = orcamentoResponse?.itemOrcamentos
-        val item = itemOrcamentos?.filter { it.id == itemId }?.toMutableList()?.get(0)
-        val custo = item?.custos?.filter { it.id == id }?.get(0)
-        item?.custos = item?.custos?.filter { it.id != id }!!.toMutableList()
+        val custoToBeRemoved = findCustoToBeRemoved(itemOrcamentos, itemId, id)
         viewModelScope.launch {
             try {
                 val response = calculadoraService.deleteCustoById(id);
                 if(response.code() == 204){
                     orcamentoResponse = orcamentoResponse?.copy(
                         itemOrcamentos = itemOrcamentos!!.toMutableList(),
-                        orcamentoGasto = orcamentoResponse!!.orcamentoGasto.minus(custo!!.precoAtual)
+                        orcamentoGasto = orcamentoResponse!!
+                            .orcamentoGasto.minus(custoToBeRemoved.precoAtual)
                     )
                     Log.i("CALCULADORA", "item de id $id deletado com sucesso!")
                 }
@@ -184,5 +221,15 @@ class CalculadoraViewModel: ViewModel() {
                 Log.e("CALCULADORA", "Não foi possível deletar o item, devido ao seguinte erro ${e.message}")
             }
         }
+    }
+    private fun findCustoToBeRemoved(
+        itemOrcamentos: MutableList<ItemOrcamentoResponse>?,
+        itemId: Int,
+        id: Int
+    ): CustoItemResponse{
+        val item = itemOrcamentos?.filter { it.id == itemId }?.toMutableList()?.get(0)
+        item?.custos = item?.custos?.filter { it.id != id }!!.toMutableList()
+        val custo = item.custos.filter { it.id == id }[0]
+        return custo
     }
 }
