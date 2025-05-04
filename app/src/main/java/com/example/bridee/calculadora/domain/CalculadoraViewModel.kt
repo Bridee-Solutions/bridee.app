@@ -6,7 +6,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.bridee.R
 import com.example.bridee.calculadora.data.CalculadoraEndpoints
 import com.example.bridee.core.api.ApiInstance
 import kotlinx.coroutines.Dispatchers
