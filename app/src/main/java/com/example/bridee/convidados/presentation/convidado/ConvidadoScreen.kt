@@ -51,6 +51,7 @@ import com.example.bridee.convidados.domain.Convite
 import com.example.bridee.convidados.presentation.component.ActionCircle
 import com.example.bridee.convidados.presentation.component.ActionReport
 import com.example.bridee.convidados.presentation.component.ActionSquare
+import com.example.bridee.convidados.presentation.component.CategoryBox
 import com.example.bridee.ui.components.ferramentas_section.domain.Tool
 import com.example.bridee.ui.components.ferramentas_section.presentation.screens.FerramentasSection
 
@@ -58,7 +59,6 @@ import com.example.bridee.ui.components.ferramentas_section.presentation.screens
 fun ConvidadoScreen(navController: NavController){
 
     val screenWidth = LocalConfiguration.current.screenWidthDp
-    val scrollState = rememberScrollState()
     var searchState by remember {
         mutableStateOf("")
     }
@@ -181,169 +181,32 @@ fun ConvidadoScreen(navController: NavController){
                     horizontalAlignment = Alignment.Start,
                     verticalArrangement = Arrangement.Top
                 ) {
-                    Row (
-                        verticalAlignment = Alignment.CenterVertically
-                    ){
-                        Spacer(modifier = Modifier.height(5.dp))
-                        Box(
-                            modifier = Modifier
-                                .background(
-                                    color = Color(0xFFDD7B78),
-                                    shape = RoundedCornerShape(10f)
-                                )
-                                .width(30.dp),
-                        ) {
-                            Text(
-                                text = "10",
-                                color = Color.White,
-                                textAlign = TextAlign.Center,
-                                modifier = Modifier.fillMaxWidth()
-                            )
-                        }
-                        VerticalDivider(
-                            modifier = Modifier.width(5.dp)
-                        )
-                        Text(
-                            text = "Convidados"
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(5.dp))
-                    Row (
-                        verticalAlignment = Alignment.CenterVertically
-                    ){
-                        Box (
-                            modifier = Modifier
-                                .background(
-                                    color = Color(0xFFDD7B78),
-                                    shape = RoundedCornerShape(10f)
-                                )
-                                .width(30.dp)
-                        ) {
-                            Text(
-                                text = "2",
-                                color = Color.White,
-                                textAlign = TextAlign.Center,
-                                modifier = Modifier.fillMaxWidth()
-                            )
-                        }
-                        VerticalDivider(
-                            modifier = Modifier.width(5.dp)
-                        )
-                        Text(
-                            text = "Convites"
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.height(5.dp))
-                    Row (
-                        verticalAlignment = Alignment.CenterVertically
-                    ){
-                        Box (
-                            modifier = Modifier
-                                .background(
-                                    color = Color(0xFFDD7B78),
-                                    shape = RoundedCornerShape(10f)
-                                )
-                                .width(30.dp)
-                        ) {
-                            Text(
-                                text = "3",
-                                color = Color.White,
-                                textAlign = TextAlign.Center,
-                                modifier = Modifier.fillMaxWidth()
-                            )
-                        }
-                        VerticalDivider(
-                            modifier = Modifier.width(5.dp)
-                        )
-                        Text(
-                            text = "Adultos"
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.height(5.dp))
-                    Row (
-                        verticalAlignment = Alignment.CenterVertically
-                    ){
-                        Box (
-                            modifier = Modifier
-                                .background(
-                                    color = Color(0xFFDD7B78),
-                                    shape = RoundedCornerShape(10f)
-                                )
-                                .width(30.dp)
-                        ) {
-                            Text(
-                                text = "3",
-                                color = Color.White,
-                                textAlign = TextAlign.Center,
-                                modifier = Modifier.fillMaxWidth()
-                            )
-                        }
-                        VerticalDivider(
-                            modifier = Modifier.width(5.dp)
-                        )
-                        Text(
-                            text = "Família da Amanda"
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.height(5.dp))
-                    Row (
-                        verticalAlignment = Alignment.CenterVertically
-                    ){
-                        Box (
-                            modifier = Modifier
-                                .background(
-                                    color = Color(0xFFDD7B78),
-                                    shape = RoundedCornerShape(10f)
-                                )
-                                .width(30.dp)
-                        ) {
-                            Text(
-                                text = "3",
-                                color = Color.White,
-                                textAlign = TextAlign.Center,
-                                modifier = Modifier.fillMaxWidth()
-                            )
-                        }
-                        VerticalDivider(
-                            modifier = Modifier.width(5.dp)
-                        )
-                        Text(
-                            text = "Amigos"
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.height(5.dp))
-                    Row (
-                        verticalAlignment = Alignment.CenterVertically
-                    ){
-                        Box (
-                            modifier = Modifier
-                                .background(
-                                    color = Color(0xFFDD7B78),
-                                    shape = RoundedCornerShape(15f)
-                                )
-                                .width(30.dp)
-                        ) {
-                            Text(
-                                text = "3",
-                                color = Color.White,
-                                textAlign = TextAlign.Center,
-                                modifier = Modifier.fillMaxWidth()
-                            )
-                        }
-                        VerticalDivider(
-                            modifier = Modifier.width(5.dp)
-                        )
-                        Text(
-                            text = "Colegas de trabalho"
-                        )
-                    }
+                    CategoryBox(
+                        quantity = "10",
+                        type = "Convidado(s)"
+                    )
+                    CategoryBox(
+                        quantity = "2",
+                        type = "Convites"
+                    )
+                    CategoryBox(
+                        quantity = "3",
+                        type = "Adultos"
+                    )
+                    CategoryBox(
+                        quantity = "3",
+                        type = "Familia da Amanda"
+                    )
+                    CategoryBox(
+                        quantity = "3",
+                        type = "Amigos"
+                    )
+                    CategoryBox(
+                        quantity = "3",
+                        type = "Colegas de trabalho"
+                    )
                 }
             }
-            Spacer(modifier = Modifier.height(20.dp))
             Row (
                 modifier = Modifier.fillMaxWidth()
                     .height(65.dp)
