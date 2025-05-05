@@ -4,7 +4,6 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,14 +14,12 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.MailOutline
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -40,7 +37,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
@@ -48,10 +44,10 @@ import androidx.navigation.NavController
 import com.example.bridee.R
 import com.example.bridee.convidados.domain.Convidado
 import com.example.bridee.convidados.domain.Convite
-import com.example.bridee.convidados.presentation.component.ActionCircle
 import com.example.bridee.convidados.presentation.component.ActionReport
 import com.example.bridee.convidados.presentation.component.ActionSquare
 import com.example.bridee.convidados.presentation.component.CategoryBox
+import com.example.bridee.convidados.presentation.component.ConviteComponent
 import com.example.bridee.ui.components.ferramentas_section.domain.Tool
 import com.example.bridee.ui.components.ferramentas_section.presentation.screens.FerramentasSection
 
@@ -275,84 +271,7 @@ fun ConvidadoScreen(navController: NavController){
             }
             Column {
                 for(convite in convites) {
-                    Column (
-                        modifier = Modifier
-                            .border(
-                                width = 0.5.dp,
-                                color = Color(0xFF9B9B9B)
-                            )
-                    ) {
-                        Spacer(modifier = Modifier.height(10.dp))
-                        Row (
-                            horizontalArrangement = Arrangement.SpaceEvenly,
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Text(convite.nome)
-                            Text(convite.ano)
-                            Button(
-                                onClick = {}
-                            ) {
-                                Text("Ver convite ->")
-                            }
-                        }
-                        Column (
-                            verticalArrangement = Arrangement.Top
-                        ) {
-                            convite.convidados.forEach {
-                                Spacer(modifier = Modifier.height(10.dp))
-                                Row (
-                                    horizontalArrangement = Arrangement.SpaceEvenly,
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                ) {
-                                    Row (
-                                        horizontalArrangement = Arrangement.Start,
-                                        verticalAlignment = Alignment.CenterVertically,
-                                        modifier = Modifier.width((screenWidth * 0.5).dp)
-                                            .padding(20.dp, 0.dp)
-                                    ) {
-                                        ActionCircle(
-                                            color = Color.Green
-                                        )
-                                        Text(
-                                            text = it.nome,
-                                            modifier = Modifier.padding(start = 5.dp)
-                                        )
-                                    }
-                                    Row (
-                                        horizontalArrangement = Arrangement.SpaceBetween,
-                                        verticalAlignment = Alignment.CenterVertically,
-                                        modifier = Modifier.width((screenWidth * 0.5).dp)
-                                            .padding(end = 12.dp)
-                                    ) {
-
-                                        Text(
-                                            text = it.tipo,
-                                            modifier = Modifier
-                                                .clip(RoundedCornerShape(15f))
-                                                .background(
-                                                    color = Color(0xFFC1C1C1)
-                                                )
-                                                .padding(4.dp)
-                                        )
-
-                                        Text(
-                                            text = it.faixaEtaria,
-                                            modifier = Modifier
-                                                .clip(RoundedCornerShape(15f))
-                                                .background(
-                                                    color = Color(0xFFEFEAEA)
-                                                )
-                                                .padding(4.dp)
-                                        )
-                                    }
-                                }
-                            }
-                        }
-                        Spacer(modifier = Modifier.height(10.dp))
-                    }
+                    ConviteComponent(convite)
                 }
             }
             Spacer(modifier = Modifier.height(90.dp))
