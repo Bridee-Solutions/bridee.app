@@ -31,10 +31,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.example.bridee.calculadora.domain.CalculadoraViewModel
-import com.example.bridee.calculadora.domain.CategoriaItem
 import com.example.bridee.calculadora.domain.ItemOrcamentoResponse
 import com.example.bridee.calculadora.presentation.components.CategoriaDetalhes.CustomModal
 

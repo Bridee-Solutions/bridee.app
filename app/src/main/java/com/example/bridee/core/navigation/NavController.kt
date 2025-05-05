@@ -1,7 +1,6 @@
 package com.example.bridee.core.navigation
 
 import android.content.Context
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
@@ -9,11 +8,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import androidx.navigation.navArgument
 import com.example.bridee.auth.domain.AuthenticationViewModel
 import com.example.bridee.auth.domain.RegistrationSharedViewModel
 import com.example.bridee.auth.presentation.login.LoginScreen
@@ -30,19 +27,17 @@ import com.example.bridee.calculadora.domain.CalculadoraViewModel
 import com.example.bridee.calculadora.domain.ItemOrcamentoResponse
 import com.example.bridee.calculadora.presentation.screens.CalculadoraScreen
 import com.example.bridee.calculadora.presentation.screens.CategoriaDetalhesScreen
+import com.example.bridee.calculadora.presentation.screens.FornecedorDetalhesScreen
 import com.example.bridee.configuracoes.presentation.screen.ConfiguracoesScreen
 import com.example.bridee.lista_tarefas.presentation.screens.ListaTarefasScreen
 import com.example.bridee.servicos.presentation.screens.HomeScreen
 import com.example.bridee.servicos.presentation.screens.InspiracaoScreen
 import com.example.bridee.servicos.presentation.screens.ServicosScreen
 import com.google.gson.Gson
-import java.math.BigDecimal
-import java.net.URL
 import java.net.URLDecoder
 
 @Composable
 fun NavController(navController: NavHostController, context: Context){
-//    val navController = rememberNavController()
     NavHost(navController = navController, startDestination = Screen.Login.route){
         composable(route = Screen.Login.route) {
             val authenticationViewModel: AuthenticationViewModel = AuthenticationViewModel(context)
@@ -108,6 +103,15 @@ fun NavController(navController: NavHostController, context: Context){
                 CategoriaDetalhesScreen(
                     viewModel = viewModel,
                     item = item,
+                    navController = navController
+                )
+            }
+            composable(
+                route = Screen.FornecedorDetalhes.route
+            ) { backStackEntry ->
+                val viewModel = backStackEntry.sharedViewModel<CalculadoraViewModel>(navController)
+                FornecedorDetalhesScreen(
+                    viewModel = viewModel,
                     navController = navController
                 )
             }

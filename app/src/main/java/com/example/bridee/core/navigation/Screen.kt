@@ -1,6 +1,6 @@
 package com.example.bridee.core.navigation
 
-import com.example.bridee.calculadora.domain.CalculadoraViewModel
+import com.example.bridee.calculadora.domain.OrcamentoFornecedorResponse
 
 sealed class Screen (val route: String){
     object Login: Screen("login")
@@ -21,6 +21,7 @@ sealed class Screen (val route: String){
             item: String
         ) = "categoria_detalhes/$item"
     }
+    object FornecedorDetalhes : Screen("fornecedores_detalhes")
     object Home : Screen("home")
     object Servicos : Screen("servicos")
     object Inspiracao : Screen("inspiracao")

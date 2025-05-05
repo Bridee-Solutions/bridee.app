@@ -213,7 +213,7 @@ class CalculadoraViewModel: ViewModel() {
                     orcamentoResponse = orcamentoResponse?.copy(
                         itemOrcamentos = itemOrcamentos!!.toMutableList(),
                         orcamentoGasto = orcamentoResponse!!
-                            .orcamentoGasto.minus(custoToBeRemoved.precoAtual)
+                            .orcamentoGasto.minus(custoToBeRemoved!!.precoAtual)
                     )
                     Log.i("CALCULADORA", "item de id $id deletado com sucesso!")
                 }
@@ -226,10 +226,10 @@ class CalculadoraViewModel: ViewModel() {
         itemOrcamentos: MutableList<ItemOrcamentoResponse>?,
         itemId: Int,
         id: Int
-    ): CustoItemResponse{
+    ): CustoItemResponse?{
         val item = itemOrcamentos?.filter { it.id == itemId }?.toMutableList()?.get(0)
         item?.custos = item?.custos?.filter { it.id != id }!!.toMutableList()
-        val custo = item.custos.filter { it.id == id }[0]
+        val custo = item?.custos?.filter { it.id == id }?.get(0)
         return custo
     }
 }

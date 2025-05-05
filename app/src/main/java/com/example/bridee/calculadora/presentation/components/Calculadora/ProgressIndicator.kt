@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.bridee.ui.theme.rosa
 import java.math.BigDecimal
+import java.math.RoundingMode
 
 @Composable
 fun ProgressIndicator(
@@ -31,7 +32,7 @@ fun ProgressIndicator(
             style = MaterialTheme.typography.bodyLarge
         )
         Text(
-            text = "R$${value}",
+            text = "R$${value.setScale(2, RoundingMode.DOWN)}",
             style = MaterialTheme.typography.bodyLarge
         )
     }

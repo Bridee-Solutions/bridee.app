@@ -48,7 +48,7 @@ fun ControleDeGastoCard(viewModel: CalculadoraViewModel) {
     val orcamento = viewModel.orcamentoResponse
     val orcamentoTotal = orcamento?.orcamentoTotal ?: BigDecimal(0)
     val orcamentoGasto = orcamento?.orcamentoGasto ?: BigDecimal(0)
-    val orcamentoRestante = orcamentoTotal.minus(orcamentoGasto)
+    val orcamentoRestante = orcamentoTotal.minus(orcamentoGasto).setScale(2, RoundingMode.DOWN)
 
     Box(
         modifier = Modifier

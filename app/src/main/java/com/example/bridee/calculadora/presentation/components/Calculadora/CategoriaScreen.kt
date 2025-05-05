@@ -73,14 +73,24 @@ fun CategoriaScreen(viewModel: CalculadoraViewModel, navController: NavControlle
 
             Spacer(modifier = Modifier.height(15.dp))
 
-            if(!categorias.isNullOrEmpty()){
-                categorias.forEachIndexed { index, item ->
+            if(!categorias.isNullOrEmpty() || !fornecedores.isNullOrEmpty()){
+                if(!fornecedores.isNullOrEmpty()){
+                    FornecedorCard(
+                        totalFornecedores = viewModel.orcamentoResponse!!.orcamentoFornecedores.size,
+                        totalDespesas = viewModel.orcamentoResponse!!.totalDespesasFornecedor(),
+                        openModal = {
+                            navController.navigate(Screen.FornecedorDetalhes.route)
+                        }
+                    )
+                }
+                categorias?.forEachIndexed { index, item ->
                     val json = URLEncoder.encode(Gson().toJson(item), "UTF-8")
                     CategoriaCard(
                         item = item,
                         openModal = {
                             navController.navigate(
-                                Screen.CategoriaDetalhes.createRoute(json))
+                                Screen.CategoriaDetalhes.createRoute(json)
+                            )
                         },
                         viewModel = viewModel
                     )
