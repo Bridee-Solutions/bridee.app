@@ -2,7 +2,6 @@ package com.example.bridee.inspiracao.presentation.components
 
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,11 +25,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.bridee.inspiracao.domain.TelaInpiracaoViewModel
+import com.example.bridee.inspiracao.domain.TelaInspiracaoViewModel
 
 
 @Composable
-fun Navegar(viewModel: TelaInpiracaoViewModel) {
+fun Navegar(viewModel: TelaInspiracaoViewModel) {
     var selecionado by remember { mutableStateOf("Inspirações") }
 
     Column(
@@ -87,7 +86,7 @@ fun Navegar(viewModel: TelaInpiracaoViewModel) {
         ) {
             when (selecionado) {
                 "Inspirações" -> TelaInspiracao(viewModel)
-                "Quadro de inspiração" -> TelaQuadroInspiracao()
+                "Quadro de inspiração" -> TelaQuadroInspiracao(viewModel)
             }
         }
     }

@@ -28,7 +28,7 @@ import com.example.bridee.auth.presentation.registration.fases.fase7.Fase7Regist
 import com.example.bridee.calculadora.presentation.screens.CalculadoraScreen
 import com.example.bridee.calculadora.presentation.screens.CategoriaDetalhesScreen
 import com.example.bridee.configuracoes.presentation.screen.ConfiguracoesScreen
-import com.example.bridee.inspiracao.domain.TelaInpiracaoViewModel
+import com.example.bridee.inspiracao.domain.TelaInspiracaoViewModel
 import com.example.bridee.lista_tarefas.presentation.screens.ListaTarefasScreen
 import com.example.bridee.servicos.presentation.screens.HomeScreen
 import com.example.bridee.servicos.presentation.screens.InspiracaoScreen
@@ -110,7 +110,7 @@ fun NavController(navController: NavHostController, paddingValues: PaddingValues
             ServicosScreen(navController)
         }
         composable(route = Screen.Inspiracao.route) {
-            val viewModel = TelaInpiracaoViewModel()
+            val viewModel = TelaInspiracaoViewModel()
             InspiracaoScreen(viewModel, navController)
         }
 

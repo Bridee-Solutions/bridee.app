@@ -14,17 +14,26 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.example.bridee.R
+import com.example.bridee.inspiracao.domain.TelaInspiracaoViewModel
 import com.example.bridee.ui.theme.rosa
 
 @Composable
-fun TelaQuadroInspiracao() {
-    val items = (1..10).toList()
+fun TelaQuadroInspiracao(viewModel: TelaInspiracaoViewModel) {
+
+    val items = viewModel.pexelsFavoriteImages
+    LaunchedEffect(true) {
+        viewModel.findFavoritesImages()
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -49,15 +58,12 @@ fun TelaQuadroInspiracao() {
                             .fillMaxSize()
                             .background(Color(0xFFE0E0E0))
                     ) {
-
-                    }
-
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(Color(0xFFE0E0E0))
-                    ) {
-
+                        AsyncImage(
+                            model = item?.data,
+                            contentDescription = "Imagem favoritada",
+                            modifier = Modifier.size(200.dp),
+                            contentScale = ContentScale.Crop
+                        )
                     }
 
                     Image(

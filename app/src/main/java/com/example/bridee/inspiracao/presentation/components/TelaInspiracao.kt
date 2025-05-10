@@ -45,15 +45,15 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import coil.compose.AsyncImage
 import com.example.bridee.R
-import com.example.bridee.inspiracao.domain.TelaInpiracaoViewModel
+import com.example.bridee.inspiracao.domain.TelaInspiracaoViewModel
 import com.example.bridee.ui.theme.rosa
 
 @Composable
-fun TelaInspiracao(viewModel: TelaInpiracaoViewModel) {
+fun TelaInspiracao(viewModel: TelaInspiracaoViewModel) {
     LaunchedEffect(true) {
         viewModel.findPexelsImage("Casamento")
     }
-    var photos = viewModel.pexelsInfo!!.photos
+    val photos = viewModel.pexelsInfo!!.photos
     var showFilterDialog by remember { mutableStateOf(false) }
 
     Column(
@@ -62,7 +62,6 @@ fun TelaInspiracao(viewModel: TelaInpiracaoViewModel) {
             .background(Color.White),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
         Row(
             modifier = Modifier
                 .fillMaxWidth(0.9f)
