@@ -38,6 +38,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -50,11 +51,12 @@ import com.example.bridee.ui.theme.rosa
 
 @Composable
 fun TelaInspiracao(viewModel: TelaInspiracaoViewModel) {
-    LaunchedEffect(true) {
-        viewModel.findPexelsImage("Casamento")
-    }
     val photos = viewModel.pexelsInfo!!.photos
     var showFilterDialog by remember { mutableStateOf(false) }
+    var renderScreen by remember { mutableStateOf(true) }
+    LaunchedEffect(renderScreen) {
+        viewModel.findPexelsImage("Casamento")
+    }
 
     Column(
         modifier = Modifier
@@ -119,11 +121,36 @@ fun TelaInspiracao(viewModel: TelaInspiracaoViewModel) {
                         .aspectRatio(1f)
                         .background(Color(0xFFE0E0E0))
                 ) {
-                    AsyncImage(
-                        model = item?.source?.medium,
-                        contentDescription = item.altText,
-                        modifier = Modifier.size(200.dp),
-                        contentScale = ContentScale.Crop
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(Color(0xFFE0E0E0))
+                    ) {
+                        AsyncImage(
+                            model = item?.source?.medium,
+                            contentDescription = item.altText,
+                            modifier = Modifier.size(200.dp),
+                            contentScale = ContentScale.Crop
+                        )
+                    }
+                    val favoritarColor = if (item.favorite){
+                        ColorFilter.tint(rosa)
+                    }else {
+                        ColorFilter.tint(Color(0xFFE0E0E0))
+                    }
+                    Image(
+                        painter = painterResource(id = R.drawable.bookmark),
+                        contentDescription = "Favoritar",
+                        colorFilter = favoritarColor,
+                        modifier = Modifier
+                            .align(Alignment.TopEnd)
+                            .padding(8.dp)
+                            .size(24.dp)
+                            .clickable {
+                                viewModel.favoriteImage(item)
+                                item.favorite = true
+                                renderScreen = !renderScreen
+                            }
                     )
                 }
             }

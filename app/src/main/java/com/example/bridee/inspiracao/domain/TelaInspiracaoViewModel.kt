@@ -2,7 +2,6 @@ package com.example.bridee.inspiracao.domain
 
 import android.util.Log
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
@@ -27,6 +26,19 @@ class TelaInspiracaoViewModel: ViewModel() {
                 }
             }catch (e: Exception){
                 Log.e("INSPIRAÇÕES", "Aconteceu um erro ao buscar as imagens, erro: ${e.message}")
+            }
+        }
+    }
+
+    fun favoriteImage(image: PexelPhotos){
+        viewModelScope.launch {
+            try {
+                val response = pexelsService.favoriteImage(image.toImageMetadata())
+                if(response.code() == 204){
+                    Log.i("INSPIRAÇÕES", "Imagem favoritada com sucesso!")
+                }
+            }catch (e: Exception){
+                Log.e("INSPIRAÇÕES", "Houve um erro ao favoritar a imagem")
             }
         }
     }
