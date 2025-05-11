@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 class TelaInspiracaoViewModel: ViewModel() {
 
     val pexelsService = ApiInstance().createService(InpiracaoEndpoints::class.java)
-    var pexelsInfo by mutableStateOf<PexelsResponseDto?>(PexelsResponseDto())
+    var pexelsInfo by mutableStateOf(PexelsResponseDto())
     var pexelsFavoriteImages by mutableStateOf<List<FavoriteImageResponse>>(mutableListOf())
 
     fun findPexelsImage(inspiracao: String){
@@ -53,6 +53,21 @@ class TelaInspiracaoViewModel: ViewModel() {
                 }
             }catch (e: Exception){
                 Log.e("INSPIRAÇÕES", "Busca pelas imagens favoritas retornou o seguinte erro ${e.message}")
+            }
+        }
+    }
+
+    fun desfavoriteImage(id: Int) {
+        viewModelScope.launch {
+            try {
+                val response = pexelsService.desfavoriteImage(id)
+                if(response.code() == 204){
+                    val newItems = pexelsFavoriteImages.toMutableList().filter { it.id != id }
+                    pexelsFavoriteImages = newItems.toMutableList()
+                    Log.i("INSPIRAÇÕES", "Imagem desfavoritada com sucesso!")
+                }
+            }catch (e: Exception){
+                Log.e("INSPIRAÇÕES", "Houve um erro ao desfavoritar a imagem")
             }
         }
     }

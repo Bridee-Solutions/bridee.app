@@ -54,8 +54,10 @@ fun TelaInspiracao(viewModel: TelaInspiracaoViewModel) {
     val photos = viewModel.pexelsInfo!!.photos
     var showFilterDialog by remember { mutableStateOf(false) }
     var renderScreen by remember { mutableStateOf(true) }
+    var inspiracao by remember { mutableStateOf("Casamento") }
+
     LaunchedEffect(renderScreen) {
-        viewModel.findPexelsImage("Casamento")
+        viewModel.findPexelsImage(inspiracao)
     }
 
     Column(
@@ -147,8 +149,13 @@ fun TelaInspiracao(viewModel: TelaInspiracaoViewModel) {
                             .padding(8.dp)
                             .size(24.dp)
                             .clickable {
-                                viewModel.favoriteImage(item)
-                                item.favorite = true
+                                if(item.favorite){
+                                    viewModel.desfavoriteImage(item.id.toInt())
+                                    item.favorite = false
+                                }else{
+                                    viewModel.favoriteImage(item)
+                                    item.favorite = true
+                                }
                                 renderScreen = !renderScreen
                             }
                     )
@@ -196,7 +203,8 @@ fun TelaInspiracao(viewModel: TelaInspiracaoViewModel) {
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .clickable {
-                                        viewModel.findPexelsImage("Casamento $estilo")
+                                        inspiracao = "Casamento em $estilo"
+                                        viewModel.findPexelsImage(inspiracao)
                                         showFilterDialog = false
                                     }
                                     .padding(vertical = 12.dp, horizontal = 16.dp),

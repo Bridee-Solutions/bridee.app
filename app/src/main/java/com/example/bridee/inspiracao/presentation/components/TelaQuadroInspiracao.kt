@@ -1,11 +1,11 @@
 package com.example.bridee.inspiracao.presentation.components
 
-import androidx.compose.ui.res.painterResource
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.bridee.R
@@ -29,7 +30,7 @@ import com.example.bridee.ui.theme.rosa
 @Composable
 fun TelaQuadroInspiracao(viewModel: TelaInspiracaoViewModel) {
 
-    val items = viewModel.pexelsFavoriteImages
+    var items = viewModel.pexelsFavoriteImages.toMutableList()
     LaunchedEffect(true) {
         viewModel.findFavoritesImages()
     }
@@ -45,7 +46,7 @@ fun TelaQuadroInspiracao(viewModel: TelaInspiracaoViewModel) {
             modifier = Modifier
                 .fillMaxWidth(0.9f)
                 .padding(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.Top,
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(items) { item ->
@@ -74,6 +75,9 @@ fun TelaQuadroInspiracao(viewModel: TelaInspiracaoViewModel) {
                             .align(Alignment.TopEnd)
                             .padding(8.dp)
                             .size(24.dp)
+                            .clickable {
+                                viewModel.desfavoriteImage(item.id)
+                            }
                     )
                 }
             }
