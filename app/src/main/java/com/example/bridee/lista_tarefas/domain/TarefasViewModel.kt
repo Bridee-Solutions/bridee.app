@@ -2,20 +2,22 @@ package com.example.bridee.lista_tarefas.domain
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.bridee.lista_tarefas.data.Tarefa
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
+class TarefasViewModel : ViewModel() {
 
-class TarefasViewModel(
-    private val listar: ListarTarefasUseCase,
-    private val adicionar: AdicionarTarefaUseCase,
-    private val atualizar: AtualizarTarefaUseCase,
-    private val deletar: DeletarTarefaUseCase
-) : ViewModel() {
+    private val repository = TarefaRepository()
 
-    private val listaTarefas = MutableStateFlow<List<Tarefa>>(emptyList())
-    val tarefa: StateFlow<List<Tarefa>> = listaTarefas
+    private val listar = ListarTarefasUseCase(repository)
+    private val adicionar = AdicionarTarefaUseCase(repository)
+    private val atualizar = AtualizarTarefaUseCase(repository)
+    private val deletar = DeletarTarefaUseCase(repository)
+
+    private val _tarefas = MutableStateFlow(listOf<Tarefa>())
+    val tarefas: StateFlow<List<Tarefa>> = _tarefas
 
     init {
         carregarTarefas()
@@ -23,13 +25,13 @@ class TarefasViewModel(
 
     fun carregarTarefas() {
         viewModelScope.launch {
-            listaTarefas.value = listar()
+            _tarefas.value = listar()
         }
     }
 
-    fun adicionarTarefa(tarefa: Tarefa) {
+    fun adicionarTarefa(descricao: String) {
         viewModelScope.launch {
-            adicionar(tarefa)
+            adicionar(descricao)
             carregarTarefas()
         }
     }
@@ -41,10 +43,9 @@ class TarefasViewModel(
         }
     }
 
-
-    fun deletarTarefa(tarefa: Tarefa) {
+    fun deletarTarefa(id: Int) {
         viewModelScope.launch {
-            deletarTarefa(tarefa)
+            deletar(id)
             carregarTarefas()
         }
     }

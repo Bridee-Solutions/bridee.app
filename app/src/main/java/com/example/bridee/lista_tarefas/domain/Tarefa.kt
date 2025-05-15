@@ -1,10 +1,8 @@
-package com.example.bridee.lista_tarefas.domain
 
-import java.time.LocalDate
+package com.example.bridee.lista_tarefas.data
 
 data class Tarefa(
     val id: Int,
-    val titulo: String,
-    val data: LocalDate,
+    var descricao: String,
     var concluida: Boolean = false
 )

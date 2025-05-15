@@ -1,5 +1,6 @@
+
 package com.example.bridee.lista_tarefas.domain
 
-class DeletarTarefaUseCase(private val repository: ListaTarefasRepository) {
-    suspend operator fun invoke(id: Long) = repository.deletarTarefa(id)
+class DeletarTarefaUseCase(private val repository: TarefaRepository) {
+    operator fun invoke(id: Int) = repository.deletar(id)
 }
