@@ -5,23 +5,21 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import com.example.bridee.lista_tarefas.domain.ListarTarefasUseCase
-import com.example.bridee.lista_tarefas.domain.AdicionarTarefaUseCase
-import com.example.bridee.lista_tarefas.domain.AtualizarTarefaUseCase
-import com.example.bridee.lista_tarefas.domain.DeletarTarefaUseCase
 
 
 class TarefasViewModel(
-
     private val listar: ListarTarefasUseCase,
     private val adicionar: AdicionarTarefaUseCase,
     private val atualizar: AtualizarTarefaUseCase,
     private val deletar: DeletarTarefaUseCase
-
 ) : ViewModel() {
 
     private val listaTarefas = MutableStateFlow<List<Tarefa>>(emptyList())
-    val tarefas: StateFlow<List<Tarefa>> = listaTarefas
+    val tarefa: StateFlow<List<Tarefa>> = listaTarefas
+
+    init {
+        carregarTarefas()
+    }
 
     fun carregarTarefas() {
         viewModelScope.launch {
@@ -43,9 +41,10 @@ class TarefasViewModel(
         }
     }
 
-    fun deletarTarefa(id: Long) {
+
+    fun deletarTarefa(tarefa: Tarefa) {
         viewModelScope.launch {
-            deletar(id)
+            deletarTarefa(tarefa)
             carregarTarefas()
         }
     }
