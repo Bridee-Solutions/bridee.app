@@ -37,9 +37,9 @@ import com.example.bridee.servicos.presentation.screens.ServicosScreen
 @Composable
 fun NavController(navController: NavHostController, paddingValues: PaddingValues){
 //    val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = Screen.Inspiracao.route){
+    NavHost(navController = navController, startDestination = Screen.Login.route){
         composable(route = Screen.Login.route) {
-            val authenticationViewModel: AuthenticationViewModel = AuthenticationViewModel()
+            val authenticationViewModel = AuthenticationViewModel()
             LoginScreen(authenticationViewModel, navController)
         }
         navigation(

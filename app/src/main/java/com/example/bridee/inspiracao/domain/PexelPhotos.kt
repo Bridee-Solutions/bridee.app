@@ -3,7 +3,7 @@ package com.example.bridee.inspiracao.domain
 import java.time.LocalDateTime
 
 data class PexelPhotos(
-    val id: Long,
+    var id: Long,
     val photographer: String,
     val photographerUrl: String,
     val photographerId: String,
@@ -12,11 +12,11 @@ data class PexelPhotos(
     var favorite: Boolean
 ){
     fun toImageMetadata(): ImageMetadata{
-        val originalSource = source.original.split(".")
+        val originalSource = source.small.split(".")
         val extensao = originalSource[originalSource.size - 1]
         return ImageMetadata(
             nome = altText.plus(LocalDateTime.now().toString()),
-            url = source.medium,
+            url = source.small,
             extensao = extensao
         )
     }

@@ -9,19 +9,40 @@ import androidx.lifecycle.viewModelScope
 import com.example.bridee.core.api.ApiInstance
 import com.example.bridee.inspiracao.data.InpiracaoEndpoints
 import kotlinx.coroutines.launch
+import java.util.Objects
 
 class TelaInspiracaoViewModel: ViewModel() {
 
     val pexelsService = ApiInstance().createService(InpiracaoEndpoints::class.java)
-    var pexelsInfo by mutableStateOf(PexelsResponseDto())
+    var pexelsInfo by mutableStateOf<PexelsResponseDto?>(null)
     var pexelsFavoriteImages by mutableStateOf<List<FavoriteImageResponse>>(mutableListOf())
+    var lastPageFetched by mutableStateOf(1)
 
     fun findPexelsImage(inspiracao: String){
+        if(Objects.isNull(pexelsInfo)){
+            prepareForPexelsResponse()
+        }
         viewModelScope.launch {
             try{
-                val response = pexelsService.findImages(inspiracao)
+                val response = pexelsService.findImages(
+                    inspiracao,
+                    lastPageFetched.toString(),
+                    "15"
+                )
                 if(response.code() == 200){
-                    pexelsInfo = response.body()!!
+                    response.body()?.let { body ->
+                        val current = pexelsInfo!!.photos.toMutableList()
+                        val photosToBeAdded = body.photos.filter {!pexelsInfo!!.photos.contains(it)}
+                        current.addAll(photosToBeAdded)
+
+                        pexelsInfo = pexelsInfo!!.copy(
+                            photos = current,
+                            page = body.page,
+                            perPage = body.perPage,
+                            totalResults = body.totalResults,
+                            nextPageUrl = body.nextPageUrl
+                        )
+                    }
                     Log.i("INSPIRAÇÕES", "Busca realizada com sucesso para inspiração $inspiracao")
                 }
             }catch (e: Exception){
@@ -34,13 +55,30 @@ class TelaInspiracaoViewModel: ViewModel() {
         viewModelScope.launch {
             try {
                 val response = pexelsService.favoriteImage(image.toImageMetadata())
-                if(response.code() == 204){
+                if(response.code() == 200){
+                    val updatedPhotos = updateFavoriteImage(response.body(), image)
+                    pexelsInfo = pexelsInfo!!.copy(photos = updatedPhotos)
                     Log.i("INSPIRAÇÕES", "Imagem favoritada com sucesso!")
                 }
             }catch (e: Exception){
                 Log.e("INSPIRAÇÕES", "Houve um erro ao favoritar a imagem")
             }
         }
+    }
+
+    private fun updateFavoriteImage(
+        response: FavoriteImageResponse?,
+        image: PexelPhotos
+    ): List<PexelPhotos>{
+        val responseId = response!!.id
+        val updatedPhotos = pexelsInfo!!.photos.map {
+            if(it.id == image.id){
+                it.copy(id = responseId.toLong())
+            }else{
+                it
+            }
+        }
+        return updatedPhotos
     }
 
     fun findFavoritesImages(){
@@ -70,6 +108,18 @@ class TelaInspiracaoViewModel: ViewModel() {
                 Log.e("INSPIRAÇÕES", "Houve um erro ao desfavoritar a imagem")
             }
         }
+    }
+
+    fun toggleFavoriteImage(photoId: Long){
+        val updatedPhotos = pexelsInfo!!.photos.map { photo ->
+            if (photo.id == photoId) photo.copy(favorite = !photo.favorite) else photo
+        }
+        pexelsInfo = pexelsInfo!!.copy(photos = updatedPhotos)
+    }
+
+
+    fun prepareForPexelsResponse(){
+        pexelsInfo = PexelsResponseDto()
     }
 
 }

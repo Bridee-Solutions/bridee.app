@@ -14,13 +14,17 @@ import retrofit2.http.Query
 interface InpiracaoEndpoints {
 
     @GET("pexels/images")
-    suspend fun findImages(@Query("query") query: String): Response<PexelsResponseDto>
+    suspend fun findImages(
+        @Query("query") query: String,
+        @Query("page") page: String,
+        @Query("perPage") perPage: String
+    ): Response<PexelsResponseDto>
 
     @GET("pexels/favoritos")
     suspend fun findFavoritesImages(): Response<PaginationResponse<FavoriteImageResponse>>
 
     @POST("pexels/favoritos")
-    suspend fun favoriteImage(@Body body: ImageMetadata): Response<Void>
+    suspend fun favoriteImage(@Body body: ImageMetadata): Response<FavoriteImageResponse>
 
     @POST("pexels/desfavoritar/{id}")
     suspend fun desfavoriteImage(@Path("id") id: Int): Response<Void>

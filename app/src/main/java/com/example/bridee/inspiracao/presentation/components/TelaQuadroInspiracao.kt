@@ -30,7 +30,7 @@ import com.example.bridee.ui.theme.rosa
 @Composable
 fun TelaQuadroInspiracao(viewModel: TelaInspiracaoViewModel) {
 
-    var items = viewModel.pexelsFavoriteImages.toMutableList()
+    val items = viewModel.pexelsFavoriteImages.toMutableList()
     LaunchedEffect(true) {
         viewModel.findFavoritesImages()
     }
@@ -60,7 +60,7 @@ fun TelaQuadroInspiracao(viewModel: TelaInspiracaoViewModel) {
                             .background(Color(0xFFE0E0E0))
                     ) {
                         AsyncImage(
-                            model = item?.data,
+                            model = item.data,
                             contentDescription = "Imagem favoritada",
                             modifier = Modifier.size(200.dp),
                             contentScale = ContentScale.Crop
