@@ -16,12 +16,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.bridee.convidados.domain.Convite
 
+import androidx.compose.material3.ButtonDefaults
+import com.example.bridee.ui.theme.rosa
+
 @Composable
 fun ConviteComponent(
     convite: Convite
-){
-
-    Column (
+) {
+    Column(
         modifier = Modifier
             .border(
                 width = 0.5.dp,
@@ -29,7 +31,7 @@ fun ConviteComponent(
             )
     ) {
         Spacer(modifier = Modifier.height(10.dp))
-        Row (
+        Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()
@@ -37,12 +39,15 @@ fun ConviteComponent(
             Text(convite.nome)
             Text(convite.ano)
             Button(
-                onClick = {}
+                onClick = {},
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = rosa
+                )
             ) {
-                Text("Ver convite ->")
+                Text("Ver convite ->", color = Color.White)
             }
         }
-        Column (
+        Column(
             verticalArrangement = Arrangement.Top
         ) {
             convite.convidados.forEach {
