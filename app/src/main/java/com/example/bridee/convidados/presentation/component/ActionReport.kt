@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -21,6 +22,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun ActionReport(){
@@ -59,17 +61,16 @@ fun ActionReport(){
                 )
             }
             Row{
-                Text("Relatório de convidados")
+                Text("Relatório de convidados",
+                style = MaterialTheme.typography.titleMedium.copy(fontSize = 19.sp)
+                    )
             }
             Row(
                 modifier = Modifier.offset(y = (-10).dp)
             ){
                 Text(
                     text = "5 convidados irão comparecer",
-                    fontSize = TextUnit(
-                        value = 12.0f,
-                        type = TextUnitType.Sp
-                    )
+                    style = MaterialTheme.typography.bodySmall
                 )
             }
         }

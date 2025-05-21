@@ -3,6 +3,7 @@ package com.example.bridee.convidados.presentation.convidado
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -20,7 +22,9 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.MailOutline
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
@@ -37,9 +41,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.bridee.R
 import com.example.bridee.convidados.domain.Convidado
@@ -48,9 +54,11 @@ import com.example.bridee.convidados.presentation.component.ActionReport
 import com.example.bridee.convidados.presentation.component.ActionSquare
 import com.example.bridee.convidados.presentation.component.CategoryBox
 import com.example.bridee.convidados.presentation.component.ConviteComponent
+import com.example.bridee.convidados.presentation.component.TopBarDePesquisa
 import com.example.bridee.ui.components.ferramentas_section.domain.Tool
 import com.example.bridee.ui.components.ferramentas_section.presentation.screens.FerramentasSection
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ConvidadoScreen(navController: NavController){
 
@@ -105,6 +113,7 @@ fun ConvidadoScreen(navController: NavController){
             )
         )
     }
+    Text(text = "Valor da busca: '$searchState'")
 
     LazyColumn (
         modifier = Modifier
@@ -158,16 +167,17 @@ fun ConvidadoScreen(navController: NavController){
             ) {
                 Row (
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.width(170.dp),
+                    modifier = Modifier.wrapContentWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ){
                     Icon(
                         painter = painterResource(R.drawable.filter),
-                        contentDescription = "Ícone que acompanha o total de convidados"
+                        contentDescription = "Ícone que acompanha o total de convidados",
+                        modifier = Modifier.padding(end = 8.dp)
                     )
                     Text(
                         text = "Total de convidados",
-
+                        style = MaterialTheme.typography.titleMedium,
                         )
                 }
 
@@ -177,98 +187,60 @@ fun ConvidadoScreen(navController: NavController){
                     horizontalAlignment = Alignment.Start,
                     verticalArrangement = Arrangement.Top
                 ) {
+                    Spacer(modifier = Modifier.height(10.dp))
+
                     CategoryBox(
                         quantity = "10",
                         type = "Convidado(s)"
                     )
+                    Spacer(modifier = Modifier.height(10.dp))
+
                     CategoryBox(
                         quantity = "2",
                         type = "Convites"
                     )
+                    Spacer(modifier = Modifier.height(10.dp))
+
                     CategoryBox(
                         quantity = "3",
                         type = "Adultos"
                     )
+                    Spacer(modifier = Modifier.height(10.dp))
+
                     CategoryBox(
                         quantity = "3",
                         type = "Familia da Amanda"
                     )
+                    Spacer(modifier = Modifier.height(10.dp))
+
                     CategoryBox(
                         quantity = "3",
                         type = "Amigos"
                     )
+                    Spacer(modifier = Modifier.height(10.dp))
+
                     CategoryBox(
                         quantity = "3",
                         type = "Colegas de trabalho"
                     )
+                    Spacer(modifier = Modifier.height(15.dp))
+
                 }
             }
-            Row (
-                modifier = Modifier.fillMaxWidth()
-                    .height(65.dp)
-                    .background(
-                        color = Color(0xFFF5F1DF)
-                    ),
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                OutlinedTextField(
-                    value = searchState,
-                    onValueChange = { searchState = it },
-                    singleLine = true,
-                    placeholder = {
-                        Icon(
-                            imageVector = Icons.Filled.Search,
-                            contentDescription = "Pesquisa",
-                            tint = Color(0xFF7E7E7E)
-                        )
-                        Text(
-                            text = "Pesquisar",
-                            modifier = Modifier.offset(x = 25.dp, y = (-2).dp),
-                            color = Color(0xFF707070),
-                        )
-                    },
-                    modifier = Modifier
-                        .border(
-                            BorderStroke(width = 1.dp, color = Color(0xFF999999)),
-                            shape = RoundedCornerShape(30)
-                        )
-                        .width(240.dp)
-                        .height(50.dp),
-                    colors = TextFieldDefaults.colors(
-                        unfocusedContainerColor = Color.White,
-                        focusedContainerColor = Color.White,
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent,
-                    ),
-                    textStyle = TextStyle(
-                        lineHeight = TextUnit(
-                            value = 25f,
-                            type = TextUnitType.Sp
-                        ),
-                        fontSize = TextUnit(
-                            value = 14f,
-                            type = TextUnitType.Sp
-                        )
-                    )
-                )
-                Column(
-                    modifier = Modifier
-                        .background(
-                            color = Color.White
-                        )
-                        .height(40.dp)
-                        .width(40.dp)
-                        .clip(RoundedCornerShape(15.dp)),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ){
-                    Icon(
-                        imageVector = Icons.Default.Menu,
-                        contentDescription = ""
-                    )
+            Spacer(modifier = Modifier.width(20.dp))
+
+            TopBarDePesquisa(
+                textoPesquisa = searchState,
+                aoPesquisar = { newText ->
+                    searchState = newText
+                },
+                aoAbrirFiltro = {
+                   //
                 }
-            }
+            )
+
+
+
             Column {
                 for(convite in convites) {
                     ConviteComponent(convite)
@@ -278,3 +250,4 @@ fun ConvidadoScreen(navController: NavController){
         }
     }
 }
+

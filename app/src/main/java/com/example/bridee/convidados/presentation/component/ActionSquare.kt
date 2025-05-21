@@ -22,16 +22,16 @@ fun ActionSquare(
     val screenWidth = LocalConfiguration.current.screenWidthDp
 
     Column(
-        modifier = modifier
-            .width((screenWidth * 0.40).dp)
-            .height(100.dp)
-            .border(
-                width = 1.dp,
-                color = Color(0xC3C3C3C9),
-                shape = RoundedCornerShape(15)
-            )
-            .padding(start = 10.dp, top = 10.dp, bottom = 10.dp),
-        verticalArrangement = Arrangement.SpaceEvenly
+            modifier = modifier
+                .width((screenWidth * 0.40).dp)
+                .height(100.dp)
+                .border(
+                    width = 1.dp,
+                    color = Color(0xC3C3C3C9),
+                    shape = RoundedCornerShape(15)
+                )
+                .padding(start = 10.dp, top = 10.dp, bottom = 10.dp),
+    verticalArrangement = Arrangement.SpaceEvenly
     ) {
         content()
     }
