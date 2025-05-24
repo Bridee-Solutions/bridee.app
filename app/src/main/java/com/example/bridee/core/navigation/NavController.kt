@@ -32,11 +32,7 @@ import com.example.bridee.calculadora.presentation.screens.CalculadoraScreen
 import com.example.bridee.calculadora.presentation.screens.CategoriaDetalhesScreen
 import com.example.bridee.configuracoes.domain.ConfiguracaoInformation
 import com.example.bridee.configuracoes.presentation.screen.ConfiguracoesScreen
-<<<<<<< Updated upstream
-=======
 import com.example.bridee.configuracoes.presentation.viewmodel.ConfiguracaoViewModel
-import com.example.bridee.home.presentation.viewmodel.HomeViewModel
->>>>>>> Stashed changes
 import com.example.bridee.inspiracao.domain.TelaInpiracaoViewModel
 import com.example.bridee.lista_tarefas.presentation.screens.ListaTarefasScreen
 import com.example.bridee.servicos.presentation.screens.GaleriaImagensScreen
@@ -53,14 +49,9 @@ fun NavController(
     navController: NavHostController,
     context: Context,
     paddingValues: PaddingValues){
-//    val navController = rememberNavController()
     NavHost(navController = navController, startDestination = Screen.Login.route){
         composable(route = Screen.Login.route) {
-<<<<<<< Updated upstream
-            val authenticationViewModel: AuthenticationViewModel = AuthenticationViewModel(context)
-=======
             val authenticationViewModel: AuthenticationViewModel = viewModel()
->>>>>>> Stashed changes
             LoginScreen(authenticationViewModel, navController)
         }
         navigation(
@@ -108,7 +99,6 @@ fun NavController(
             viewModel.information = information
             ConfiguracoesScreen(navController, viewModel)
         }
-
         navigation(
             startDestination = Screen.Calculadora.route,
             route = Screen.CalculadoraRoutes.route
@@ -132,7 +122,8 @@ fun NavController(
             }
         }
         composable(route = Screen.Home.route) {
-            HomeScreen(navController, paddingValues)
+            val viewModel: HomeViewModel = viewModel()
+            HomeScreen(viewModel, navController, paddingValues)
         }
         composable(route = Screen.Servicos.route) {
             ServicosScreen(navController)
@@ -162,7 +153,7 @@ fun NavController(
         }
 
         composable(route = Screen.Inspiracao.route) {
-            val viewModel = TelaInpiracaoViewModel()
+            val viewModel: TelaInpiracaoViewModel = viewModel()
             InspiracaoScreen(viewModel, navController, paddingValues)
         }
         composable(route = Screen.ListaTarefas.route) {
