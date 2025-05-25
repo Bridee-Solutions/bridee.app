@@ -21,7 +21,6 @@ fun HomeScreen(
     navController: NavController,
     paddingValues: PaddingValues
 ) {
-    val homeResponse by viewModel.homeResponse
     LaunchedEffect(true) {
         viewModel.findHomeInfo()
     }
@@ -32,9 +31,9 @@ fun HomeScreen(
 
     ) {
         WeddingHeader(
-            homeResponseDto = homeResponse,
+            viewModel = viewModel,
             navController = navController)
-        CountdownSection()
+        CountdownSection(viewModel)
         SuppliersList()
     }}
 

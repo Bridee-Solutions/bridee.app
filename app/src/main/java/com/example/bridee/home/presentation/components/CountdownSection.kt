@@ -4,14 +4,18 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.runtime.Composable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.Modifier
+import com.example.bridee.home.presentation.viewmodel.HomeViewModel
+
 @Composable
-fun CountdownSection() {
+fun CountdownSection(
+    viewModel: HomeViewModel
+) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -22,9 +26,9 @@ fun CountdownSection() {
             horizontalArrangement = Arrangement.SpaceEvenly,
             modifier = Modifier.fillMaxWidth()
         ) {
-            CountdownItem("519", "DIAS")
-            CountdownItem("6", "HORAS")
-            CountdownItem("10", "MINUTOS")
+            CountdownItem("${viewModel.daysToWedding()}", "DIAS")
+            CountdownItem("${viewModel.hoursToWedding()}", "HORAS")
+            CountdownItem("${viewModel.minutesToWedding()}", "MINUTOS")
         }
     }
 }
