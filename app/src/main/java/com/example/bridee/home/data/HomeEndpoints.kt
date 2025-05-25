@@ -7,6 +7,7 @@ import com.example.bridee.home.domain.Fornecedor
 import com.example.bridee.home.domain.HomeResponseDto
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -27,4 +28,9 @@ interface HomeEndpoints {
 
     @GET("categorias-servicos")
     suspend fun fetchCategories(): Response<PaginationResponse<Categoria>>
+
+    @PUT("casamentos/assessor/{assessorId}/vincular")
+    suspend fun vinculateAssessorToWedding(
+        @Path("assessorId") assessorId: Int
+    ): Response<AssessorResponse>
 }
