@@ -28,18 +28,14 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.bridee.R
 import com.example.bridee.core.navigation.Screen
-import com.example.bridee.home.domain.HomeResponseDto
 import com.example.bridee.home.presentation.viewmodel.HomeViewModel
 import com.example.bridee.ui.theme.rosa
 
 @Composable
 fun WeddingHeader(
-    homeResponseDto: HomeResponseDto?,
+    viewModel: HomeViewModel,
     navController: NavController
 ) {
-    val casal = homeResponseDto?.casamentoInfo?.casal
-    val casamento = homeResponseDto?.casamentoInfo
-    val dataCasamento = casamento?.dataCasamento
 
     Box(modifier = Modifier.height(250.dp)) {
         Image(
@@ -87,7 +83,7 @@ fun WeddingHeader(
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text =  "${casal?.nome} & ${casal?.nomeParceiro}",
+                    text =  viewModel.coupleName(),
                     style = MaterialTheme.typography.titleLarge.copy(Color.White, fontSize = 35.sp),
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
@@ -105,7 +101,7 @@ fun WeddingHeader(
                         tint = rosa
                     )
                     Text(
-                        text = "$dataCasamento",
+                        text = "${viewModel.weddingDate()}",
                         fontSize = 16.sp,
                         color = Color.White,
                         modifier = Modifier.padding(start = 8.dp)
@@ -120,7 +116,7 @@ fun WeddingHeader(
                         tint = rosa
                     )
                     Text(
-                        text = homeResponseDto?.casamentoInfo?.local ?: "",
+                        text = viewModel.location(),
                         fontSize = 16.sp,
                         color = Color.White,
                         modifier = Modifier.padding(start = 8.dp)
