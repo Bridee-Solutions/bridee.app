@@ -12,6 +12,7 @@ import com.example.bridee.home.domain.AssessorResponse
 import com.example.bridee.home.domain.Categoria
 import com.example.bridee.home.domain.Fornecedor
 import com.example.bridee.home.domain.HomeResponseDto
+import com.example.bridee.home.domain.icons
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.Period
@@ -23,10 +24,11 @@ class HomeViewModel: ViewModel() {
     private val _homeResponse by mutableStateOf<HomeResponseDto?>(null)
     var homeResponse = _homeResponse
     var searchFornecedorResult by mutableStateOf<List<Fornecedor>>(mutableListOf())
-    val searchAssessorResult:  MutableList<AssessorResponse> = mutableListOf()
+    var searchAssessorResult by mutableStateOf<List<AssessorResponse>>(mutableListOf())
     var categories by mutableStateOf<List<Categoria>>(mutableListOf())
+    var assessor by mutableStateOf<AssessorResponse?>(null)
 
-    private fun updateSubcategoriaInfo(){
+    private fun updateCategoriaInfo(){
         val orcamentoResponse = this.homeResponse?.orcamentoFornecedorResponse
         this.categories.forEach {category ->
             val orcamento = orcamentoResponse?.filter {
@@ -38,13 +40,22 @@ class HomeViewModel: ViewModel() {
         }
     }
 
+    private fun updateAssessorInfo(){
+        val assessor = this.homeResponse?.assessorResponseDto?.assessorResponse
+        if(Objects.nonNull(assessor)){
+            this.assessor = assessor
+        }
+    }
+
     fun findHomeInfo(){
         viewModelScope.launch {
             try {
                 val response = homeService.fetchHomeInfo()
                 if(response.code() == 200){
-                    homeResponse = response.body()
-                    updateSubcategoriaInfo()
+                    val body = response.body()
+                    updateCategoriaInfo()
+                    updateAssessorInfo()
+                    homeResponse = body
                 }
             }catch (e: Exception){
                 e.printStackTrace()
@@ -52,22 +63,7 @@ class HomeViewModel: ViewModel() {
         }
     }
 
-    private val icons: MutableMap<String, Int> = mutableMapOf(
-        Pair("Local", R.drawable.hospedagem),
-        Pair("Florista", R.drawable.buqueflores),
-        Pair("Buffet e Gastronomia", R.drawable.buffet),
-        Pair("Vestido", R.drawable.weddingdress),
-        Pair("Fotógrafo", R.drawable.fotografia),
-        Pair("Decoração", R.drawable.arch),
-        Pair("Hospedagem", R.drawable.honeymoon),
-        Pair("Confeitaria", R.drawable.cake),
-        Pair("Moda e Beleza", R.drawable.cosmetics),
-        Pair("Videógrafos", R.drawable.videographer),
-        Pair("Papelaria", R.drawable.letter),
-        Pair("Entretenimento", R.drawable.confetti)
-    )
-
-    fun fornecedorIcon(nome: String): Int?{
+    private fun fornecedorIcon(nome: String): Int?{
         return icons[nome]
     }
 
@@ -132,5 +128,26 @@ class HomeViewModel: ViewModel() {
         val fornecedores = searchFornecedorResult.filter { it.id != id }.toMutableList()
         fornecedores.forEach { it.selected = false }
         searchFornecedorResult = (mutableListOf(fornecedor) + fornecedores).toMutableList()
+    }
+
+    fun searchAssessor(nome: String){
+        viewModelScope.launch {
+            try {
+                val response = homeService.searchAssessor(nome)
+                if(response.code() == 200){
+                    searchAssessorResult = response.body()?.content ?: mutableListOf()
+                }
+            }catch (e: Exception){
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun selectAssessor(id: Int){
+        val assessor = searchAssessorResult.filter { it.id == id }[0]
+        assessor.selected = true
+        val assessores = searchAssessorResult.filter { it.id != id }.toMutableList()
+        assessores.forEach { it.selected = false }
+        searchAssessorResult = (mutableListOf(assessor) + assessores).toMutableList()
     }
 }

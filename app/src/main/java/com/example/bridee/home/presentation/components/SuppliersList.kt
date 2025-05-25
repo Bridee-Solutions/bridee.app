@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -28,6 +29,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.bridee.R
+import com.example.bridee.home.domain.Categoria
 import com.example.bridee.home.presentation.viewmodel.HomeViewModel
 import com.example.bridee.ui.components.CustomModal
 
@@ -57,16 +60,33 @@ fun SuppliersList(
             )
         }
 
-        items(viewModel.categories) { category ->
-            FornecedorItem(
-                category = category,
-                onClick = {
-                    selectedCategoryId = category.id
-                    selectedCategory = category.nome
-                    viewModel.searchFornecedorResult = mutableListOf()
-                    showModal = true
-                }
-            )
+        itemsIndexed(viewModel.categories) { index, category ->
+            if(index == 0){
+                FornecedorItem(
+                    category = Categoria(
+                        id = -1,
+                        nome = "Assessor",
+                        selecionado = viewModel.assessor != null,
+                        drawableResId = R.drawable.wedding_day,
+                        descricao = "Buscar assesores"
+                    ),
+                    onClick = {
+                        viewModel.searchAssessorResult = mutableListOf()
+                        selectedCategory = "Assessor"
+                        showModal = true
+                    }
+                )
+            }else{
+                FornecedorItem(
+                    category = category,
+                    onClick = {
+                        selectedCategoryId = category.id
+                        selectedCategory = category.nome
+                        viewModel.searchFornecedorResult = mutableListOf()
+                        showModal = true
+                    }
+                )
+            }
         }
     }
 
@@ -84,7 +104,11 @@ fun SuppliersList(
                 value = searchText,
                 onValueChange = {
                     searchText = it
-                    viewModel.searchFornecedor(selectedCategoryId, it)
+                    if(selectedCategory == "Assessor"){
+                        viewModel.searchAssessor(it)
+                    }else{
+                        viewModel.searchFornecedor(selectedCategoryId, it)
+                    }
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -105,26 +129,7 @@ fun SuppliersList(
                     )
                 }
             )
-
-            val fornecedorResult = viewModel.searchFornecedorResult
-            if(fornecedorResult.isNotEmpty()){
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(200.dp)
-                        .offset(y = 5.dp)
-                ) {
-                    items(fornecedorResult){
-                        AssociadoRow(
-                            nome = it.nome,
-                            isSelected = it.selected,
-                            clickableEvent = {
-                                viewModel.selectFornecedor(it.id!!)
-                            })
-                    }
-                }
-            }
-
+            associates(viewModel)
         }
     )
 }
