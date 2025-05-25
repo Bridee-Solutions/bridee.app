@@ -63,6 +63,7 @@ fun SuppliersList(
                 onClick = {
                     selectedCategoryId = category.id
                     selectedCategory = category.nome
+                    viewModel.searchFornecedorResult = mutableListOf()
                     showModal = true
                 }
             )
