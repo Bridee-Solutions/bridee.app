@@ -80,7 +80,7 @@ fun FornecedorItem(
             modifier = Modifier.weight(1f)
         ) {
             Text(text = fornecedor.nome, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-            Text(text = fornecedor.descricao, fontSize = 14.sp, color = Color.Gray)
+//            Text(text = fornecedor., fontSize = 14.sp, color = Color.Gray)
         }
 
         Spacer(modifier = Modifier.width(12.dp))

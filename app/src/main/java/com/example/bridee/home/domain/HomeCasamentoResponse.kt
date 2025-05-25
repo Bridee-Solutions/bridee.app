@@ -7,6 +7,5 @@ data class HomeCasamentoResponse(
     val quantidadeConvidados: String,
     val dataCasamento: String,
     val local: String,
-    val casal: CasalResponse,
-    val image: String
+    val casal: CasalResponse
 )
