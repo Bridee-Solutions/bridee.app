@@ -109,7 +109,7 @@ fun WeddingHeader(
                         tint = rosa
                     )
                     Text(
-                        text = "${viewModel.weddingDate()}",
+                        text = viewModel.weddingDate() ?: "",
                         fontSize = 16.sp,
                         color = Color.White,
                         modifier = Modifier.padding(start = 8.dp)
