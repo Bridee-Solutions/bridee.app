@@ -1,36 +1,41 @@
 package com.example.bridee.servicos.presentation.screens
 
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.example.bridee.home.presentation.components.CountdownSection
 import com.example.bridee.home.presentation.components.SuppliersList
 import com.example.bridee.home.presentation.components.WeddingHeader
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
-import com.example.bridee.calculadora.presentation.components.Calculadora.ControleDeGastoCard
+import com.example.bridee.home.presentation.viewmodel.HomeViewModel
 
 
 @Composable
-fun HomeScreen(navController: NavController, paddingValues: PaddingValues) {
+fun HomeScreen(
+    viewModel: HomeViewModel,
+    navController: NavController,
+    paddingValues: PaddingValues
+) {
+    val homeResponse by viewModel.homeResponse
+    LaunchedEffect(true) {
+        viewModel.findHomeInfo()
+    }
+
     Column(modifier = Modifier
         .fillMaxSize()
         .padding(paddingValues)
 
     ) {
-        WeddingHeader(navController = navController)
+        WeddingHeader(
+            homeResponseDto = homeResponse,
+            navController = navController)
         CountdownSection()
         SuppliersList()
-
     }}
 
 
