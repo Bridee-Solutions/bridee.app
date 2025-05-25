@@ -55,31 +55,31 @@ fun SuppliersList() {
             )
         }
 
-        val fornecedores = listOf(
-            Fornecedor("Assessor", "Buscar fornecedores", false, R.drawable.wedding_day),
-            Fornecedor("Local", "Buscar fornecedores", false, R.drawable.hospedagem),
-            Fornecedor("Florista", "Buscar fornecedores", false, R.drawable.buqueflores),
-            Fornecedor("Buffet e Gastronomia", "Buscar fornecedores", false, R.drawable.buffet),
-            Fornecedor("Vestido", "Buscar fornecedores", false, R.drawable.weddingdress),
-            Fornecedor("Fotógrafo", "Buscar fornecedores", false, R.drawable.fotografia),
-            Fornecedor("Decoração", "Buscar fornecedores", false, R.drawable.arch),
-            Fornecedor("Hospedagem", "Buscar fornecedores", false, R.drawable.honeymoon),
-            Fornecedor("Confeitaria", "Buscar fornecedores", false, R.drawable.cake),
-            Fornecedor("Moda e Beleza", "Buscar fornecedores", false, R.drawable.cosmetics),
-            Fornecedor("Videógrafos", "Buscar fornecedores", false, R.drawable.videographer),
-            Fornecedor("Papelaria", "Buscar fornecedores", false, R.drawable.letter),
-            Fornecedor("Entretenimento", "Buscar fornecedores", false, R.drawable.confetti)
-        )
+//        val fornecedores = listOf(
+//            Fornecedor("Assessor", "Buscar fornecedores", false, R.drawable.wedding_day),
+//            Fornecedor("Local", "Buscar fornecedores", false, R.drawable.hospedagem),
+//            Fornecedor("Florista", "Buscar fornecedores", false, R.drawable.buqueflores),
+//            Fornecedor("Buffet e Gastronomia", "Buscar fornecedores", false, R.drawable.buffet),
+//            Fornecedor("Vestido", "Buscar fornecedores", false, R.drawable.weddingdress),
+//            Fornecedor("Fotógrafo", "Buscar fornecedores", false, R.drawable.fotografia),
+//            Fornecedor("Decoração", "Buscar fornecedores", false, R.drawable.arch),
+//            Fornecedor("Hospedagem", "Buscar fornecedores", false, R.drawable.honeymoon),
+//            Fornecedor("Confeitaria", "Buscar fornecedores", false, R.drawable.cake),
+//            Fornecedor("Moda e Beleza", "Buscar fornecedores", false, R.drawable.cosmetics),
+//            Fornecedor("Videógrafos", "Buscar fornecedores", false, R.drawable.videographer),
+//            Fornecedor("Papelaria", "Buscar fornecedores", false, R.drawable.letter),
+//            Fornecedor("Entretenimento", "Buscar fornecedores", false, R.drawable.confetti)
+//        )
 
-        items(fornecedores) { fornecedor ->
-            FornecedorItem(
-                fornecedor = fornecedor,
-                onClick = {
-                    selectedCategory = fornecedor.nome
-                    showModal = true
-                }
-            )
-        }
+//        items(fornecedores) { fornecedor ->
+//            FornecedorItem(
+//                fornecedor = fornecedor,
+//                onClick = {
+//                    selectedCategory = fornecedor.nome
+//                    showModal = true
+//                }
+//            )
+//        }
 
 
     }

@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -29,11 +28,19 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.bridee.R
 import com.example.bridee.core.navigation.Screen
-
+import com.example.bridee.home.domain.HomeResponseDto
+import com.example.bridee.home.presentation.viewmodel.HomeViewModel
 import com.example.bridee.ui.theme.rosa
 
 @Composable
-fun WeddingHeader(navController: NavController) {
+fun WeddingHeader(
+    homeResponseDto: HomeResponseDto?,
+    navController: NavController
+) {
+    val casal = homeResponseDto?.casamentoInfo?.casal
+    val casamento = homeResponseDto?.casamentoInfo
+    val dataCasamento = casamento?.dataCasamento
+
     Box(modifier = Modifier.height(250.dp)) {
         Image(
             painter = painterResource(id = R.drawable.image_home),
@@ -77,19 +84,19 @@ fun WeddingHeader(navController: NavController) {
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center // Alinha o conteúdo verticalmente no centro
+                verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = "Amanda & Enzo",
+                    text =  "${casal?.nome} & ${casal?.nomeParceiro}",
                     style = MaterialTheme.typography.titleLarge.copy(Color.White, fontSize = 35.sp),
-                    modifier = Modifier.align(Alignment.CenterHorizontally) // Garante que o texto estará centralizado
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center // Alinha os itens da row no centro
+                    horizontalArrangement = Arrangement.Center
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.calendario),
@@ -98,7 +105,7 @@ fun WeddingHeader(navController: NavController) {
                         tint = rosa
                     )
                     Text(
-                        text = "11 de Fevereiro, 2026",
+                        text = "$dataCasamento",
                         fontSize = 16.sp,
                         color = Color.White,
                         modifier = Modifier.padding(start = 8.dp)
@@ -113,7 +120,7 @@ fun WeddingHeader(navController: NavController) {
                         tint = rosa
                     )
                     Text(
-                        text = "São Paulo",
+                        text = homeResponseDto?.casamentoInfo?.local ?: "",
                         fontSize = 16.sp,
                         color = Color.White,
                         modifier = Modifier.padding(start = 8.dp)
