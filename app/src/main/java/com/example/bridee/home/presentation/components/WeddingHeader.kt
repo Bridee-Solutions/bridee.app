@@ -29,16 +29,19 @@ import androidx.navigation.NavController
 import com.example.bridee.R
 import com.example.bridee.configuracoes.domain.ConfiguracaoInformation
 import com.example.bridee.core.navigation.Screen
-import com.example.bridee.home.presentation.viewmodel.HomeViewModel
+import com.example.bridee.home.domain.HomeResponseDto
 import com.example.bridee.ui.theme.rosa
 import com.google.gson.Gson
 import java.net.URLEncoder
 
 @Composable
 fun WeddingHeader(
-    viewModel: HomeViewModel,
+    homeResponse: HomeResponseDto?,
     navController: NavController
 ) {
+    val casal = homeResponse?.casamentoInfo?.casal
+    val nomeCasal =  "${casal?.nome ?: ""} & ${casal?.nomeParceiro ?: ""}"
+
 
     Box(modifier = Modifier.height(250.dp)) {
         Image(
@@ -91,7 +94,7 @@ fun WeddingHeader(
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text =  viewModel.coupleName(),
+                    text =  nomeCasal,
                     style = MaterialTheme.typography.titleLarge.copy(Color.White, fontSize = 35.sp),
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
@@ -109,7 +112,7 @@ fun WeddingHeader(
                         tint = rosa
                     )
                     Text(
-                        text = viewModel.weddingDate() ?: "",
+                        text = weddingDate(homeResponse) ?: "",
                         fontSize = 16.sp,
                         color = Color.White,
                         modifier = Modifier.padding(start = 8.dp)
@@ -124,7 +127,7 @@ fun WeddingHeader(
                         tint = rosa
                     )
                     Text(
-                        text = viewModel.location(),
+                        text = homeResponse?.casamentoInfo?.local ?: "",
                         fontSize = 16.sp,
                         color = Color.White,
                         modifier = Modifier.padding(start = 8.dp)
@@ -133,4 +136,10 @@ fun WeddingHeader(
             }
         }
     }
+}
+
+fun weddingDate(homeResponse: HomeResponseDto?): String?{
+    val date = homeResponse?.casamentoInfo?.dataCasamento
+    return date?.split("-")
+        ?.reversed()?.joinToString("/")
 }

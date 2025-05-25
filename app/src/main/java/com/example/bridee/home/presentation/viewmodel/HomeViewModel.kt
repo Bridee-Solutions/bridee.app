@@ -1,7 +1,6 @@
 package com.example.bridee.home.presentation.viewmodel
 
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
@@ -23,7 +22,7 @@ class HomeViewModel: ViewModel() {
     private val homeService = ApiInstance.createService(HomeEndpoints::class.java)
     private val _homeResponse by mutableStateOf<HomeResponseDto?>(null)
     var homeResponse = _homeResponse
-    var searchFornecedorResult: MutableList<Fornecedor> = mutableListOf()
+    var searchFornecedorResult by mutableStateOf<List<Fornecedor>>(mutableListOf())
     val searchAssessorResult:  MutableList<AssessorResponse> = mutableListOf()
     var categories by mutableStateOf<List<Categoria>>(mutableListOf())
 
@@ -76,7 +75,7 @@ class HomeViewModel: ViewModel() {
         viewModelScope.launch {
             val response = homeService.fetchCategories()
             if(response.code() == 200){
-                val responseContent = response.body()!!.content
+                val responseContent = response.body()?.content ?: mutableListOf()
                 responseContent.forEach{
                     it.drawableResId = fornecedorIcon(it.nome) ?: R.drawable.wedding_day
                     it.descricao = "Buscar fornecedores"
@@ -86,21 +85,10 @@ class HomeViewModel: ViewModel() {
         }
     }
 
-    fun coupleName(): String{
-        val casal = homeResponse?.casamentoInfo?.casal
-        val casalNome = casal?.nome ?: ""
-        val parceiroNome = casal?.nomeParceiro ?: ""
-        return "$casalNome & $parceiroNome"
-    }
-
     fun weddingDate(): String?{
         val date = homeResponse?.casamentoInfo?.dataCasamento
         return date?.split("-")
             ?.reversed()?.joinToString("/")
-    }
-
-    fun location(): String{
-        return homeResponse?.casamentoInfo?.local ?: ""
     }
 
     fun daysToWedding(): Int{
@@ -125,16 +113,24 @@ class HomeViewModel: ViewModel() {
         return hoursToWedding * 60
     }
 
-    fun searchFornecedor(nome: String, categoriaId: Int){
+    fun searchFornecedor(categoriaId: Int, nome: String){
         viewModelScope.launch {
             try {
-                val response = homeService.searchFornecedor(nome, categoriaId)
+                val response = homeService.searchFornecedor(categoriaId, nome)
                 if(response.code() == 200){
-                    searchFornecedorResult = response.body()!!.content
+                    searchFornecedorResult = response.body()?.content ?: mutableListOf()
                 }
             }catch (e: Exception){
-
+                e.printStackTrace()
             }
         }
+    }
+
+    fun selectFornecedor(id: Int){
+        val fornecedor = searchFornecedorResult.filter { it.id == id }[0]
+        fornecedor.selected = true
+        val fornecedores = searchFornecedorResult.filter { it.id != id }.toMutableList()
+        fornecedores.forEach { it.selected = false }
+        searchFornecedorResult = (mutableListOf(fornecedor) + fornecedores).toMutableList()
     }
 }
