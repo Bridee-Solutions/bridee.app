@@ -13,8 +13,10 @@ import com.example.bridee.home.domain.AssessorResponse
 import com.example.bridee.home.domain.Categoria
 import com.example.bridee.home.domain.Fornecedor
 import com.example.bridee.home.domain.HomeResponseDto
+import com.example.bridee.home.domain.OrcamentoFornecedorRequest
 import com.example.bridee.home.domain.icons
 import kotlinx.coroutines.launch
+import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.Period
 import java.util.Objects
@@ -28,6 +30,7 @@ class HomeViewModel: ViewModel() {
     var searchAssessorResult by mutableStateOf<List<AssessorResponse>>(mutableListOf())
     var categories by mutableStateOf<List<Categoria>>(mutableListOf())
     var assessor by mutableStateOf<AssessorResponse?>(null)
+    var fornecedor by mutableStateOf<Fornecedor?>(null)
 
     private fun updateCategoriaInfo(){
         val orcamentoResponse = this.homeResponse?.orcamentoFornecedorResponse
@@ -126,6 +129,7 @@ class HomeViewModel: ViewModel() {
     fun selectFornecedor(id: Int){
         val fornecedor = searchFornecedorResult.filter { it.id == id }[0]
         fornecedor.selected = true
+        this.fornecedor = fornecedor
         val fornecedores = searchFornecedorResult.filter { it.id != id }.toMutableList()
         fornecedores.forEach { it.selected = false }
         searchFornecedorResult = (mutableListOf(fornecedor) + fornecedores).toMutableList()
@@ -158,6 +162,20 @@ class HomeViewModel: ViewModel() {
             try {
                 val response = homeService.vinculateAssessorToWedding(assessor!!.id)
                 if(response.code() == 200){
+                    Log.i("HOME", "Assessor vinculado com sucesso!")
+                }
+            }catch (e: Exception){
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun vinculateFornecedor(categoriaId: Int){
+        viewModelScope.launch {
+            val requestBody = OrcamentoFornecedorRequest(null, BigDecimal("0"), fornecedor?.id!!)
+            try {
+                val response = homeService.vinculateFornecedorToWedding(categoriaId, requestBody)
+                if(response.code() == 201){
                     Log.i("HOME", "Assessor vinculado com sucesso!")
                 }
             }catch (e: Exception){

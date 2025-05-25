@@ -1,12 +1,16 @@
 package com.example.bridee.home.data
 
+import com.example.bridee.calculadora.domain.OrcamentoFornecedorResponse
 import com.example.bridee.core.pagination.PaginationResponse
 import com.example.bridee.home.domain.AssessorResponse
 import com.example.bridee.home.domain.Categoria
 import com.example.bridee.home.domain.Fornecedor
 import com.example.bridee.home.domain.HomeResponseDto
+import com.example.bridee.home.domain.OrcamentoFornecedorRequest
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -33,4 +37,10 @@ interface HomeEndpoints {
     suspend fun vinculateAssessorToWedding(
         @Path("assessorId") assessorId: Int
     ): Response<AssessorResponse>
+
+    @POST("orcamento-fornecedor/categoria/{categoriaId}")
+    suspend fun vinculateFornecedorToWedding(
+        @Path("categoriaId") assessorId: Int,
+        @Body requestBody: OrcamentoFornecedorRequest
+    ): Response<OrcamentoFornecedorResponse>
 }
