@@ -3,6 +3,7 @@ package com.example.bridee.home.presentation.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
@@ -66,9 +67,8 @@ fun SuppliersList(
                 }
             )
         }
-
-
     }
+
     CustomModal(
         showModal = showModal,
         onDismissRequest = { showModal = false },
@@ -83,7 +83,7 @@ fun SuppliersList(
                 value = searchText,
                 onValueChange = {
                     searchText = it
-                    viewModel.searchFornecedor(it, selectedCategoryId)
+                    viewModel.searchFornecedor(selectedCategoryId, it)
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -105,6 +105,24 @@ fun SuppliersList(
                 }
             )
 
+            val fornecedorResult = viewModel.searchFornecedorResult
+            if(fornecedorResult.isNotEmpty()){
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp)
+                        .offset(y = 5.dp)
+                ) {
+                    items(fornecedorResult){
+                        AssociadoRow(
+                            nome = it.nome,
+                            isSelected = it.selected,
+                            clickableEvent = {
+                                viewModel.selectFornecedor(it.id!!)
+                            })
+                    }
+                }
+            }
 
         }
     )

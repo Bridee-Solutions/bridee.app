@@ -5,5 +5,6 @@ data class Fornecedor(
     val nome: String,
     val email: String = "",
     val nota: Int = 0,
-    val subcategoriaServico: SubcategoriaServicoResponse? = null
+    val subcategoriaServico: SubcategoriaServicoResponse? = null,
+    var selected: Boolean
 )
