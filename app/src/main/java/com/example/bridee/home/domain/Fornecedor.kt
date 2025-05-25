@@ -1,10 +1,9 @@
 package com.example.bridee.home.domain
 
 data class Fornecedor(
-    val id: Int,
+    var id: Int? = -1,
     val nome: String,
-    val email: String,
-    val nota: Int,
-    val selecionado: Boolean,
-    val drawableResId: Int
+    val email: String = "",
+    val nota: Int = 0,
+    val subcategoriaServico: SubcategoriaServicoResponse? = null
 )
