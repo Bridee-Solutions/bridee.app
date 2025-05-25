@@ -15,7 +15,9 @@ interface HomeEndpoints {
     suspend fun fetchHomeInfo(): Response<HomeResponseDto>
 
     @GET("assessores")
-    suspend fun searchAssessor(@Query("nome") nome: String): Response<AssessorResponse>
+    suspend fun searchAssessor(
+        @Query("nome") nome: String
+    ): Response<PaginationResponse<AssessorResponse>>
 
     @GET("fornecedores/details/categoria/{categoriaId}")
     suspend fun searchFornecedor(
