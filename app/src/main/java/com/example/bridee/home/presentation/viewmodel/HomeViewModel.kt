@@ -1,5 +1,6 @@
 package com.example.bridee.home.presentation.viewmodel
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -41,7 +42,7 @@ class HomeViewModel: ViewModel() {
     }
 
     private fun updateAssessorInfo(){
-        val assessor = this.homeResponse?.assessorResponseDto?.assessorResponse
+        val assessor = this.homeResponse?.assessorResponseDto?.assessor
         if(Objects.nonNull(assessor)){
             this.assessor = assessor
         }
@@ -53,9 +54,9 @@ class HomeViewModel: ViewModel() {
                 val response = homeService.fetchHomeInfo()
                 if(response.code() == 200){
                     val body = response.body()
+                    homeResponse = body
                     updateCategoriaInfo()
                     updateAssessorInfo()
-                    homeResponse = body
                 }
             }catch (e: Exception){
                 e.printStackTrace()
@@ -146,8 +147,22 @@ class HomeViewModel: ViewModel() {
     fun selectAssessor(id: Int){
         val assessor = searchAssessorResult.filter { it.id == id }[0]
         assessor.selected = true
+        this.assessor = assessor
         val assessores = searchAssessorResult.filter { it.id != id }.toMutableList()
         assessores.forEach { it.selected = false }
         searchAssessorResult = (mutableListOf(assessor) + assessores).toMutableList()
+    }
+
+    fun vinculateAssessor(){
+        viewModelScope.launch {
+            try {
+                val response = homeService.vinculateAssessorToWedding(assessor!!.id)
+                if(response.code() == 200){
+                    Log.i("HOME", "Assessor vinculado com sucesso!")
+                }
+            }catch (e: Exception){
+                e.printStackTrace()
+            }
+        }
     }
 }
