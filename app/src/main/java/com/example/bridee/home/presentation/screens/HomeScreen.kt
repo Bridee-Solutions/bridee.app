@@ -20,8 +20,12 @@ fun HomeScreen(
     navController: NavController,
     paddingValues: PaddingValues
 ) {
+    val homeResponse = viewModel.homeResponse
     LaunchedEffect(true) {
         viewModel.findHomeInfo()
+    }
+
+    LaunchedEffect(true) {
         viewModel.findCategories()
     }
 
@@ -31,7 +35,7 @@ fun HomeScreen(
 
     ) {
         WeddingHeader(
-            viewModel = viewModel,
+            homeResponse = homeResponse,
             navController = navController)
         CountdownSection(viewModel)
         SuppliersList(viewModel)

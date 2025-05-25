@@ -19,8 +19,8 @@ interface HomeEndpoints {
 
     @GET("fornecedores/details/categoria/{categoriaId}")
     suspend fun searchFornecedor(
-        @Query("nome") nome: String,
-        @Path("categoriaId") categoriaId: Int
+        @Path("categoriaId") categoriaId: Int,
+        @Query("nome") nome: String
     ): Response<PaginationResponse<Fornecedor>>
 
     @GET("categorias-servicos")
