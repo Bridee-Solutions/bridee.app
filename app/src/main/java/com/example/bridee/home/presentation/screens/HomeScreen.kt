@@ -23,9 +23,6 @@ fun HomeScreen(
     val homeResponse = viewModel.homeResponse
     LaunchedEffect(true) {
         viewModel.findHomeInfo()
-    }
-
-    LaunchedEffect(true) {
         viewModel.findCategories()
     }
 
