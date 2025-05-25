@@ -93,7 +93,11 @@ fun SuppliersList(
         onDismissRequest = { showModal = false },
         title = selectedCategory,
         onConfirm = {
-            viewModel.vinculateAssessor()
+            if(selectedCategory == "Assessor"){
+                viewModel.vinculateAssessor()
+            }else{
+                viewModel.vinculateFornecedor(selectedCategoryId)
+            }
             showModal = false
         },
         onCancel = {
