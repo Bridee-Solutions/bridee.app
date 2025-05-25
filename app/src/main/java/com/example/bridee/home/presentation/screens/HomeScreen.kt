@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.example.bridee.home.presentation.components.CountdownSection
@@ -23,6 +22,7 @@ fun HomeScreen(
 ) {
     LaunchedEffect(true) {
         viewModel.findHomeInfo()
+        viewModel.findCategories()
     }
 
     Column(modifier = Modifier
@@ -34,7 +34,7 @@ fun HomeScreen(
             viewModel = viewModel,
             navController = navController)
         CountdownSection(viewModel)
-        SuppliersList()
+        SuppliersList(viewModel)
     }}
 
 
