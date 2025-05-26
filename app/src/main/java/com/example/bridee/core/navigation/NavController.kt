@@ -40,6 +40,8 @@ import com.example.bridee.servicos.presentation.screens.InspiracaoScreen
 import com.example.bridee.servicos.presentation.screens.ServicosDetalhesScreen
 import com.example.bridee.servicos.presentation.screens.ServicosScreen
 import com.example.bridee.servicos.presentation.screens.ServicosSubcategoriaScreen
+import com.example.bridee.servicos.presentation.viewModel.CategoriasViewModel
+import com.example.bridee.servicos.presentation.viewModel.ServicosDetalhesViewModel
 import com.google.gson.Gson
 import java.net.URLDecoder
 
@@ -121,22 +123,27 @@ fun NavController(
             HomeScreen(viewModel, navController, paddingValues)
         }
         composable(route = Screen.Servicos.route) {
-            ServicosScreen(navController)
+            val viewModel: CategoriasViewModel = viewModel()
+            ServicosScreen(viewModel, navController)
         }
 
         composable(
             route = Screen.ServicosSubcategoriaScreen.route,
             arguments = listOf(
-                navArgument("subcategoriaNome") { type = NavType.StringType }
+                navArgument("subcategoriaNome") { type = NavType.StringType },
+                navArgument("subcategoriaId") {type = NavType.IntType}
             )
         ) { backStackEntry ->
+            val viewModel: ServicosDetalhesViewModel = viewModel()
             val subcategoriaNome = backStackEntry.arguments?.getString("subcategoriaNome")?.let {
-                URLDecoder.decode(it, "UTF-8")
-            } ?: ""
-
+                URLDecoder.decode(it, "UTF-8") } ?: ""
+            val subcategoriaId = backStackEntry.arguments?.getInt("subcategoriaId")
+            viewModel.subcategoriaId = subcategoriaId!!
+            viewModel.subcategoriaNome = subcategoriaNome
             ServicosSubcategoriaScreen(
                 navController = navController,
-                subcategoriaNome = subcategoriaNome,  paddingValues = paddingValues
+                viewModel = viewModel,
+                paddingValues = paddingValues
             )
         }
 
