@@ -13,14 +13,19 @@ import kotlinx.coroutines.launch
 class ServicosDetalhesViewModel : ViewModel() {
     private val servicosService = ApiInstance.createService(ServicosEndpoints::class.java)
     var subcategoriaNome: String = ""
+    var nomeFornecedor: String = ""
     var subcategoriaId: Int = 0
     var associadoResponseDto by mutableStateOf<List<AssociadoResponseDto>>(mutableListOf())
 
     fun loadFornecedorDetails() {
         viewModelScope.launch {
-            val response = servicosService.getFornecedoresBySubcategoria(subcategoriaId, subcategoriaNome)
-            if (response.code() == 200) {
-                associadoResponseDto = response.body()?.content ?: mutableListOf()
+            try {
+                val response = servicosService.getFornecedoresBySubcategoria(subcategoriaId, nomeFornecedor)
+                if (response.code() == 200) {
+                    associadoResponseDto = response.body()?.content ?: mutableListOf()
+                }
+            }catch (e: Exception){
+                e.printStackTrace()
             }
         }
     }

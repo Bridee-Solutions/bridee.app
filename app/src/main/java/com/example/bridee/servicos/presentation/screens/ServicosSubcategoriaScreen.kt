@@ -64,7 +64,10 @@ fun ServicosSubcategoriaScreen(
 
             SearchBar(
                 searchText = searchText,
-                onSearchTextChanged = { newText -> searchText = newText },
+                onSearchTextChanged = {
+                    newText -> searchText = newText
+                    viewModel.loadFornecedorDetails()
+                },
                 placeholderText = "Pesquisar",
                 modifier = Modifier
                     .fillMaxWidth()
