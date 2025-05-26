@@ -107,7 +107,7 @@ fun CategoriaExpansivelItem(
                                 .fillMaxWidth()
                                 .clickable {
                                     navController?.navigate(
-                                        Screen.ServicosSubcategoriaScreen.createRoute(subcategoria.nome))
+                                        Screen.ServicosSubcategoriaScreen.createRoute(subcategoria.nome, subcategoria.id.toInt()))
                                 }
                                 .padding(vertical = 12.dp, horizontal = 16.dp),
                             style = MaterialTheme.typography.bodyLarge.copy(

@@ -30,76 +30,74 @@ fun ServicosDetalhesScreen(
     paddingValues: PaddingValues,
     viewModel: ServicosDetalhesViewModel = viewModel()
 ) {
-    val uiState by viewModel.uiState.collectAsState()
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(paddingValues)
-    ) {
-        Column(
-            modifier = Modifier
-                .weight(1f)
-                .verticalScroll(rememberScrollState())
-        ) {
-            uiState.servico?.let { servico ->
-                ServicoHeader(
-                    nome = servico.nome,
-                    localizacao = servico.localizacao,
-                    imagem = servico.imagem,
-                    onBackClick = { navController.popBackStack() },
-                    onImageClick = {
-                        navController.navigate(Screen.GaleriaImagens.route)
-                    }
-                )
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
-                ) {
-                    Text(
-                        "Website",
-                        modifier = Modifier.padding(end = 16.dp),
-                        fontWeight = FontWeight.Bold
-                    )
-
-
-                    Text(
-                        "Imagens",
-                        fontWeight = FontWeight.Normal,
-                        modifier = Modifier.clickable {
-                            navController.navigate(Screen.GaleriaImagens.route)
-                        },
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                }
-
-                Divider(modifier = Modifier.padding(vertical = 8.dp))
-
-                ServicoInformacoes(descricao = servico.descricao)
-                Spacer(modifier = Modifier.height(16.dp))
-
-                ServicoPerguntasFrequentes(
-                    perguntas = servico.perguntasFrequentes,
-                    servicos = servico.servicosOferecidos
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-
-                ServicoLocalizacao(endereco = servico.endereco)
-                Spacer(modifier = Modifier.height(16.dp))
-            }
-        }
-
-        SolicitarOrcamentoButton(
-            onClick = { viewModel.toggleDialog(true) }
-        )
-    }
-
-    if (uiState.showDialog) {
-        OrcamentoDialog(
-            onDismiss = { viewModel.toggleDialog(false) },
-            onConfirm = { viewModel.toggleDialog(false) }
-        )
-    }
+//    Column(
+//        modifier = Modifier
+//            .fillMaxSize()
+//            .padding(paddingValues)
+//    ) {
+//        Column(
+//            modifier = Modifier
+//                .weight(1f)
+//                .verticalScroll(rememberScrollState())
+//        ) {
+//            uiState.servico?.let { servico ->
+//                ServicoHeader(
+//                    nome = servico.nome,
+//                    localizacao = servico.localizacao,
+//                    imagem = servico.imagem,
+//                    onBackClick = { navController.popBackStack() },
+//                    onImageClick = {
+//                        navController.navigate(Screen.GaleriaImagens.route)
+//                    }
+//                )
+//
+//                Row(
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .padding(horizontal = 16.dp)
+//                ) {
+//                    Text(
+//                        "Website",
+//                        modifier = Modifier.padding(end = 16.dp),
+//                        fontWeight = FontWeight.Bold
+//                    )
+//
+//
+//                    Text(
+//                        "Imagens",
+//                        fontWeight = FontWeight.Normal,
+//                        modifier = Modifier.clickable {
+//                            navController.navigate(Screen.GaleriaImagens.route)
+//                        },
+//                        color = MaterialTheme.colorScheme.primary
+//                    )
+//                }
+//
+//                Divider(modifier = Modifier.padding(vertical = 8.dp))
+//
+//                ServicoInformacoes(descricao = servico.descricao)
+//                Spacer(modifier = Modifier.height(16.dp))
+//
+//                ServicoPerguntasFrequentes(
+//                    perguntas = servico.perguntasFrequentes,
+//                    servicos = servico.servicosOferecidos
+//                )
+//                Spacer(modifier = Modifier.height(16.dp))
+//
+//                ServicoLocalizacao(endereco = servico.endereco)
+//                Spacer(modifier = Modifier.height(16.dp))
+//            }
+//        }
+//
+//        SolicitarOrcamentoButton(
+//            onClick = { viewModel.toggleDialog(true) }
+//        )
+//    }
+//
+//    if (uiState.showDialog) {
+//        OrcamentoDialog(
+//            onDismiss = { viewModel.toggleDialog(false) },
+//            onConfirm = { viewModel.toggleDialog(false) }
+//        )
+//    }
 }

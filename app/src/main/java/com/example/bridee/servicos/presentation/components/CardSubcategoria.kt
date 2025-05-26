@@ -1,56 +1,36 @@
 package com.example.bridee.servicos.presentation.components
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.Image
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-
-import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.bridee.home.domain.Fornecedor
-import com.example.bridee.servicos.domain.Subcategoria
+import com.example.bridee.servicos.domain.AssociadoResponseDto
 import com.example.bridee.ui.theme.rosa
 
 
 @Composable
 fun CardSubcategoria(
-    subcategoria: Subcategoria,
+    subcategoria: AssociadoResponseDto,
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
@@ -77,15 +57,15 @@ fun CardSubcategoria(
             elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
         ) {
             Column {
-                Image(
-                    painter = painterResource(id = subcategoria.imagem),
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(180.dp)
-                        .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
-                )
+//                Image(
+//                    painter = painterResource(id = subcategoria.imagemPrincipal),
+//                    contentDescription = null,
+//                    contentScale = ContentScale.Crop,
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .height(180.dp)
+//                        .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
+//                )
 
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
@@ -97,7 +77,7 @@ fun CardSubcategoria(
                     Spacer(modifier = Modifier.height(4.dp))
 
                     Text(
-                        text = subcategoria.local,
+                        text = subcategoria.cidade + subcategoria.bairro,
                         style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold),
                         color = Color.DarkGray
                     )
@@ -105,7 +85,7 @@ fun CardSubcategoria(
                     Spacer(modifier = Modifier.height(8.dp))
 
                     Text(
-                        text = subcategoria.descricao,
+                        text = subcategoria.visaoGeral,
                         style = MaterialTheme.typography.bodySmall,
                         color = Color.Gray,
                         lineHeight = 18.sp
