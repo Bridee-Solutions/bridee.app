@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.bridee.core.navigation.Screen
-import com.example.bridee.servicos.presentation.components.CardSubcategoria
+import com.example.bridee.servicos.presentation.components.CardAssociado
 import com.example.bridee.servicos.presentation.viewModel.ServicosDetalhesViewModel
 
 @Composable
@@ -111,14 +111,14 @@ fun ServicosSubcategoriaScreen(
                         )
                     }
 
-                    items(associadoResponse) { subcategoria ->
-                        CardSubcategoria(
-                            subcategoria = subcategoria,
+                    items(associadoResponse) { associado ->
+                        CardAssociado(
+                            associado = associado,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(vertical = 8.dp),
                             onClick = {
-                                navController.navigate(Screen.ServicosDetalhesScreen.route)
+                                navController.navigate(Screen.ServicosDetalhesScreen.createRoute(associado.id))
                             }
                         )
                     }

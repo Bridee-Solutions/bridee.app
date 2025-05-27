@@ -29,11 +29,12 @@ import com.example.bridee.ui.theme.rosa
 
 
 @Composable
-fun CardSubcategoria(
-    subcategoria: AssociadoResponseDto,
+fun CardAssociado(
+    associado: AssociadoResponseDto,
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
+
     Box(
         modifier = modifier
             .padding(8.dp)
@@ -69,7 +70,7 @@ fun CardSubcategoria(
 
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = subcategoria.nome,
+                        text = associado.nome,
                         style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                         color = Color.Black
                     )
@@ -77,7 +78,7 @@ fun CardSubcategoria(
                     Spacer(modifier = Modifier.height(4.dp))
 
                     Text(
-                        text = subcategoria.cidade + subcategoria.bairro,
+                        text = associado.cidade + associado.bairro,
                         style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold),
                         color = Color.DarkGray
                     )
@@ -85,7 +86,7 @@ fun CardSubcategoria(
                     Spacer(modifier = Modifier.height(8.dp))
 
                     Text(
-                        text = subcategoria.visaoGeral,
+                        text = associado.visaoGeral,
                         style = MaterialTheme.typography.bodySmall,
                         color = Color.Gray,
                         lineHeight = 18.sp
