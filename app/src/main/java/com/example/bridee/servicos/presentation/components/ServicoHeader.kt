@@ -44,12 +44,12 @@ fun ServicoHeader(
                 .height(250.dp)
                 .clickable(onClick = onImageClick)
         ) {
-            Image(
-                painter = painterResource(id = imagem),
-                contentDescription = "Imagem do serviço $nome",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxSize()
-            )
+//            Image(
+//                painter = painterResource(id = imagem),
+//                contentDescription = "Imagem do serviço $nome",
+//                contentScale = ContentScale.Crop,
+//                modifier = Modifier.fillMaxSize()
+//            )
 
             IconButton(
                 onClick = onBackClick,

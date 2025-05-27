@@ -152,8 +152,16 @@ fun NavController(
             )
         }
 
-        composable(route = Screen.ServicosDetalhesScreen.route) {
-            ServicosDetalhesScreen(navController,  paddingValues)
+        composable(
+            route = Screen.ServicosDetalhesScreen.route,
+            arguments = listOf(
+                navArgument("associadoId") {type = NavType.IntType}
+            )
+        ) {
+            val associadoId = it.arguments?.getInt("associadoId")
+            val viewModel: ServicosDetalhesViewModel = viewModel()
+            viewModel.selectedAssociadoId = associadoId!!
+            ServicosDetalhesScreen(navController,  paddingValues, viewModel)
         }
         composable(route = Screen.GaleriaImagens.route) {
             GaleriaImagensScreen(navController, paddingValues)
