@@ -1,6 +1,7 @@
 package com.example.bridee.servicos.data
 
 import com.example.bridee.core.pagination.PaginationResponse
+import com.example.bridee.servicos.domain.AssociadoGeralResponseDto
 import com.example.bridee.servicos.domain.AssociadoResponseDto
 import com.example.bridee.servicos.domain.Categoria
 import retrofit2.Response
@@ -18,4 +19,9 @@ interface ServicosEndpoints {
         @Path("subcategoriaId") id: Int,
         @Query("nome") nome: String
     ): Response<PaginationResponse<AssociadoResponseDto>>
+
+    @GET("fornecedores/information/{id}")
+    suspend fun getFornecedorInformation(
+        @Path("id") id: Int
+    ): Response<AssociadoGeralResponseDto>
 }
