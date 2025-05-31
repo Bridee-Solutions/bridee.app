@@ -27,12 +27,14 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.bridee.R
+import com.example.bridee.core.image_bitmap.ImageUtils
+import java.util.Base64
 
 @Composable
 fun ServicoHeader(
     nome: String,
     localizacao: String,
-    imagem: Int,
+    imagem: String,
     onBackClick: () -> Unit,
     onImageClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -44,12 +46,12 @@ fun ServicoHeader(
                 .height(250.dp)
                 .clickable(onClick = onImageClick)
         ) {
-//            Image(
-//                painter = painterResource(id = imagem),
-//                contentDescription = "Imagem do serviço $nome",
-//                contentScale = ContentScale.Crop,
-//                modifier = Modifier.fillMaxSize()
-//            )
+            Image(
+                bitmap = ImageUtils.convertImageBase64ToBitMap(imagem),
+                contentDescription = "Imagem do serviço $nome",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
+            )
 
             IconButton(
                 onClick = onBackClick,
