@@ -3,9 +3,11 @@ package com.example.bridee.lista_tarefas.domain
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bridee.lista_tarefas.data.Tarefa
+import com.example.bridee.lista_tarefas.data.TarefaRequestDto
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 
 class TarefasViewModel : ViewModel() {
 
@@ -29,16 +31,16 @@ class TarefasViewModel : ViewModel() {
         }
     }
 
-    fun adicionarTarefa(descricao: String) {
+    fun adicionarTarefa(descricao: String, nome: String, mesesAnteriores: Int, categoria: String, status: String, dataLimite: LocalDate){
         viewModelScope.launch {
-            adicionar(descricao)
+            adicionar(descricao, nome, mesesAnteriores, categoria, status, dataLimite)
             carregarTarefas()
         }
     }
 
-    fun atualizarTarefa(tarefa: Tarefa) {
+    fun atualizarTarefa(id: Int, tarefa: TarefaRequestDto) {
         viewModelScope.launch {
-            atualizar(tarefa)
+            atualizar(id, tarefa)
             carregarTarefas()
         }
     }

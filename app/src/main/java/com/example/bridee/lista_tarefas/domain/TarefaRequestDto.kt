@@ -3,8 +3,7 @@ package com.example.bridee.lista_tarefas.data
 
 import java.time.LocalDate
 
-data class Tarefa(
-    val id: Int,
+data class TarefaRequestDto(
     val mesesAnteriores: Int,
     val nome: String,
     var descricao: String,

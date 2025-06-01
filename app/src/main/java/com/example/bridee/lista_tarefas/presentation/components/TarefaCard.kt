@@ -27,7 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.bridee.auth.presentation.component.CustomCheckbox
-import com.example.bridee.lista_tarefas.domain.Tarefa
+import com.example.bridee.lista_tarefas.data.Tarefa
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
@@ -39,7 +39,7 @@ fun TarefaCard(
     onCheckClick: (Boolean) -> Unit
 ) {
 
-    val isChecked = remember { mutableStateOf(tarefa.concluida) }
+    val isChecked = remember { mutableStateOf(tarefa.status) }
     Card(
         modifier = Modifier
             .fillMaxWidth(),
@@ -56,7 +56,7 @@ fun TarefaCard(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             CustomCheckbox(
-                checked = tarefa.concluida,
+                checked = tarefa.status == "CONCLUIDO",
                 onCheckedChange = { isChecked ->
                     onCheckClick(isChecked)
                 },
@@ -66,16 +66,16 @@ fun TarefaCard(
             )
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    text = tarefa.titulo,
+                    text = tarefa.nome,
                     style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
                 )
-                Text(text = "${tarefa.data.format(DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy", Locale("pt", "BR")))}")
+                Text(text = "${tarefa.dataLimite.format(DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy", Locale("pt", "BR")))}")
             }
 
             IconButton(
                 onClick = {
                     onDeleteClick()
-                    deleteTaskName.value = tarefa.titulo
+                    deleteTaskName.value = tarefa.nome
                 },
                 modifier = Modifier.size(40.dp)
             ) {

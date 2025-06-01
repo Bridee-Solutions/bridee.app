@@ -1,6 +1,8 @@
 package com.example.bridee.lista_tarefas.domain
 
 import com.example.bridee.lista_tarefas.data.Tarefa
+import com.example.bridee.lista_tarefas.data.TarefaRequestDto
+import java.time.LocalDate
 
 
 class TarefaRepository {
@@ -9,14 +11,14 @@ class TarefaRepository {
 
         fun listar(): List<Tarefa> = tarefas
 
-        fun adicionar(descricao: String) {
-                tarefas.add(Tarefa(id = nextId++, descricao = descricao))
+        fun adicionar(descricao: String, nome: String, mesesAnteriores: Int, categoria: String, status: String, dataLimite: LocalDate) {
+                tarefas.add(Tarefa(id = nextId++, nome = nome, descricao = descricao, mesesAnteriores = mesesAnteriores, categoria = categoria, dataLimite = dataLimite, status = status))
         }
 
-        fun atualizar(tarefa: Tarefa) {
-                tarefas.find { it.id == tarefa.id }?.apply {
+        fun atualizar(id: Int, tarefa: TarefaRequestDto) {
+                tarefas.find { it.id == id }?.apply {
                         descricao = tarefa.descricao
-                        concluida = tarefa.concluida
+                        status = tarefa.status
                 }
         }
 

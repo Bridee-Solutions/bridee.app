@@ -1,6 +1,5 @@
 package com.example.bridee.lista_tarefas.data
 
-import com.example.bridee.lista_tarefas.domain.Tarefa
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET

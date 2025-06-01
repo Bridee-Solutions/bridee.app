@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.foundation.lazy.LazyColumn
@@ -21,6 +20,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -43,8 +43,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.bridee.auth.presentation.registration.fases.fase2.Fase2RegistrationScreen
-import com.example.bridee.lista_tarefas.domain.FilterItem
-import com.example.bridee.lista_tarefas.domain.Tarefa
+import com.example.bridee.lista_tarefas.domain.TarefasViewModel
 import com.example.bridee.lista_tarefas.presentation.components.AddTarefa
 import com.example.bridee.lista_tarefas.presentation.components.FilterPanel
 import com.example.bridee.lista_tarefas.presentation.components.TarefaCard
@@ -52,13 +51,12 @@ import com.example.bridee.ui.components.ferramentas_section.domain.Tool
 import com.example.bridee.ui.components.ferramentas_section.presentation.screens.FerramentasSection;
 import com.example.bridee.ui.theme.BrideeTheme
 import com.example.bridee.ui.theme.rosa
-import com.seuapp.presentation.components.CustomModal
 import com.seuapp.presentation.components.CustomModalCreate
 import java.time.LocalDate
 import java.util.Locale
 
 @Composable
-fun ListaTarefasScreen(viewModel: TarefasViewModel = viewModel()) {
+fun ListaTarefasScreen(viewModel: TarefasViewModel= viewModel()) {
     val tarefas by viewModel.tarefas.collectAsState()
 
     var textoNovaTarefa by remember { mutableStateOf("") }
@@ -76,7 +74,6 @@ fun ListaTarefasScreen(viewModel: TarefasViewModel = viewModel()) {
             )
             Button(onClick = {
                 if (textoNovaTarefa.isNotBlank()) {
-                    viewModel.adicionarTarefa(textoNovaTarefa)
                     textoNovaTarefa = ""
                 }
             }) {
@@ -91,14 +88,15 @@ fun ListaTarefasScreen(viewModel: TarefasViewModel = viewModel()) {
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     TextButton(onClick = {
-                        viewModel.atualizarTarefa(tarefa.copy(concluida = !tarefa.concluida))
+                        val novoStatus = if (tarefa.status == "CONCLUIDO") "EM_ANDAMENTO" else "CONCLUIDO"
+                        //viewModel.atualizarTarefa(tarefa.copy(status = novoStatus))
                     }) {
-                        Text(text = if (tarefa.concluida) "✅ ${tarefa.descricao}" else tarefa.descricao)
+                        Text(text = if (tarefa.status == "CONCLUIDO") "✅ ${tarefa.descricao}" else tarefa.descricao)
                     }
                     Row {
                         Button(onClick = {
 
-                            viewModel.atualizarTarefa(tarefa.copy(descricao = tarefa.descricao + " (editado)"))
+                            //viewModel.atualizarTarefa(tarefa.copy(descricao = tarefa.descricao + " (editado)"))
                         }) {
                             Text("Editar")
                         }
