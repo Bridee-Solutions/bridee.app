@@ -24,4 +24,12 @@ interface ServicosEndpoints {
     suspend fun getFornecedorInformation(
         @Path("id") id: Int
     ): Response<AssociadoGeralResponseDto>
+
+    @GET("assessores/information/{id}")
+    suspend fun getAssessorInformation(
+        @Path("id") id: Int
+    ): Response<AssociadoGeralResponseDto>
+
+    @GET("assessores/details")
+    suspend fun getAssessoresDetails(): Response<PaginationResponse<AssociadoResponseDto>>
 }

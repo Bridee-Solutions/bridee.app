@@ -34,6 +34,7 @@ import com.example.bridee.configuracoes.presentation.screen.ConfiguracoesScreen
 import com.example.bridee.home.presentation.viewmodel.HomeViewModel
 import com.example.bridee.inspiracao.domain.TelaInpiracaoViewModel
 import com.example.bridee.lista_tarefas.presentation.screens.ListaTarefasScreen
+import com.example.bridee.servicos.presentation.screens.AssessoresDetailsScreen
 import com.example.bridee.servicos.presentation.screens.GaleriaImagensScreen
 import com.example.bridee.servicos.presentation.screens.HomeScreen
 import com.example.bridee.servicos.presentation.screens.InspiracaoScreen
@@ -150,15 +151,20 @@ fun NavController(
         composable(
             route = Screen.ServicosDetalhesScreen.route,
             arguments = listOf(
-                navArgument("associadoId") {type = NavType.IntType}
+                navArgument("associadoId") {type = NavType.IntType},
+                navArgument("tipoAssociado") {type = NavType.StringType}
             )
         ) {
             val associadoId = it.arguments?.getInt("associadoId")
+            val tipoAssociado = it.arguments?.getString("tipoAssociado")
             val viewModel: ServicosDetalhesViewModel = viewModel()
             viewModel.selectedAssociadoId = associadoId!!
+            viewModel.tipoAssociado = tipoAssociado
             ServicosDetalhesScreen(navController,  paddingValues, viewModel)
         }
-        composable(route = Screen.GaleriaImagens.route) {
+        composable(
+            route = Screen.GaleriaImagens.route
+        ) {
             GaleriaImagensScreen(navController, paddingValues)
         }
 
@@ -168,6 +174,10 @@ fun NavController(
         }
         composable(route = Screen.ListaTarefas.route) {
             ListaTarefasScreen(navController, paddingValues)
+        }
+        composable(route = Screen.AssessoresScreen.route) {
+            val viewModel: ServicosDetalhesViewModel = viewModel()
+            AssessoresDetailsScreen(viewModel, paddingValues, navController)
         }
     }
 }

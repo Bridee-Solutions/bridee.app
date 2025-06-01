@@ -4,5 +4,5 @@ data class Categoria(
     val id: Int?,
     val nome: String,
     val icone: Int,
-    val subcategorias: List<Subcategoria> = emptyList()
+    val subcategorias: MutableList<Subcategoria> = mutableListOf()
 )

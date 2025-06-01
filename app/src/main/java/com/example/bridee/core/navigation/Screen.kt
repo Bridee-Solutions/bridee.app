@@ -31,16 +31,16 @@ sealed class Screen (val route: String){
             subcategoriaId: Int
         ) = "servicos_subcategoria/${URLEncoder.encode(subcategoriaNome, "UTF-8")}/$subcategoriaId"
     }
-    object ServicosDetalhesScreen  : Screen("servicos_detalhes/{associadoId}"){
+    object ServicosDetalhesScreen  : Screen("servicos_detalhes/{associadoId}/{tipoAssociado}"){
         fun createRoute(
-            associadoId: Int
-        ) = "servicos_detalhes/${associadoId}"
+            associadoId: Int,
+            tipoAssociado: String
+        ) = "servicos_detalhes/${associadoId}/$tipoAssociado"
     }
     object Inspiracao : Screen("inspiracao")
     object ListaTarefas : Screen("lista_tarefas")
     object Configuracoes : Screen("configuracoes")
     object EsqueceuSenha : Screen("esqueceu_senha")
-    object GaleriaImagens : Screen("galeria_imagens")
-
-
+    object GaleriaImagens : Screen("galeria_imagens/{images}")
+    object AssessoresScreen: Screen("assessores/details")
 }

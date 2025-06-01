@@ -31,15 +31,16 @@ import com.example.bridee.servicos.presentation.components.CardAssociado
 import com.example.bridee.servicos.presentation.viewModel.ServicosDetalhesViewModel
 
 @Composable
-fun ServicosSubcategoriaScreen(
-    navController: NavController,
+fun AssessoresDetailsScreen(
     viewModel: ServicosDetalhesViewModel,
-    paddingValues: PaddingValues
-) {
+    paddingValues: PaddingValues,
+    navController: NavController
+){
+
     val associadoResponse = viewModel.associadoResponseDto
     var searchText by remember { mutableStateOf("") }
     LaunchedEffect(true) {
-        viewModel.loadFornecedorDetails()
+        viewModel.loadAssessorDetails()
     }
 
     Column(modifier = Modifier
@@ -55,7 +56,7 @@ fun ServicosSubcategoriaScreen(
         ) {
             Spacer(modifier = Modifier.height(40.dp))
             Text(
-                text = viewModel.subcategoriaNome,
+                text = "Assessores",
                 fontSize = 22.sp,
                 style = MaterialTheme.typography.titleLarge.copy(color = Color.Black),
                 modifier = Modifier.align(Alignment.CenterHorizontally)
@@ -65,7 +66,7 @@ fun ServicosSubcategoriaScreen(
             SearchBar(
                 searchText = searchText,
                 onSearchTextChanged = {
-                    newText -> searchText = newText
+                        newText -> searchText = newText
                     viewModel.loadFornecedorDetails()
                 },
                 placeholderText = "Pesquisar",
@@ -119,7 +120,7 @@ fun ServicosSubcategoriaScreen(
                                 .padding(vertical = 8.dp),
                             onClick = {
                                 navController.navigate(Screen.ServicosDetalhesScreen
-                                    .createRoute(associado.id, "FORNECEDOR"))
+                                    .createRoute(associado.id, "ASSESSOR"))
                             }
                         )
                     }

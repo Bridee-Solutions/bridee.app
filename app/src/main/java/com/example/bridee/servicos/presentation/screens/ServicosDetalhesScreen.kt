@@ -43,7 +43,7 @@ fun ServicosDetalhesScreen(
     val associadoInfo = viewModel.associadoInformationResponseDto
     var showDialog by remember { mutableStateOf(false) }
     LaunchedEffect (true){
-        viewModel.loadFornecedorInformation()
+        viewModel.loadScreenInformation()
     }
 
     Column(
@@ -60,9 +60,11 @@ fun ServicosDetalhesScreen(
                 ServicoHeader(
                     nome = servico.nome,
                     localizacao = servico.cidade + servico.bairro,
-                    imagem = 0,
+                    imagem = servico.imagens[0],
                     onBackClick = { navController.popBackStack() },
                     onImageClick = {
+                        val imagesString = servico.imagens.joinToString(separator = ",")
+                        navController.currentBackStackEntry?.savedStateHandle?.set("images", imagesString)
                         navController.navigate(Screen.GaleriaImagens.route)
                     }
                 )
