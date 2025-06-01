@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.bridee.auth.presentation.registration.fases.fase2.Fase2RegistrationScreen
+import com.example.bridee.lista_tarefas.data.TarefaRequestDto
 import com.example.bridee.lista_tarefas.domain.TarefasViewModel
 import com.example.bridee.lista_tarefas.presentation.components.AddTarefa
 import com.example.bridee.lista_tarefas.presentation.components.FilterPanel
@@ -89,14 +90,14 @@ fun ListaTarefasScreen(viewModel: TarefasViewModel= viewModel()) {
                 ) {
                     TextButton(onClick = {
                         val novoStatus = if (tarefa.status == "CONCLUIDO") "EM_ANDAMENTO" else "CONCLUIDO"
-                        //viewModel.atualizarTarefa(tarefa.copy(status = novoStatus))
+                        viewModel.atualizarTarefa(tarefa.id, TarefaRequestDto(nome =  tarefa.nome, descricao = tarefa.descricao, categoria = tarefa.categoria, status = novoStatus, mesesAnteriores = tarefa.mesesAnteriores, dataLimite = tarefa.dataLimite))
                     }) {
                         Text(text = if (tarefa.status == "CONCLUIDO") "✅ ${tarefa.descricao}" else tarefa.descricao)
                     }
                     Row {
                         Button(onClick = {
 
-                            //viewModel.atualizarTarefa(tarefa.copy(descricao = tarefa.descricao + " (editado)"))
+                        viewModel.atualizarTarefa(tarefa.id, TarefaRequestDto(nome =  tarefa.nome, descricao = tarefa.descricao + " (editado)", categoria = tarefa.categoria, status = tarefa.status, mesesAnteriores = tarefa.mesesAnteriores, dataLimite = tarefa.dataLimite))
                         }) {
                             Text("Editar")
                         }
