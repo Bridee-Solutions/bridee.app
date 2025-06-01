@@ -1,6 +1,5 @@
 package com.example.bridee.servicos.presentation.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,9 +25,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.example.bridee.R
-import com.example.bridee.core.image_bitmap.ImageUtils
-import java.util.Base64
 
 @Composable
 fun ServicoHeader(
@@ -46,8 +44,8 @@ fun ServicoHeader(
                 .height(250.dp)
                 .clickable(onClick = onImageClick)
         ) {
-            Image(
-                bitmap = ImageUtils.convertImageBase64ToBitMap(imagem),
+            AsyncImage(
+                model = imagem,
                 contentDescription = "Imagem do serviço $nome",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()

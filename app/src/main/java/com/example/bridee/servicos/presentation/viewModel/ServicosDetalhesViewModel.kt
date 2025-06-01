@@ -10,6 +10,7 @@ import com.example.bridee.servicos.data.ServicosEndpoints
 import com.example.bridee.servicos.domain.AssociadoGeralResponseDto
 import com.example.bridee.servicos.domain.AssociadoResponseDto
 import kotlinx.coroutines.launch
+import java.util.Objects
 
 class ServicosDetalhesViewModel : ViewModel() {
     private val servicosService = ApiInstance.createService(ServicosEndpoints::class.java)
@@ -17,6 +18,7 @@ class ServicosDetalhesViewModel : ViewModel() {
     var nomeFornecedor: String = ""
     var subcategoriaId: Int = 0
     var selectedAssociadoId: Int = 0
+    var tipoAssociado: String? = null;
     var associadoResponseDto by mutableStateOf<List<AssociadoResponseDto>>(mutableListOf())
     var associadoInformationResponseDto by mutableStateOf<AssociadoGeralResponseDto?>(null)
 
@@ -33,11 +35,43 @@ class ServicosDetalhesViewModel : ViewModel() {
         }
     }
 
+    fun loadScreenInformation(){
+        if(tipoAssociado == "ASSESSOR"){
+           loadAssessorInformation()
+            return
+        }
+        loadFornecedorInformation()
+    }
+
     fun loadFornecedorInformation(){
         viewModelScope.launch {
             try {
                 val response = servicosService.getFornecedorInformation(selectedAssociadoId)
                 associadoInformationResponseDto = response.body()
+            }catch (e: Exception){
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun loadAssessorInformation(){
+        viewModelScope.launch {
+            try {
+                val response = servicosService.getAssessorInformation(selectedAssociadoId)
+                associadoInformationResponseDto = response.body()
+            }catch (e: Exception){
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun loadAssessorDetails() {
+        viewModelScope.launch {
+            try {
+                val response = servicosService.getAssessoresDetails()
+                if (response.code() == 200) {
+                    associadoResponseDto = response.body()?.content ?: mutableListOf()
+                }
             }catch (e: Exception){
                 e.printStackTrace()
             }

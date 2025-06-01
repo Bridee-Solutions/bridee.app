@@ -1,5 +1,4 @@
 package com.example.bridee.servicos.presentation.screens
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -20,10 +19,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.bridee.R
+import coil.compose.AsyncImage
 
 @Composable
 fun GaleriaImagensScreen(
@@ -31,13 +29,10 @@ fun GaleriaImagensScreen(
     paddingValues: PaddingValues
 ) {
 
-    val imagens = listOf(
-        R.drawable.image_home,
-        R.drawable.image_home,
-        R.drawable.image_home,
-        R.drawable.image_home,
-        R.drawable.image_home
-    )
+    val imagensStrings = navController.previousBackStackEntry
+        ?.savedStateHandle
+        ?.get<String>("images")
+    val imagens = imagensStrings?.split(",") ?: emptyList()
 
     Column(
         modifier = Modifier
@@ -68,8 +63,8 @@ fun GaleriaImagensScreen(
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
         ) {
             items(imagens) { imagem ->
-                Image(
-                    painter = painterResource(id = imagem),
+                AsyncImage(
+                    model = imagem,
                     contentDescription = "Imagem do serviço",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier

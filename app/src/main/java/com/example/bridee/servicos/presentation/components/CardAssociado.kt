@@ -1,6 +1,5 @@
 package com.example.bridee.servicos.presentation.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,7 +27,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.bridee.core.image_bitmap.ImageUtils
+import coil.compose.AsyncImage
 import com.example.bridee.servicos.domain.AssociadoResponseDto
 import com.example.bridee.ui.theme.rosa
 
@@ -63,8 +62,8 @@ fun CardAssociado(
             elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
         ) {
             Column {
-                Image(
-                    bitmap = ImageUtils.convertImageBase64ToBitMap(associado.imagemPrincipal),
+                AsyncImage(
+                    model = associado.imagemPrincipal,
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier

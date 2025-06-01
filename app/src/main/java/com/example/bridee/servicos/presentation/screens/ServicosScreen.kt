@@ -37,7 +37,7 @@ fun ServicosScreen(
 ) {
     var searchText by remember { mutableStateOf("") }
     val categorias = viewModel.categorias.map {
-        Categoria(null, it.key, R.drawable.rancho_raveiro, it.value)
+        Categoria(null, it.key, R.drawable.rancho_raveiro, it.value.toMutableList())
     }
 
     LaunchedEffect(true) {
@@ -87,7 +87,17 @@ fun ServicosScreen(
                     color = Color.Black
                 )
             }
+            item {
+                val assessorCategory = Categoria(null, "Assessores", R.drawable.rancho_raveiro, mutableListOf())
+                CategoriaExpansivelItem(
+                    categoria = assessorCategory,
+                    navController = navController,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp, horizontal = 16.dp),
 
+                )
+            }
             items(categorias) { categoria ->
                 CategoriaExpansivelItem(
                     categoria = categoria,
