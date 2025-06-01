@@ -54,6 +54,7 @@ fun NavController(
     NavHost(navController = navController, startDestination = Screen.Login.route){
         composable(route = Screen.Login.route) {
             val authenticationViewModel: AuthenticationViewModel = viewModel()
+
             LoginScreen(authenticationViewModel, navController)
         }
         navigation(
