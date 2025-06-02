@@ -23,6 +23,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 
 @SuppressLint("StaticFieldLeak")
@@ -54,10 +55,12 @@ class ConfiguracaoViewModel(
                 val requestBody = tempFile.asRequestBody("image/*".toMediaTypeOrNull())
                 val imagePart = MultipartBody.Part.createFormData("file", tempFile.name, requestBody)
                 val metadataJson = Gson().toJson(imageMetadata)
+                val metadataRequestBody = metadataJson
+                    .toRequestBody("application/json".toMediaTypeOrNull())
 
                 try {
                     val response = configuracaoService.uploadProfileImage(
-                        metadata = metadataJson,
+                        metadata = metadataRequestBody,
                         file = imagePart
                     )
                     if(response.code() == 200){
