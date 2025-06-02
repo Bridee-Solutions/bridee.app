@@ -18,11 +18,15 @@ import com.example.bridee.configuracoes.presentation.components.ProfileCard
 import com.example.bridee.configuracoes.presentation.components.ProfileDetailsCard
 import com.example.bridee.configuracoes.presentation.components.WeddingDetailsCard
 import androidx.navigation.NavController
+import com.example.bridee.configuracoes.domain.ConfiguracaoInformation
+import com.example.bridee.configuracoes.presentation.viewmodel.ConfiguracaoViewModel
 
 @Composable
-fun ConfiguracoesScreen(navController: NavController) {
+fun ConfiguracoesScreen(
+    navController: NavController,
+    viewModel: ConfiguracaoViewModel
+) {
     var isEditing by remember { mutableStateOf(false) }
-
 
     var weddingDate by remember { mutableStateOf("11 de Fevereiro, 2026") }
     var weddingLocation by remember { mutableStateOf("São Paulo - SP") }
@@ -44,8 +48,7 @@ fun ConfiguracoesScreen(navController: NavController) {
             navController = navController,
             isEditing = isEditing,
             onEditClick = { isEditing = !isEditing },
-            name = name,
-            loveName = loveName
+            viewModel = viewModel
         )
         WeddingDetailsCard(
             isEditing = isEditing,

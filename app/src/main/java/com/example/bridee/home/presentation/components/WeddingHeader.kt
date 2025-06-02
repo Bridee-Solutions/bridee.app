@@ -28,9 +28,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.bridee.R
+import com.example.bridee.configuracoes.domain.ConfiguracaoInformation
 import com.example.bridee.core.navigation.Screen
 
 import com.example.bridee.ui.theme.rosa
+import com.google.gson.Gson
+import java.net.URLEncoder
 
 @Composable
 fun WeddingHeader(navController: NavController) {
@@ -64,7 +67,12 @@ fun WeddingHeader(navController: NavController) {
                 modifier = Modifier
                     .size(26.dp)
                     .align(Alignment.TopEnd)
-                    .clickable { navController.navigate(Screen.Configuracoes.route) },
+                    .clickable {
+                        val casamentoInfo = homeResponse?.casamentoInfo
+                        val information = ConfiguracaoInformation(casamentoInfo?.image, casamentoInfo!!)
+                        val json = URLEncoder.encode(Gson().toJson(information), "UTF-8")
+                        navController.navigate(Screen.Configuracoes.createRoute(json))
+                    },
                 tint = Color.White
             )
         }

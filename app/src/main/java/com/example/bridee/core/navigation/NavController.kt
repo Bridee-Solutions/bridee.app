@@ -30,7 +30,13 @@ import com.example.bridee.calculadora.domain.CalculadoraViewModel
 import com.example.bridee.calculadora.domain.ItemOrcamentoResponse
 import com.example.bridee.calculadora.presentation.screens.CalculadoraScreen
 import com.example.bridee.calculadora.presentation.screens.CategoriaDetalhesScreen
+import com.example.bridee.configuracoes.domain.ConfiguracaoInformation
 import com.example.bridee.configuracoes.presentation.screen.ConfiguracoesScreen
+<<<<<<< Updated upstream
+=======
+import com.example.bridee.configuracoes.presentation.viewmodel.ConfiguracaoViewModel
+import com.example.bridee.home.presentation.viewmodel.HomeViewModel
+>>>>>>> Stashed changes
 import com.example.bridee.inspiracao.domain.TelaInpiracaoViewModel
 import com.example.bridee.lista_tarefas.presentation.screens.ListaTarefasScreen
 import com.example.bridee.servicos.presentation.screens.GaleriaImagensScreen
@@ -50,7 +56,11 @@ fun NavController(
 //    val navController = rememberNavController()
     NavHost(navController = navController, startDestination = Screen.Login.route){
         composable(route = Screen.Login.route) {
+<<<<<<< Updated upstream
             val authenticationViewModel: AuthenticationViewModel = AuthenticationViewModel(context)
+=======
+            val authenticationViewModel: AuthenticationViewModel = viewModel()
+>>>>>>> Stashed changes
             LoginScreen(authenticationViewModel, navController)
         }
         navigation(
@@ -91,8 +101,12 @@ fun NavController(
         composable(route = Screen.EmailFailRegistration.route) {
             EmailFailRegistrationScreen()
         }
-        composable(Screen.Configuracoes.route) {
-            ConfiguracoesScreen(navController)
+        composable(Screen.Configuracoes.route) { it ->
+            val itemJson = it.arguments?.getString("information")
+            val information = Gson().fromJson(URLDecoder.decode(itemJson, "UTF-8"), ConfiguracaoInformation::class.java)
+            val viewModel: ConfiguracaoViewModel = viewModel()
+            viewModel.information = information
+            ConfiguracoesScreen(navController, viewModel)
         }
 
         navigation(
