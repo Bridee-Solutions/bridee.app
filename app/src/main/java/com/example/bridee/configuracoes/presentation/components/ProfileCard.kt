@@ -84,7 +84,7 @@ fun ProfileCard(
                         modifier = Modifier
                             .clickable {
                                 onEditClick()
-                                viewModel.uploadFile()
+                                viewModel.updateConfiguracoes()
                             }
                     )
                 } else {
