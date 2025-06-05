@@ -8,6 +8,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.Headers
 import retrofit2.http.Multipart
 import retrofit2.http.PATCH
 import retrofit2.http.POST
@@ -22,11 +23,13 @@ interface ConfiguracaoEndpoints {
         @Part("metadata") metadata: RequestBody
     ): Response<Unit>
 
+    @Headers("Content-Type: application/merge-patch+json")
     @PATCH("casamentos")
     suspend fun updateCasamentoInfo(
             @Body configuracaoCasamento: ConfiguracaoCasamento
     ): Response<HomeCasamentoResponse>
 
+    @Headers("Content-Type: application/merge-patch+json")
     @PATCH("casais")
     suspend fun updateCasalInfo(
         @Body configuracaoCasal: ConfiguracaoCasal
