@@ -75,7 +75,11 @@ fun WeddingHeader(
                     .align(Alignment.TopEnd)
                     .clickable {
                         val casamentoInfo = homeResponse?.casamentoInfo
-                        val information = ConfiguracaoInformation(casamentoInfo?.image, casamentoInfo!!)
+                        val information = ConfiguracaoInformation(
+                            casamentoInfo?.image,
+                            casamentoInfo!!,
+                            homeResponse.orcamento
+                        )
                         val json = URLEncoder.encode(Gson().toJson(information), "UTF-8")
                         navController.navigate(Screen.Configuracoes.createRoute(json))
                     },

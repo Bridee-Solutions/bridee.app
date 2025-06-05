@@ -10,23 +10,22 @@ import androidx.compose.ui.semantics.SemanticsProperties.EditableText
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.bridee.configuracoes.presentation.viewmodel.ConfiguracaoViewModel
 import com.example.bridee.home.presentation.components.EditableText
 
 
 @Composable
-fun ProfileDetailsCard(isEditing: Boolean,
-                       name : String,
-                       onNameChange :  (String) -> Unit,
-                       loveName : String,
-                       onLoveNameChange :  (String) -> Unit,
-                       phone : String,
-                       onPhoneChange : (String) -> Unit,
-                       )
+fun ProfileDetailsCard(
+    isEditing: Boolean,
+    viewModel: ConfiguracaoViewModel
+) {
+    var nome = viewModel.information?.casamentoResponse?.casal?.nome
+    var nomeParceiro = viewModel.information?.casamentoResponse?.casal?.nomeParceiro
+    var telefone = viewModel.information?.casamentoResponse?.casal?.telefone
 
-{
-    Column(modifier = Modifier.fillMaxWidth().background(Color(0xFFFCFAF2))) {
-
-
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .background(Color(0xFFFCFAF2))) {
         Text(
             "Detalhes do perfil",
             style = MaterialTheme.typography.titleMedium,
@@ -42,8 +41,13 @@ fun ProfileDetailsCard(isEditing: Boolean,
         )
 
         EditableText(
-            text = name,
-            onTextChange = onNameChange,
+            text = nome ?: "",
+            onTextChange = {
+                nome = it
+                viewModel.information = viewModel.information?.copy(
+                    casamentoResponse = viewModel.updateNomeCasal(it)
+                )
+            },
             isEditing = isEditing,
             textStyle = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.padding(start = 20.dp)
@@ -59,8 +63,13 @@ fun ProfileDetailsCard(isEditing: Boolean,
 
 
         EditableText(
-            text = loveName,
-            onTextChange = onLoveNameChange,
+            text = nomeParceiro ?: "",
+            onTextChange = {
+                nomeParceiro = it
+                viewModel.information = viewModel.information?.copy(
+                    casamentoResponse = viewModel.updateNomeParceiroCasal(it)
+                )
+            },
             isEditing = isEditing,
             textStyle = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.padding(start = 20.dp)
@@ -73,8 +82,13 @@ fun ProfileDetailsCard(isEditing: Boolean,
             modifier = Modifier.padding(start = 20.dp))
 
         EditableText(
-            text = phone,
-            onTextChange = onPhoneChange,
+            text = telefone ?: "",
+            onTextChange = {
+                telefone = it
+                viewModel.information = viewModel.information?.copy(
+                    casamentoResponse = viewModel.updateTelefoneCasal(it)
+                )
+            },
             isEditing = isEditing,
             textStyle = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.padding(start = 20.dp, bottom = 12.dp)

@@ -165,7 +165,7 @@ fun ProfileCard(
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
-                    text = "350 dias",
+                    text = "${viewModel.daysToWedding()}",
                     style = MaterialTheme.typography.bodyLarge,
                     color = Color.LightGray
                 )
