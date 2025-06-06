@@ -1,9 +1,14 @@
 package com.example.bridee.lista_tarefas.domain
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.bridee.core.api.ApiInstance
+import com.example.bridee.lista_tarefas.data.ListaTarefasEndpoints
 import com.example.bridee.lista_tarefas.data.Tarefa
 import com.example.bridee.lista_tarefas.data.TarefaRequestDto
+import com.example.bridee.lista_tarefas.data.TarefaResponseDto
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -11,15 +16,11 @@ import java.time.LocalDate
 
 class TarefasViewModel : ViewModel() {
 
-    private val repository = TarefaRepository()
 
-    private val listar = ListarTarefasUseCase(repository)
-    private val adicionar = AdicionarTarefaUseCase(repository)
-    private val atualizar = AtualizarTarefaUseCase(repository)
-    private val deletar = DeletarTarefaUseCase(repository)
+    val tarefaService = ApiInstance.createService(ListaTarefasEndpoints::class.java)
 
-    private val _tarefas = MutableStateFlow(listOf<Tarefa>())
-    val tarefas: StateFlow<List<Tarefa>> = _tarefas
+
+    val tarefas = MutableStateFlow<List<TarefaResponseDto>>(emptyList())
 
     init {
         carregarTarefas()
@@ -27,28 +28,25 @@ class TarefasViewModel : ViewModel() {
 
     fun carregarTarefas() {
         viewModelScope.launch {
-            _tarefas.value = listar()
+            tarefas.value = tarefaService.listarTarefas()
         }
     }
 
-    fun adicionarTarefa(descricao: String, nome: String, mesesAnteriores: Int, categoria: String, status: String, dataLimite: LocalDate){
+    fun adicionarTarefa(request : TarefaRequestDto){
         viewModelScope.launch {
-            adicionar(descricao, nome, mesesAnteriores, categoria, status, dataLimite)
-            carregarTarefas()
+            tarefaService.adicionarTarefa(request)
         }
     }
 
-    fun atualizarTarefa(id: Int, tarefa: TarefaRequestDto) {
+    fun atualizarTarefa(id: Long, tarefa: TarefaRequestDto) {
         viewModelScope.launch {
-            atualizar(id, tarefa)
-            carregarTarefas()
+            tarefaService.atualizarTarefa(id, tarefa)
         }
     }
 
-    fun deletarTarefa(id: Int) {
+    fun deletarTarefa(id: Long) {
         viewModelScope.launch {
-            deletar(id)
-            carregarTarefas()
+            tarefaService.deletarTarefa(id)
         }
     }
 }

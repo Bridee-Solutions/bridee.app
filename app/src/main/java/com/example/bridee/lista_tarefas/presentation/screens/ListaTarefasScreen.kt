@@ -85,7 +85,7 @@ import java.util.Locale
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ListaTarefasScreen(navController: NavController, paddingValues: PaddingValues, viewModel: TarefasViewModel= viewModel()) {
-        val tarefas by viewModel.tarefas.collectAsState()
+    val tarefas by viewModel.tarefas.collectAsState()
 
 
     var statusFilter by remember {
@@ -149,9 +149,18 @@ fun ListaTarefasScreen(navController: NavController, paddingValues: PaddingValue
     var showFilterPanel by remember { mutableStateOf(false) }
 
     val tarefasAgrupadas = tarefas.groupBy {
-        if (it.dataLimite.isBefore(hoje)) "Atrasado"
-        else "${it.dataLimite.month.getDisplayName(TextStyleDate.FULL, Locale.getDefault())
-            .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }} ${it.dataLimite.year}"
+        val data = it.dataLimite
+        if (data != null && data.isBefore(hoje)) {
+            "Atrasado"
+        } else if (data != null) {
+            val mes = data.month.getDisplayName(TextStyleDate.FULL, Locale.getDefault())
+                .replaceFirstChar { char ->
+                    if (char.isLowerCase()) char.titlecase(Locale.getDefault()) else char.toString()
+                }
+            "$mes ${data.year}"
+        } else {
+            "Sem data"
+        }
     }
 
     Column(
@@ -582,7 +591,7 @@ fun ListaTarefasScreen(navController: NavController, paddingValues: PaddingValue
 
         },
         onConfirm = {
-            viewModel.adicionarTarefa(descricao = descTaskText, categoria = categoryTaskText, nome = nomeTaskText, status = "EM_ANDAMENTO", dataLimite = selectedDate, mesesAnteriores = 0)
+            viewModel.adicionarTarefa(TarefaRequestDto(descricao = descTaskText, categoria = categoryTaskText, nome = nomeTaskText, status = "EM_ANDAMENTO", dataLimite = selectedDate, mesesAnteriores = 0))
             showCreateModal = true
         },
         onCancel = {

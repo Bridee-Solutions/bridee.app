@@ -28,12 +28,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.bridee.auth.presentation.component.CustomCheckbox
 import com.example.bridee.lista_tarefas.data.Tarefa
+import com.example.bridee.lista_tarefas.data.TarefaResponseDto
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 @Composable
 fun TarefaCard(
-    tarefa: Tarefa,
+    tarefa: TarefaResponseDto,
     deleteTaskName: MutableState<String>,
     onDeleteClick: () -> Unit,
     onCheckClick: (Boolean) -> Unit
@@ -66,10 +67,18 @@ fun TarefaCard(
             )
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    text = tarefa.nome,
+                    text = tarefa.nome ?: "Nome não disponível",
                     style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
                 )
-                Text(text = "${tarefa.dataLimite.format(DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy", Locale("pt", "BR")))}")
+                tarefa.dataLimite?.let { data ->
+                    Text(
+                        text = data.format(
+                            DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy", Locale("pt", "BR"))
+                        )
+                    )
+                } ?: run {
+                    Text(text = "Sem data limite")
+                }
             }
 
             IconButton(
