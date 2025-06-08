@@ -31,6 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -42,13 +43,34 @@ import com.example.bridee.auth.presentation.component.Header
 import com.example.bridee.auth.presentation.component.SmallCheckbox
 import com.example.bridee.core.navigation.Screen
 
+
 @Composable
 fun Fase7RegistrationScreen(viewModel: RegistrationSharedViewModel,navController: NavController){
 
     var offset by remember {
         mutableStateOf(0f)
     }
+    val termsText = """
+Última atualização: 07 de junho de 2025
 
+Seja bem-vindo(a) à bridee!
+
+Este aplicativo foi criado para auxiliar no planejamento do seu casamento. Ao utilizar nossos serviços, você concorda com os seguintes termos:
+
+1. Coleta de dados: Coletamos informações básicas como nome, e-mail, data do casamento e preferências para personalizar sua experiência.
+
+2. Uso das informações: Suas informações são utilizadas exclusivamente para fornecer e melhorar nossos serviços. Não compartilhamos seus dados com terceiros sem seu consentimento.
+
+3. Segurança: Adotamos medidas de segurança para proteger suas informações, mas lembramos que nenhum sistema é 100% seguro.
+
+4. Responsabilidades: A bridee não se responsabiliza por compromissos criados ou não confirmados, tampouco por decisões tomadas com base em funcionalidades do app.
+
+5. Modificações: Podemos alterar estes termos a qualquer momento. Recomendamos revisar periodicamente.
+
+6. Contato: Em caso de dúvidas, fale conosco pelo e-mail suporte@bridee.app
+
+Ao continuar, você declara estar ciente e de acordo com os termos acima.
+""".trimIndent()
     val windowWidthDp = LocalConfiguration.current.screenWidthDp.dp
     val windowHeightDp = LocalConfiguration.current.screenHeightDp.dp
 
@@ -68,7 +90,7 @@ fun Fase7RegistrationScreen(viewModel: RegistrationSharedViewModel,navController
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceEvenly,
             modifier = Modifier.fillMaxWidth()
-                .height(300.dp)
+                .weight(1f)
         ) {
             Spacer(modifier = Modifier.height(20.dp))
             Text(
@@ -77,10 +99,10 @@ fun Fase7RegistrationScreen(viewModel: RegistrationSharedViewModel,navController
                 style = MaterialTheme.typography.titleMedium.copy(fontSize = 21.sp),
             )
             TextField(
-                value = "",
+                value = termsText,
                 onValueChange = {}, modifier = Modifier
                     .fillMaxWidth()
-                    .height(350.dp)
+                    .height(450.dp)
                     .padding(20.dp)
                     .border(
                         BorderStroke(width = 1.dp, color = Color(0x56999999)),
@@ -93,6 +115,7 @@ fun Fase7RegistrationScreen(viewModel: RegistrationSharedViewModel,navController
                             it
                         }
                     ),
+                textStyle = TextStyle(fontSize = 12.sp),
                 colors = TextFieldDefaults.colors(
                     unfocusedContainerColor = Color(0xFFF5F5F5),
                     focusedContainerColor = Color(0xFFF5F5F5),
@@ -140,6 +163,12 @@ fun Fase7RegistrationScreen(viewModel: RegistrationSharedViewModel,navController
     }
 
 }
+
+
+
+
+
+
 
 
 
