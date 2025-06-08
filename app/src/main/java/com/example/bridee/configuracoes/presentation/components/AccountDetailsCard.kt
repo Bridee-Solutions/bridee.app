@@ -21,15 +21,18 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.bridee.R
+import com.example.bridee.configuracoes.presentation.viewmodel.ConfiguracaoViewModel
 import com.example.bridee.home.presentation.components.EditableText
 import com.example.bridee.ui.theme.rosa
 
 
 @Composable
-fun AccountDetailsCard(isEditing: Boolean,
-                       email : String,
-                       onEmailChange : (String) -> Unit,
-                       ) {
+fun AccountDetailsCard(
+    isEditing: Boolean,
+    viewModel: ConfiguracaoViewModel
+) {
+
+    var email = viewModel.information?.casamentoResponse?.casal?.email
 
     Column(
         modifier = Modifier
@@ -47,8 +50,13 @@ fun AccountDetailsCard(isEditing: Boolean,
             style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
             modifier = Modifier.padding(start = 20.dp) )
         EditableText(
-            text = email,
-            onTextChange = onEmailChange,
+            text = email ?: "",
+            onTextChange = {
+                email = it
+                viewModel.information = viewModel.information?.copy(
+                    casamentoResponse = viewModel.updateEmailCasal(it)
+                )
+            },
             isEditing = isEditing,
             textStyle = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.padding(start = 20.dp, bottom = 12.dp)
@@ -72,7 +80,9 @@ fun AccountDetailsCard(isEditing: Boolean,
                 painter = painterResource(id = R.drawable.deslogar),
                 contentDescription = "Deslogar",
                 tint = rosa,
-                modifier = Modifier.size(40.dp).padding(start = 20.dp, bottom = 20.dp)
+                modifier = Modifier
+                    .size(40.dp)
+                    .padding(start = 20.dp, bottom = 20.dp)
 
             )
             Spacer(modifier = Modifier.width(8.dp))

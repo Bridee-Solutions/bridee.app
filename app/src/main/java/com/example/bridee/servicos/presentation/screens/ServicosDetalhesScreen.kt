@@ -2,35 +2,49 @@ package com.example.bridee.servicos.presentation.screens
 
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.*
+import androidx.compose.material3.Divider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.bridee.core.navigation.Screen
 import com.example.bridee.servicos.presentation.components.OrcamentoDialog
 import com.example.bridee.servicos.presentation.components.ServicoHeader
 import com.example.bridee.servicos.presentation.components.ServicoInformacoes
-import com.example.bridee.servicos.presentation.components.ServicoLocalizacao
 import com.example.bridee.servicos.presentation.components.ServicoPerguntasFrequentes
 import com.example.bridee.servicos.presentation.components.SolicitarOrcamentoButton
 import com.example.bridee.servicos.presentation.viewModel.ServicosDetalhesViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.bridee.core.navigation.Screen
 
 
 @Composable
 fun ServicosDetalhesScreen(
     navController: NavController,
     paddingValues: PaddingValues,
-    viewModel: ServicosDetalhesViewModel = viewModel()
+    viewModel: ServicosDetalhesViewModel
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val associadoInfo = viewModel.associadoInformationResponseDto
+    var showDialog by remember { mutableStateOf(false) }
+    LaunchedEffect (true){
+        viewModel.loadScreenInformation()
+    }
 
     Column(
         modifier = Modifier
@@ -42,13 +56,15 @@ fun ServicosDetalhesScreen(
                 .weight(1f)
                 .verticalScroll(rememberScrollState())
         ) {
-            uiState.servico?.let { servico ->
+            associadoInfo?.let { servico ->
                 ServicoHeader(
                     nome = servico.nome,
-                    localizacao = servico.localizacao,
-                    imagem = servico.imagem,
+                    localizacao = servico.cidade + servico.bairro,
+                    imagem = servico.imagens[0],
                     onBackClick = { navController.popBackStack() },
                     onImageClick = {
+                        val imagesString = servico.imagens.joinToString(separator = ",")
+                        navController.currentBackStackEntry?.savedStateHandle?.set("images", imagesString)
                         navController.navigate(Screen.GaleriaImagens.route)
                     }
                 )
@@ -77,29 +93,29 @@ fun ServicosDetalhesScreen(
 
                 Divider(modifier = Modifier.padding(vertical = 8.dp))
 
-                ServicoInformacoes(descricao = servico.descricao)
+                ServicoInformacoes(descricao = servico.visaoGeral)
                 Spacer(modifier = Modifier.height(16.dp))
 
                 ServicoPerguntasFrequentes(
-                    perguntas = servico.perguntasFrequentes,
-                    servicos = servico.servicosOferecidos
+                    perguntas = mutableListOf(),
+                    servicos = servico.tiposCasamento
                 )
                 Spacer(modifier = Modifier.height(16.dp))
 
-                ServicoLocalizacao(endereco = servico.endereco)
-                Spacer(modifier = Modifier.height(16.dp))
+//                ServicoLocalizacao(endereco = servico.)
+//                Spacer(modifier = Modifier.height(16.dp))
             }
         }
 
         SolicitarOrcamentoButton(
-            onClick = { viewModel.toggleDialog(true) }
+            onClick = {showDialog = true}
         )
     }
 
-    if (uiState.showDialog) {
+    if (showDialog) {
         OrcamentoDialog(
-            onDismiss = { viewModel.toggleDialog(false) },
-            onConfirm = { viewModel.toggleDialog(false) }
+            onDismiss = { showDialog = false },
+            onConfirm = { showDialog = false }
         )
     }
 }

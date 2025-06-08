@@ -24,15 +24,28 @@ sealed class Screen (val route: String){
     object FornecedorDetalhes : Screen("fornecedores_detalhes")
     object Home : Screen("home")
     object Servicos : Screen("servicos")
-    object ServicosSubcategoriaScreen : Screen("servicos_subcategoria/{subcategoriaNome}") {
-        fun createRoute(subcategoriaNome: String) = "servicos_subcategoria/${URLEncoder.encode(subcategoriaNome, "UTF-8")}"
+    object ServicosSubcategoriaScreen : Screen("servicos_subcategoria/{subcategoriaNome}/{subcategoriaId}") {
+        fun createRoute(
+            subcategoriaNome: String,
+            subcategoriaId: Int
+        ) = "servicos_subcategoria/${URLEncoder.encode(subcategoriaNome, "UTF-8")}/$subcategoriaId"
     }
-    object ServicosDetalhesScreen  : Screen("servicos_detalhes")
+    object ServicosDetalhesScreen  : Screen("servicos_detalhes/{associadoId}/{tipoAssociado}"){
+        fun createRoute(
+            associadoId: Int,
+            tipoAssociado: String
+        ) = "servicos_detalhes/${associadoId}/$tipoAssociado"
+    }
     object Inspiracao : Screen("inspiracao")
     object ListaTarefas : Screen("lista_tarefas")
-    object Configuracoes : Screen("configuracoes")
+    object Configuracoes : Screen("configuracoes/{information}"){
+        fun createRoute(
+            information: String
+        ) = "configuracoes/$information"
+    }
     object EsqueceuSenha : Screen("esqueceu_senha")
-    object GaleriaImagens : Screen("galeria_imagens")
     object Convidado: Screen("convidado")
     object AdicionarConvidado: Screen("convidado/adicionar")
+    object GaleriaImagens : Screen("galeria_imagens/{images}")
+    object AssessoresScreen: Screen("assessores/details")
 }

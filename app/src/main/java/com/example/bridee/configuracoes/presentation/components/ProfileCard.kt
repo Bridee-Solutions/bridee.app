@@ -24,11 +24,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import com.example.bridee.R
 import com.example.bridee.core.navigation.Screen
 import com.example.bridee.home.presentation.components.EditableText
 import com.example.bridee.ui.theme.rosa
 import coil.compose.rememberAsyncImagePainter
+import com.example.bridee.configuracoes.presentation.viewmodel.ConfiguracaoViewModel
 
 fun getFirstName(fullName: String): String {
     return fullName.split(" ").firstOrNull()?.replaceFirstChar { it.uppercase() } ?: fullName
@@ -39,16 +41,17 @@ fun ProfileCard(
     navController: NavController,
     isEditing: Boolean,
     onEditClick: () -> Unit,
-    name: String,
-    loveName: String
+    viewModel: ConfiguracaoViewModel
 ) {
-    var selectedImageUri by remember { mutableStateOf<String?>(null) }
+
+    val name = viewModel.information?.casamentoResponse?.casal?.nome
+    val loveName = viewModel.information?.casamentoResponse?.casal?.nomeParceiro
 
     val imagePickerLauncher: ActivityResultLauncher<String> =
         rememberLauncherForActivityResult(
             contract = ActivityResultContracts.GetContent(),
             onResult = { uri ->
-                selectedImageUri = uri.toString()
+                viewModel.selectedImageUri = uri
             }
         )
 
@@ -79,7 +82,10 @@ fun ProfileCard(
                         text = "Salvar",
                         style = MaterialTheme.typography.bodyLarge.copy(color = rosa),
                         modifier = Modifier
-                            .clickable { onEditClick() }
+                            .clickable {
+                                onEditClick()
+                                viewModel.updateConfiguracoes()
+                            }
                     )
                 } else {
                     Icon(
@@ -105,10 +111,9 @@ fun ProfileCard(
                         }
                     }
             ) {
-                if (selectedImageUri != null) {
+                if (viewModel.selectedImageUri != null) {
                     Image(
-                        painter = rememberAsyncImagePainter(model = selectedImageUri)
-                        ,
+                        painter = rememberAsyncImagePainter(model = viewModel.selectedImageUri),
                         contentDescription = "Imagem do perfil",
                         modifier = Modifier
                             .fillMaxSize()
@@ -116,20 +121,31 @@ fun ProfileCard(
                         contentScale = ContentScale.Crop
                     )
                 } else {
-                    Image(
-                        painter = painterResource(id = R.drawable.defauult)
-                        ,
+                    if(viewModel.information?.imageUrl != null){
+                        AsyncImage(
+                            model =  viewModel.information?.imageUrl,
                         contentDescription = "Imagem do perfil",
                         modifier = Modifier
                             .fillMaxSize()
                             .clip(CircleShape),
                         contentScale = ContentScale.Crop
-                    )
+                        )
+                    }else{
+                        Image(
+                            painter = painterResource(id =  R.drawable.defauult),
+                            contentDescription = "Imagem do perfil",
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .clip(CircleShape),
+                            contentScale = ContentScale.Crop
+                        )
+                    }
+
                 }
             }
 
             Text(
-                text = "${getFirstName(name)} & ${getFirstName(loveName)}",
+                text = "${getFirstName(name ?: "")} & ${getFirstName(loveName ?: "")}",
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.padding(top = 12.dp)
             )
@@ -149,7 +165,7 @@ fun ProfileCard(
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
-                    text = "350 dias",
+                    text = "${viewModel.daysToWedding()}",
                     style = MaterialTheme.typography.bodyLarge,
                     color = Color.LightGray
                 )

@@ -7,23 +7,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.bridee.R
+import com.example.bridee.configuracoes.presentation.viewmodel.ConfiguracaoViewModel
 import com.example.bridee.home.presentation.components.EditableText
 import com.example.bridee.ui.theme.rosa
 
 @Composable
-fun WeddingDetailsCard(isEditing: Boolean,
-                       weddingDate: String,
-                       onWeddingDateChange: (String) -> Unit,
-                       weddingLocation: String,
-                       onWeddingLocationChange: (String) -> Unit,
-                       numberOfGuests: String,
-                       onNumberOfGuestsChange: (String) -> Unit,
-                       budget: String,
-                       onBudgetChange: (String) -> Unit ) {
+fun WeddingDetailsCard(
+    isEditing: Boolean,
+    viewModel: ConfiguracaoViewModel
+) {
+    var weddingDate = viewModel.information?.casamentoResponse?.dataCasamento
+    var weddingLocation = viewModel.information?.casamentoResponse?.local
+    val numberOfGuests = viewModel.information?.casamentoResponse?.quantidadeConvidados
+    val budget = viewModel.information?.orcamentoResponse?.orcamentoTotal
+
     Column(modifier = Modifier.fillMaxWidth()) {
         Divider(
             color = Color.LightGray,
@@ -43,8 +42,13 @@ fun WeddingDetailsCard(isEditing: Boolean,
                 modifier = Modifier.padding(start = 20.dp) )
             Spacer(modifier = Modifier.width(6.dp))
             EditableText(
-                text = weddingDate,
-                onTextChange = onWeddingDateChange,
+                text = weddingDate ?: "",
+                onTextChange = {
+                    weddingDate = it
+                    viewModel.information = viewModel.information?.copy(
+                        casamentoResponse = viewModel.updateDataCasamentoInformation(it)
+                    )
+                },
                 isEditing = isEditing,
                 textStyle = MaterialTheme.typography.bodyLarge
             )
@@ -55,11 +59,18 @@ fun WeddingDetailsCard(isEditing: Boolean,
                 painterResource(id = R.drawable.place),
                 "Local",
                 tint = rosa,
-                modifier = Modifier.padding(start = 20.dp).size(16.dp))
+                modifier = Modifier
+                    .padding(start = 20.dp)
+                    .size(16.dp))
             Spacer(modifier = Modifier.width(6.dp))
             EditableText(
-                text = weddingLocation,
-                onTextChange = onWeddingLocationChange,
+                text = weddingLocation ?: "",
+                onTextChange = {
+                    weddingLocation = it
+                    viewModel.information = viewModel.information?.copy(
+                        casamentoResponse = viewModel.updateLocalInformation(it)
+                    )
+                },
                 isEditing = isEditing,
                 textStyle = MaterialTheme.typography.bodyLarge
             )
@@ -79,9 +90,9 @@ fun WeddingDetailsCard(isEditing: Boolean,
                 modifier = Modifier.padding(start = 20.dp))
             Spacer(modifier = Modifier.width(8.dp))
             EditableText(
-                text = numberOfGuests,
-                onTextChange = onNumberOfGuestsChange,
-                isEditing = isEditing,
+                text = numberOfGuests ?: "0",
+                onTextChange = {},
+                isEditing = false,
                 textStyle = MaterialTheme.typography.bodyLarge
             )
         }
@@ -93,9 +104,9 @@ fun WeddingDetailsCard(isEditing: Boolean,
                 modifier = Modifier.padding(start = 20.dp))
             Spacer(modifier = Modifier.width(8.dp))
             EditableText(
-                text = budget,
-                onTextChange = onBudgetChange,
-                isEditing = isEditing,
+                text = (budget ?: "0").toString(),
+                onTextChange = {},
+                isEditing = false,
                 textStyle = MaterialTheme.typography.bodyLarge
             )
         }

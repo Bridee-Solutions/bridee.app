@@ -34,10 +34,10 @@ import com.example.bridee.servicos.domain.Categoria
 fun CategoriaExpansivelItem(
     categoria: Categoria,
     modifier: Modifier = Modifier,
-    navController: NavController? = null,
-    state: CategoriaExpansivelItemState = rememberCategoriaExpansivelItemState(initialExpanded = categoria.nome.equals("Assessores", ignoreCase = true))
+    navController: NavController,
+    state: CategoriaExpansivelItemState = rememberCategoriaExpansivelItemState(initialExpanded = false)
 ) {
-    val isAssessores = categoria.nome.equals("Assessores", ignoreCase = true)
+
     Card(
         modifier = modifier.animateContentSize(),
         elevation = CardDefaults.cardElevation(0.dp),
@@ -49,7 +49,13 @@ fun CategoriaExpansivelItem(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable { if (!isAssessores) state.toggleExpansao()  }
+                    .clickable {
+                        if(categoria.nome == "Assessores"){
+                            navController.navigate(Screen.AssessoresScreen.route)
+                        }else{
+                            state.toggleExpansao()
+                        }
+                    }
                     .padding(16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -75,11 +81,10 @@ fun CategoriaExpansivelItem(
 
                 Icon(
                     painter = painterResource(
-                        id = if (isAssessores) R.drawable.ic_setaesquerda
-                        else if (state.expandida) R.drawable.ic_setabaixo
+                        id =  if (state.expandida) R.drawable.ic_setabaixo
                         else R.drawable.ic_setaesquerda
                     ),
-                    contentDescription = if (isAssessores) "Item fixo" else "Expandir/Recolher",
+                    contentDescription = "Expandir/Recolher",
                     tint = Color(0xFFB55557),
                     modifier = Modifier.size(24.dp)
                 )
@@ -106,8 +111,9 @@ fun CategoriaExpansivelItem(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clickable {
-                                    navController?.navigate(
-                                        Screen.ServicosSubcategoriaScreen.createRoute(subcategoria.nome))
+                                    navController.navigate(
+                                            Screen.ServicosSubcategoriaScreen.createRoute(subcategoria.nome, subcategoria.id.toInt())
+                                    )
                                 }
                                 .padding(vertical = 12.dp, horizontal = 16.dp),
                             style = MaterialTheme.typography.bodyLarge.copy(
