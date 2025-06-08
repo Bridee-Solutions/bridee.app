@@ -33,6 +33,6 @@ sealed class Screen (val route: String){
     object Configuracoes : Screen("configuracoes")
     object EsqueceuSenha : Screen("esqueceu_senha")
     object GaleriaImagens : Screen("galeria_imagens")
-
-
+    object Convidado: Screen("convidado")
+    object AdicionarConvidado: Screen("convidado/adicionar")
 }

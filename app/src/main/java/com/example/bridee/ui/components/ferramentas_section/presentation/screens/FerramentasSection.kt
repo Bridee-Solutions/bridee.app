@@ -87,7 +87,12 @@ fun FerramentasSection(navController: NavController, selectedTool: Tool) {
                 nome = "Convidados",
                 iconeRes = R.drawable.ic_convidados,
                 ativo = selectedTool == Tool.CONVIDADOS,
-                onClick = { selectedTool == Tool.CONVIDADOS }
+                onClick = {
+                    navController.navigate(Screen.Convidado.route){
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
             )
 
 
