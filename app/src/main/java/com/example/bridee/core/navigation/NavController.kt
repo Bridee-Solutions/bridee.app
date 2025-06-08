@@ -30,6 +30,7 @@ import com.example.bridee.calculadora.domain.CalculadoraViewModel
 import com.example.bridee.calculadora.domain.ItemOrcamentoResponse
 import com.example.bridee.calculadora.presentation.screens.CalculadoraScreen
 import com.example.bridee.calculadora.presentation.screens.CategoriaDetalhesScreen
+import com.example.bridee.calculadora.presentation.screens.FornecedorDetalhesScreen
 import com.example.bridee.configuracoes.presentation.screen.ConfiguracoesScreen
 import com.example.bridee.inspiracao.domain.TelaInpiracaoViewModel
 import com.example.bridee.lista_tarefas.presentation.screens.ListaTarefasScreen
@@ -46,7 +47,8 @@ import java.net.URLDecoder
 fun NavController(
     navController: NavHostController,
     context: Context,
-    paddingValues: PaddingValues){
+    paddingValues: PaddingValues
+){
 //    val navController = rememberNavController()
     NavHost(navController = navController, startDestination = Screen.Login.route){
         composable(route = Screen.Login.route) {
@@ -114,6 +116,15 @@ fun NavController(
                     item = item,
                     navController = navController,
                     paddingValues = paddingValues
+                )
+            }
+            composable(
+                route = Screen.FornecedorDetalhes.route
+            ) { backStackEntry ->
+                val viewModel = backStackEntry.sharedViewModel<CalculadoraViewModel>(navController)
+                FornecedorDetalhesScreen(
+                    viewModel = viewModel,
+                    navController = navController
                 )
             }
         }

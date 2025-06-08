@@ -48,7 +48,7 @@ fun ControleDeGastoCard(viewModel: CalculadoraViewModel) {
     val orcamento = viewModel.orcamentoResponse
     val orcamentoTotal = orcamento?.orcamentoTotal ?: BigDecimal(0)
     val orcamentoGasto = orcamento?.orcamentoGasto ?: BigDecimal(0)
-    val orcamentoRestante = orcamentoTotal.minus(orcamentoGasto)
+    val orcamentoRestante = orcamentoTotal.minus(orcamentoGasto).setScale(2, RoundingMode.DOWN)
 
     Box(
         modifier = Modifier
@@ -86,70 +86,29 @@ fun ControleDeGastoCard(viewModel: CalculadoraViewModel) {
 
             Spacer(modifier = Modifier.height(12.dp))
 
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = "Total gasto:",
-                    style = MaterialTheme.typography.bodyLarge
-                )
-                Text(
-                    text = "R$${orcamentoGasto}",
-                    style = MaterialTheme.typography.bodyLarge
-                )
-            }
-
             val gastoPercentage = if(orcamentoTotal > BigDecimal(0)){
                 orcamentoGasto.divide(orcamentoTotal, 2, RoundingMode.UP)
             }else{
                 BigDecimal(0)
             }
-            LinearProgressIndicator(
-                progress = "$gastoPercentage".toFloat(),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(30.dp)
-                    .padding(vertical = 4.dp),
-                color = rosa,
-                trackColor = Color(0xFFE1DCDC)
+
+            ProgressIndicator(
+                text = "Total gasto:",
+                value = orcamentoTotal,
+                percentage = gastoPercentage
             )
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = "Resta:",
-                    style = MaterialTheme.typography.bodyLarge
-                )
-                Text(
-                    text = "R$$orcamentoRestante",
-                    style = MaterialTheme.typography.bodyLarge
-                )
-            }
 
             val restantePercentage = if(orcamentoTotal > BigDecimal(0)){
                 orcamentoRestante.divide(orcamentoTotal, 2, RoundingMode.UP)
             }else{
                 BigDecimal(0)
             }
-            LinearProgressIndicator(
-                progress = "${restantePercentage}".toFloat(),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(30.dp)
-                    .padding(vertical = 4.dp),
-                color = rosa,
-                trackColor = Color(0xFFE1DCDC)
 
+            ProgressIndicator(
+                text = "Resta:",
+                value = orcamentoRestante,
+                percentage = restantePercentage
             )
-
-            Spacer(modifier = Modifier.height(20.dp))
 
             Row(
                 modifier = Modifier.fillMaxWidth(),

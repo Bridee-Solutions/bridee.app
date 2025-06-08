@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,18 +19,18 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.bridee.calculadora.domain.CalculadoraViewModel
-import com.example.bridee.ui.theme.rosa
+import com.example.bridee.calculadora.presentation.components.Calculadora.ProgressIndicator
 import java.math.BigDecimal
 import java.math.RoundingMode
 
 @Composable
 fun ControleGastoDetalhes(
-    viewModel: CalculadoraViewModel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: CalculadoraViewModel
 ) {
 
-    val totalGasto = viewModel.orcamentoResponse?.orcamentoGasto
-    val orcamentoTotal = viewModel.orcamentoResponse?.orcamentoTotal
+    val totalGasto = viewModel.orcamentoResponse?.orcamentoGasto ?: BigDecimal(0)
+    val orcamentoTotal = viewModel.orcamentoResponse?.orcamentoTotal ?: BigDecimal(0)
 
     Box(
         modifier = Modifier
@@ -54,33 +53,16 @@ fun ControleGastoDetalhes(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = "Total gasto:",
-                    style = MaterialTheme.typography.bodyLarge
-                )
-                Text(
-                    text = "R$$totalGasto",
-                    style = MaterialTheme.typography.bodyLarge
-                )
+            val gastoPercentage = if(orcamentoTotal > BigDecimal(0)){
+                totalGasto.divide(orcamentoTotal, 2, RoundingMode.UP)
+            }else{
+                BigDecimal(0)
             }
-
-            // Barra de progresso
-            LinearProgressIndicator(
-                progress = { "${totalGasto?.divide(orcamentoTotal, 2, RoundingMode.UP)}".toFloat()},
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(30.dp)
-                    .padding(vertical = 4.dp),
-                color = rosa,
-                trackColor = Color.White
+            ProgressIndicator(
+                text = "Total Gasto",
+                value = totalGasto,
+                percentage = gastoPercentage
             )
-
-            Spacer(modifier = Modifier.height(20.dp))
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -91,7 +73,7 @@ fun ControleGastoDetalhes(
                     style = MaterialTheme.typography.bodyLarge
                 )
                 Text(
-                    text = "R$$orcamentoTotal",
+                    text = "R$${orcamentoTotal.setScale(2, RoundingMode.DOWN)}",
                     style = MaterialTheme.typography.bodyLarge
                 )
             }

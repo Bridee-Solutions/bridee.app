@@ -31,9 +31,18 @@ fun CategoriaDetalhesScreen(
             .padding(paddingValues)
 
     ) {
-        tituloCategoria(item.tipo, item.defineIcon(), navController)
-        ControleGastoDetalhes(viewModel)
-        Subcategorias(viewModel, item)
+        tituloCategoria(
+            nomeCategoria = item.tipo,
+            icon = item.defineIcon(),
+            navController = navController
+        )
+        ControleGastoDetalhes(
+            viewModel= viewModel
+        )
+        Subcategorias(
+            viewModel = viewModel,
+            item = item
+        )
     }
 }
 

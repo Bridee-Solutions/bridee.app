@@ -2,8 +2,6 @@ package com.example.bridee.core.navigation
 
 import java.net.URLEncoder
 
-import com.example.bridee.calculadora.domain.CalculadoraViewModel
-
 sealed class Screen (val route: String){
     object Login: Screen("login")
     object Cadastro: Screen("cadastro")
@@ -23,6 +21,7 @@ sealed class Screen (val route: String){
             item: String
         ) = "categoria_detalhes/$item"
     }
+    object FornecedorDetalhes : Screen("fornecedores_detalhes")
     object Home : Screen("home")
     object Servicos : Screen("servicos")
     object ServicosSubcategoriaScreen : Screen("servicos_subcategoria/{subcategoriaNome}") {
