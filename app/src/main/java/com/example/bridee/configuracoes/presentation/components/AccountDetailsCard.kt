@@ -28,7 +28,6 @@ import com.example.bridee.ui.theme.rosa
 
 @Composable
 fun AccountDetailsCard(
-    isEditing: Boolean,
     viewModel: ConfiguracaoViewModel
 ) {
 
@@ -57,7 +56,7 @@ fun AccountDetailsCard(
                     casamentoResponse = viewModel.updateEmailCasal(it)
                 )
             },
-            isEditing = isEditing,
+            isEditing = false,
             textStyle = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.padding(start = 20.dp, bottom = 12.dp)
         )

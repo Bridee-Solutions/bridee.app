@@ -48,7 +48,6 @@ fun ConfiguracoesScreen(
             viewModel = viewModel
         )
         AccountDetailsCard(
-            isEditing = isEditing,
             viewModel = viewModel
         )
     }

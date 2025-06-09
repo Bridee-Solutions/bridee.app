@@ -3,6 +3,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.SemanticsProperties.EditableText
@@ -19,9 +23,9 @@ fun ProfileDetailsCard(
     isEditing: Boolean,
     viewModel: ConfiguracaoViewModel
 ) {
-    var nome = viewModel.information?.casamentoResponse?.casal?.nome
-    var nomeParceiro = viewModel.information?.casamentoResponse?.casal?.nomeParceiro
-    var telefone = viewModel.information?.casamentoResponse?.casal?.telefone
+    var nome by remember { mutableStateOf(viewModel.information?.casamentoResponse?.casal?.nome ?: "") }
+    var nomeParceiro by remember { mutableStateOf(viewModel.information?.casamentoResponse?.casal?.nomeParceiro ?: "") }
+    var telefone by remember { mutableStateOf(viewModel.information?.casamentoResponse?.casal?.telefone ?: "") }
 
     Column(modifier = Modifier
         .fillMaxWidth()
@@ -41,7 +45,7 @@ fun ProfileDetailsCard(
         )
 
         EditableText(
-            text = nome ?: "",
+            text = nome,
             onTextChange = {
                 nome = it
                 viewModel.information = viewModel.information?.copy(
@@ -63,7 +67,7 @@ fun ProfileDetailsCard(
 
 
         EditableText(
-            text = nomeParceiro ?: "",
+            text = nomeParceiro,
             onTextChange = {
                 nomeParceiro = it
                 viewModel.information = viewModel.information?.copy(
@@ -82,7 +86,7 @@ fun ProfileDetailsCard(
             modifier = Modifier.padding(start = 20.dp))
 
         EditableText(
-            text = telefone ?: "",
+            text = telefone,
             onTextChange = {
                 telefone = it
                 viewModel.information = viewModel.information?.copy(

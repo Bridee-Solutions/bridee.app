@@ -3,6 +3,10 @@ package com.example.bridee.configuracoes.presentation.components
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,8 +22,8 @@ fun WeddingDetailsCard(
     isEditing: Boolean,
     viewModel: ConfiguracaoViewModel
 ) {
-    var weddingDate = viewModel.information?.casamentoResponse?.dataCasamento
-    var weddingLocation = viewModel.information?.casamentoResponse?.local
+    var weddingDate by remember { mutableStateOf(viewModel.information?.casamentoResponse?.dataCasamento) }
+    var weddingLocation by remember { mutableStateOf(viewModel.information?.casamentoResponse?.local)}
     val numberOfGuests = viewModel.information?.casamentoResponse?.quantidadeConvidados
     val budget = viewModel.information?.orcamentoResponse?.orcamentoTotal
 
