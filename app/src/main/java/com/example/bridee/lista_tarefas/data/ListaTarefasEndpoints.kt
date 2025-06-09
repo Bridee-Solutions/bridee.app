@@ -10,10 +10,15 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ListaTarefasEndpoints {
     @GET("tarefas")
-    suspend fun listarTarefas(): Response<List<TarefaResponseDto>>
+    suspend fun listarTarefas(
+        @Query("nome") nome: String,
+        @Query("mes") mes: String?,
+        @Query("status") status: String?
+    ): Response<List<TarefaResponseDto>>
 
     @POST("tarefas")
     suspend fun adicionarTarefa(@Body tarefa: TarefaRequestDto): Response<Tarefa>

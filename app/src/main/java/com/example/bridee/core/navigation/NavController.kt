@@ -161,7 +161,7 @@ fun NavController(
             InspiracaoScreen(viewModel, navController, paddingValues)
         }
         composable(route = Screen.ListaTarefas.route) {
-            val viewModel = TarefasViewModel()
+            val viewModel: TarefasViewModel = viewModel()
             ListaTarefasScreen(navController,paddingValues,viewModel)
         }
     }

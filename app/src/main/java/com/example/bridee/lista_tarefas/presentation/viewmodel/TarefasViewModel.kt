@@ -3,6 +3,7 @@ package com.example.bridee.lista_tarefas.presentation.viewmodel
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -20,6 +21,9 @@ class TarefasViewModel : ViewModel() {
     val tarefaService = ApiInstance.createService(ListaTarefasEndpoints::class.java)
     var tarefas by mutableStateOf<List<TarefaResponseDto?>>(emptyList())
     var selectedTarefa by mutableStateOf(Tarefa())
+    var searchText by mutableStateOf("")
+    var status: String? = null
+    var mes: MutableList<String> = mutableListOf()
 
     init {
         carregarTarefas()
@@ -27,8 +31,16 @@ class TarefasViewModel : ViewModel() {
 
     fun carregarTarefas() {
         viewModelScope.launch {
+            var meses: String? = null
+            if(mes.isNotEmpty()){
+                meses = mes.joinToString(",")
+            }
             try {
-                val response = tarefaService.listarTarefas()
+                val response = tarefaService.listarTarefas(
+                    searchText,
+                    meses,
+                    status
+                )
                 if(response.isSuccessful){
                     tarefas = response.body()!!
                     Log.i("TAREFAS", "Busca pelas tarefas realizadas com sucesso.")

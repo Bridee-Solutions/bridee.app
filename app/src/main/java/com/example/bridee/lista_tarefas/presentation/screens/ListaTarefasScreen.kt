@@ -39,7 +39,6 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -51,12 +50,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.text.isDigitsOnly
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.bridee.auth.presentation.component.MaskVisualTransformation
 import com.example.bridee.lista_tarefas.domain.FilterItem
-import com.example.bridee.lista_tarefas.domain.Tarefa
-import com.example.bridee.lista_tarefas.domain.TarefaRequestDto
 import com.example.bridee.lista_tarefas.presentation.components.AddTarefa
 import com.example.bridee.lista_tarefas.presentation.components.FilterPanel
 import com.example.bridee.lista_tarefas.presentation.components.SimpleDropDown
@@ -67,13 +63,12 @@ import com.example.bridee.ui.components.ferramentas_section.domain.Tool
 import com.example.bridee.ui.components.ferramentas_section.presentation.screens.FerramentasSection
 import com.example.bridee.ui.theme.rosa
 import com.seuapp.presentation.components.CustomModalCreate
-import java.time.LocalDate
 
 @Composable
 fun ListaTarefasScreen(
     navController: NavController,
     paddingValues: PaddingValues,
-    viewModel: TarefasViewModel = viewModel()
+    viewModel: TarefasViewModel
 ) {
     val tarefas = viewModel.tarefas
     val concluidas = tarefas.sumOf { it?.tarefas!!.tarefasConcluidas() }
@@ -87,8 +82,8 @@ fun ListaTarefasScreen(
     var statusFilter by remember {
         mutableStateOf(
             listOf(
-                FilterItem("Concluída", false),
-                FilterItem("Em andamento", false)
+                FilterItem("Concluída", false, "CONCLUIDO"),
+                FilterItem("Em andamento", false, "EM_ANDAMENTO")
             )
         )
     }
@@ -97,30 +92,26 @@ fun ListaTarefasScreen(
     var mesFilter by remember {
         mutableStateOf(
             listOf(
-                FilterItem("Janeiro", false),
-                FilterItem("Fevereiro", false),
-                FilterItem("Março", false),
-                FilterItem("Abril", false),
-                FilterItem("Maio", false),
-                FilterItem("Junho", false),
-                FilterItem("Julho", false),
-                FilterItem("Agosto", false),
-                FilterItem("Setembro", false),
-                FilterItem("Outubro", false),
-                FilterItem("Novembro", false),
-                FilterItem("Dezembro", false)
+                FilterItem("Janeiro", false, 1),
+                FilterItem("Fevereiro", false, 2),
+                FilterItem("Março", false, 3),
+                FilterItem("Abril", false, 4),
+                FilterItem("Maio", false, 5),
+                FilterItem("Junho", false, 6),
+                FilterItem("Julho", false, 7),
+                FilterItem("Agosto", false, 8),
+                FilterItem("Setembro", false, 9),
+                FilterItem("Outubro", false, 10),
+                FilterItem("Novembro", false, 11),
+                FilterItem("Dezembro", false, 12)
             )
         )
     }
 
-    var searchText by remember { mutableStateOf("")}
 
-    val hoje = LocalDate.now();
-    val checkedStates = remember { mutableStateMapOf<Int, Boolean>() }
     val deleteTaskName = remember { mutableStateOf("") }
 
     var showDatePicker by remember { mutableStateOf(false) }
-    var selectedDate by remember { mutableStateOf(LocalDate.now().toString()) }
     var isDeletingCharacter by remember {
         mutableStateOf(false)
     }
@@ -190,8 +181,11 @@ fun ListaTarefasScreen(
                 Spacer(modifier = Modifier.width(8.dp))
 
                 TextField(
-                    value = searchText,
-                    onValueChange = { searchText = it },
+                    value = viewModel.searchText,
+                    onValueChange = {
+                        viewModel.searchText = it
+                        viewModel.carregarTarefas()
+                    },
                     placeholder = { Text("Pesquisar tarefas...") },
                     textStyle = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier
@@ -471,7 +465,6 @@ fun ListaTarefasScreen(
         onDismiss = { showFilterPanel = false },
         content = {
             Column(modifier = Modifier.fillMaxSize()) {
-                // Cabeçalho
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center
@@ -510,19 +503,23 @@ fun ListaTarefasScreen(
                                 verticalAlignment = Alignment.CenterVertically,
                                 modifier = Modifier
                                     .padding(vertical = 4.dp)
-                                    .clickable {
-                                        statusFilter = statusFilter.toMutableList().apply {
-                                            this[index] =
-                                                this[index].copy(check = !this[index].check)
-                                        }
-                                    }
                             ) {
                                 Checkbox(
                                     checked = status.check,
                                     onCheckedChange = { isChecked ->
-                                        statusFilter = statusFilter.map {
-                                            if (it.nome == status.nome) it.copy(check = isChecked)
-                                            else it
+                                        statusFilter = statusFilter.toMutableList().apply {
+                                            this.forEachIndexed() {indice, valor ->
+                                                if(indice != index){
+                                                    valor.check = false
+                                                }
+                                            }
+                                            this[index] =
+                                                this[index].copy(check = !this[index].check)
+                                            if(!this[index].check){
+                                                viewModel.status = null
+                                            }else{
+                                                viewModel.status = this[index].valor as String
+                                            }
                                         }
                                     },
                                     modifier = Modifier.size(24.dp),
@@ -560,19 +557,20 @@ fun ListaTarefasScreen(
                                 verticalAlignment = Alignment.CenterVertically,
                                 modifier = Modifier
                                     .padding(vertical = 4.dp)
-                                    .clickable {
-                                        mesFilter = mesFilter.toMutableList().apply {
-                                            this[index] =
-                                                this[index].copy(check = !this[index].check)
-                                        }
-                                    }
                             ) {
                                 Checkbox(
                                     checked = mes.check,
                                     onCheckedChange = { isChecked ->
-                                        mesFilter = mesFilter.map {
-                                            if (it.nome == mes.nome) it.copy(check = isChecked)
-                                            else it
+                                        mesFilter = mesFilter.toMutableList().apply {
+                                            this[index] =
+                                                this[index].copy(check = !this[index].check)
+                                            if(viewModel.mes.isEmpty()){
+                                                viewModel.mes.add(this[index].valor.toString())
+                                            }else if(!this[index].check){
+                                                viewModel.mes.remove(this[index].valor.toString())
+                                            } else{
+                                                viewModel.mes.add("${this[index].valor}")
+                                            }
                                         }
                                     },
                                     modifier = Modifier.size(24.dp),
@@ -592,7 +590,7 @@ fun ListaTarefasScreen(
                     }
                 }
 
-                // Botões FIXOS na parte inferior
+
                 Column(modifier = Modifier.padding(top = 8.dp)) {
                     Divider(
                         color = Color.LightGray,
@@ -624,7 +622,10 @@ fun ListaTarefasScreen(
                         }
                         Spacer(modifier = Modifier.width(8.dp))
                         Button(
-                            onClick = { showFilterPanel = false },
+                            onClick = {
+                                showFilterPanel = false
+                                viewModel.carregarTarefas()
+                            },
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = Color(0xFFDD7B78),
                                 contentColor = Color.White
