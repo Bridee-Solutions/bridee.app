@@ -36,7 +36,7 @@ class AuthenticationViewModel(
             try {
                 val authenticateUser = usuarioService.authenticate(_state.value)
                 isEnabled = authenticateUser.body()?.enabled ?: false
-                if(authenticateUser.code() == 200){
+                if(authenticateUser.code() == 200 && isEnabled){
                     TokenStore.saveAccessToken(context, authenticateUser.body()!!.accessToken)
                     navController.navigate(Screen.Home.route)
                     Log.i("LOGIN", "Usuário $email autenticado com sucesso")
