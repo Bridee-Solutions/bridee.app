@@ -27,7 +27,7 @@ class TelaInspiracaoViewModel: ViewModel() {
                 val response = pexelsService.findImages(
                     inspiracao,
                     lastPageFetched.toString(),
-                    "15"
+                    "9"
                 )
                 if(response.code() == 200){
                     response.body()?.let { body ->

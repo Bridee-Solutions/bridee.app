@@ -146,7 +146,7 @@ fun TelaInspiracao(viewModel: TelaInspiracaoViewModel) {
                                 .background(Color(0xFFE0E0E0))
                         ) {
                             AsyncImage(
-                                model = item.source.small,
+                                model = item.source.large,
                                 contentDescription = item.altText,
                                 modifier = Modifier.size(200.dp),
                                 contentScale = ContentScale.Crop
