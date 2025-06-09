@@ -33,7 +33,7 @@ import com.example.bridee.calculadora.presentation.screens.CategoriaDetalhesScre
 import com.example.bridee.configuracoes.presentation.screen.ConfiguracoesScreen
 import com.example.bridee.home.presentation.viewmodel.HomeViewModel
 import com.example.bridee.inspiracao.domain.TelaInpiracaoViewModel
-import com.example.bridee.lista_tarefas.domain.TarefasViewModel
+import com.example.bridee.lista_tarefas.presentation.viewmodel.TarefasViewModel
 import com.example.bridee.lista_tarefas.presentation.screens.ListaTarefasScreen
 import com.example.bridee.servicos.presentation.screens.GaleriaImagensScreen
 import com.example.bridee.servicos.presentation.screens.HomeScreen

@@ -56,6 +56,7 @@ dependencies {
     implementation(libs.androidx.datastore.preferences.v100)
     implementation(libs.coil.compose)
     implementation(libs.koin.androidx.compose)
+    implementation(libs.jetbrains.kotlin.reflect)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

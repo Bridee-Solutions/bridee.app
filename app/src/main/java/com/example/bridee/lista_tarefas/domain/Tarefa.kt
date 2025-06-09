@@ -1,14 +1,14 @@
 
-package com.example.bridee.lista_tarefas.data
+package com.example.bridee.lista_tarefas.domain
 
 import java.time.LocalDate
 
 data class Tarefa(
-    val id: Long,
-    val mesesAnteriores: Int,
-    val nome: String,
-    var descricao: String,
-    val categoria: String,
-    var status: String,
-    val dataLimite: LocalDate
+    val id: Long? = null,
+    val mesesAnteriores: Int = 0,
+    var nome: String = "",
+    var descricao: String = "",
+    val categoria: String = "Fotografia",
+    var status: String = "EM_ANDAMENTO",
+    val dataLimite: String = ""
 )

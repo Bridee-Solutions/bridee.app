@@ -1,18 +1,15 @@
 package com.example.bridee.lista_tarefas.presentation.components
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -27,14 +24,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.bridee.auth.presentation.component.CustomCheckbox
-import com.example.bridee.lista_tarefas.data.Tarefa
-import com.example.bridee.lista_tarefas.data.TarefaResponseDto
+import com.example.bridee.lista_tarefas.domain.Tarefa
+import com.example.bridee.lista_tarefas.domain.TarefaResponseDto
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 @Composable
 fun TarefaCard(
-    tarefa: TarefaResponseDto,
+    tarefa: Tarefa,
     deleteTaskName: MutableState<String>,
     onDeleteClick: () -> Unit,
     onCheckClick: (Boolean) -> Unit

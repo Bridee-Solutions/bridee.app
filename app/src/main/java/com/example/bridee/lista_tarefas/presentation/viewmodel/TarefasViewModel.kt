@@ -1,0 +1,116 @@
+package com.example.bridee.lista_tarefas.presentation.viewmodel
+
+import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.text.substring
+import androidx.compose.ui.text.toUpperCase
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.bridee.core.api.ApiInstance
+import com.example.bridee.lista_tarefas.data.ListaTarefasEndpoints
+import com.example.bridee.lista_tarefas.domain.Tarefa
+import com.example.bridee.lista_tarefas.domain.TarefaRequestDto
+import com.example.bridee.lista_tarefas.domain.TarefaResponseDto
+import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.util.Objects
+
+class TarefasViewModel : ViewModel() {
+
+    val tarefaService = ApiInstance.createService(ListaTarefasEndpoints::class.java)
+    var tarefas by mutableStateOf<List<TarefaResponseDto?>>(emptyList())
+    var selectedTarefa by mutableStateOf(Tarefa())
+
+    init {
+        carregarTarefas()
+    }
+
+    fun carregarTarefas() {
+        viewModelScope.launch {
+            try {
+                val response = tarefaService.listarTarefas()
+                if(response.isSuccessful){
+                    tarefas = response.body()!!
+                    Log.i("TAREFAS", "Busca pelas tarefas realizadas com sucesso.")
+                }
+            }catch (e: Exception){
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun adicionarTarefa(){
+        viewModelScope.launch {
+                try {
+                    val request = TarefaRequestDto.createFromTarefa(selectedTarefa)
+                    request.dataLimite = date(request.dataLimite)
+                    val response = tarefaService.adicionarTarefa(request)
+                    if(response.isSuccessful){
+                        tarefas = tarefas.map {
+                            val novaTarefaAno = request.dataLimite.split("-")[0].toInt()
+                            if(it!!.ano == novaTarefaAno){
+                                it.adicionarTarefa(response.body()!!)
+                            }else{
+                                it
+                            }
+                        }
+                    }
+                }catch (e: Exception){
+                    Log.e("TAREFAS", "Tarefa adicionada com sucesso")
+                    e.printStackTrace()
+                }
+        }
+    }
+
+    private fun date(date: String): String{
+        val day = date.substring(0, 2).toInt()
+        val month = date.substring(2, 4).toInt()
+        val year = date.substring(4).toInt()
+        return LocalDate.of(year, month, day).toString()
+    }
+
+    fun atualizarTarefa(id: Long) {
+        viewModelScope.launch {
+            val request = TarefaRequestDto.createFromTarefa(selectedTarefa)
+            try {
+                val response = tarefaService.atualizarTarefa(id, request)
+                if(response.isSuccessful){
+                    tarefas = tarefas.map {
+                        val tarefaEncontrada = it!!.findTaskById(id)
+                        if(tarefaEncontrada.id == id){
+                            it.updateTask(id, response.body()!!)
+                        }else{
+                            it
+                        }
+                    }
+                }
+            }catch (e: Exception){
+                Log.e("TAREFAS", "Houve um erro ao atualizar as tarefas")
+            }
+        }
+    }
+
+    fun deletarTarefa() {
+        viewModelScope.launch {
+            val id = selectedTarefa.id!!
+            try {
+                val response = tarefaService.deletarTarefa(id)
+                if(response.isSuccessful){
+                    val updatedTasks = tarefas.map{
+                        val tarefa = it!!.tarefas.findTaskById(id)
+                        if(Objects.nonNull(tarefa)){
+                            it.deletarTarefa(id)
+                            return@map null
+                        }
+                        it
+                    }.filterNotNull()
+                    tarefas = updatedTasks
+                }
+            }catch (e: Exception){
+                Log.e("TAREFAS", "Houve um erro ao deletar as tarefas")
+            }
+        }
+    }
+}
