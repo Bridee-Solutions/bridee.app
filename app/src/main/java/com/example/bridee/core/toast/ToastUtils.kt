@@ -29,6 +29,8 @@ import com.example.bridee.core.toast.property.Success
 import com.example.bridee.core.toast.property.ToastProperty
 import com.example.bridee.core.toast.property.Warning
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Warning
 
 object ToastUtils{
 
@@ -125,17 +127,18 @@ object ToastUtils{
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
+                    Icon(
+                        imageVector = Icons.Filled.Warning,
+                        contentDescription = "Ícone de aviso",
+                        modifier = Modifier.padding(end = 8.dp).size(24.dp),
+                        tint = textColor
+                    )
                     Text(
                         text = text,
                         color = textColor,
                         textAlign = TextAlign.Justify
                     )
-                    Icon(
-                        painter = painterResource(resourceId),
-                        contentDescription = "Icone do Toast",
-                        modifier = Modifier.padding(4.dp, 0.dp).size(24.dp),
-                        tint = textColor
-                    )
+
                 }
             }
         }
