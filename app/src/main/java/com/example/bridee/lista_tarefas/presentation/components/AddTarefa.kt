@@ -23,7 +23,6 @@ import com.example.bridee.ui.theme.rosa
 
 @Composable
 fun AddTarefa(
-    showCreateModal: Boolean,
     onAddClick: () -> Unit
 ) {
     Card(

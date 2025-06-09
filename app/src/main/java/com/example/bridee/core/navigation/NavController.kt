@@ -39,6 +39,7 @@ import com.example.bridee.convidados.presentation.convidado.ConvidadoScreen
 import com.example.bridee.home.presentation.viewmodel.HomeViewModel
 import com.example.bridee.inspiracao.domain.TelaInspiracaoViewModel
 import com.example.bridee.lista_tarefas.presentation.screens.ListaTarefasScreen
+import com.example.bridee.lista_tarefas.presentation.viewmodel.TarefasViewModel
 import com.example.bridee.servicos.presentation.screens.AssessoresDetailsScreen
 import com.example.bridee.servicos.presentation.screens.GaleriaImagensScreen
 import com.example.bridee.servicos.presentation.screens.HomeScreen
@@ -198,7 +199,8 @@ fun NavController(
             InspiracaoScreen(viewModel, paddingValues)
         }
         composable(route = Screen.ListaTarefas.route) {
-            ListaTarefasScreen(navController, paddingValues)
+            val viewModel: TarefasViewModel = viewModel()
+            ListaTarefasScreen(navController,paddingValues,viewModel)
         }
         composable(route = Screen.Convidado.route) {
             ConvidadoScreen(navController)

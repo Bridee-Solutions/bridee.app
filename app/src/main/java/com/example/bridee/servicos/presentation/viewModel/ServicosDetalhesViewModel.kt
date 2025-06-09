@@ -10,7 +10,6 @@ import com.example.bridee.servicos.data.ServicosEndpoints
 import com.example.bridee.servicos.domain.AssociadoGeralResponseDto
 import com.example.bridee.servicos.domain.AssociadoResponseDto
 import kotlinx.coroutines.launch
-import java.util.Objects
 
 class ServicosDetalhesViewModel : ViewModel() {
     private val servicosService = ApiInstance.createService(ServicosEndpoints::class.java)

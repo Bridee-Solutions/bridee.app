@@ -1,5 +1,6 @@
 package com.example.bridee.lista_tarefas.presentation.screens
 
+import DateDefaults
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -36,8 +37,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -47,42 +48,43 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import java.time.format.TextStyle as TextStyleDate
 import androidx.compose.ui.unit.dp
+import androidx.core.text.isDigitsOnly
 import androidx.navigation.NavController
+import com.example.bridee.auth.presentation.component.MaskVisualTransformation
 import com.example.bridee.lista_tarefas.domain.FilterItem
-import com.example.bridee.lista_tarefas.domain.Tarefa
 import com.example.bridee.lista_tarefas.presentation.components.AddTarefa
 import com.example.bridee.lista_tarefas.presentation.components.FilterPanel
+import com.example.bridee.lista_tarefas.presentation.components.SimpleDropDown
 import com.example.bridee.lista_tarefas.presentation.components.TarefaCard
-import com.example.bridee.ui.components.ferramentas_section.domain.Tool
-import com.example.bridee.ui.components.ferramentas_section.presentation.screens.FerramentasSection;
-import com.example.bridee.ui.theme.rosa
+import com.example.bridee.lista_tarefas.presentation.viewmodel.TarefasViewModel
 import com.example.bridee.ui.components.CustomModal
+import com.example.bridee.ui.components.ferramentas_section.domain.Tool
+import com.example.bridee.ui.components.ferramentas_section.presentation.screens.FerramentasSection
+import com.example.bridee.ui.theme.rosa
 import com.seuapp.presentation.components.CustomModalCreate
-import java.time.LocalDate
-import java.util.Locale
 
 @Composable
-fun ListaTarefasScreen(navController: NavController, paddingValues: PaddingValues) {
-    var tarefas by remember {
-        mutableStateOf(
-            listOf(
-                Tarefa(1, "Experimentar bolo", LocalDate.of(2025, 3, 10), concluida = false),
-                Tarefa(2, "Visitar salão", LocalDate.of(2026, 3, 12), concluida = false),
-                Tarefa(3, "Experimentar vestido", LocalDate.of(2026, 3, 15), concluida = false),
-                Tarefa(4, "Enviar convites", LocalDate.of(2026, 3, 18), concluida = false),
-                Tarefa(5, "Ir a manicure", LocalDate.of(2025, 3, 20), concluida = true)
-            )
-        )
+fun ListaTarefasScreen(
+    navController: NavController,
+    paddingValues: PaddingValues,
+    viewModel: TarefasViewModel
+) {
+    val tarefas = viewModel.tarefas
+    val concluidas = tarefas.sumOf { it?.tarefas!!.tarefasConcluidas() }
+    val progresso = tarefas.sumOf { it?.tarefas!!.tarefasEmProgresso() }
+    val total = tarefas.sumOf { it?.tarefas!!.totalTarefas() }
+
+    LaunchedEffect(true) {
+        viewModel.carregarTarefas()
     }
 
     var statusFilter by remember {
         mutableStateOf(
             listOf(
-                FilterItem("Concluída", false),
-                FilterItem("Em andamento", false)
-                )
+                FilterItem("Concluída", false, "CONCLUIDO"),
+                FilterItem("Em andamento", false, "EM_ANDAMENTO")
+            )
         )
     }
 
@@ -90,49 +92,37 @@ fun ListaTarefasScreen(navController: NavController, paddingValues: PaddingValue
     var mesFilter by remember {
         mutableStateOf(
             listOf(
-                FilterItem("Janeiro", false),
-                FilterItem("Fevereiro", false),
-                FilterItem("Março", false),
-                FilterItem("Abril", false),
-                FilterItem("Maio", false),
-                FilterItem("Junho", false),
-                FilterItem("Julho", false),
-                FilterItem("Agosto", false),
-                FilterItem("Setembro", false),
-                FilterItem("Outubro", false),
-                FilterItem("Novembro", false),
-                FilterItem("Dezembro", false)
+                FilterItem("Janeiro", false, 1),
+                FilterItem("Fevereiro", false, 2),
+                FilterItem("Março", false, 3),
+                FilterItem("Abril", false, 4),
+                FilterItem("Maio", false, 5),
+                FilterItem("Junho", false, 6),
+                FilterItem("Julho", false, 7),
+                FilterItem("Agosto", false, 8),
+                FilterItem("Setembro", false, 9),
+                FilterItem("Outubro", false, 10),
+                FilterItem("Novembro", false, 11),
+                FilterItem("Dezembro", false, 12)
             )
         )
     }
 
-    // Cálculos derivados
-    val total = tarefas.size
-    val concluidas = tarefas.count { it.concluida }
-    val progresso = remember(tarefas) { concluidas.toFloat() / total }
 
-
-    var searchText by remember { mutableStateOf("")}
-    var nomeTaskText by remember { mutableStateOf("")}
-    var descTaskText by remember { mutableStateOf("")}
-    var notesTaskText by remember { mutableStateOf("")}
-    var dateTaskText by remember { mutableStateOf("")}
-    var categoryTaskText by remember { mutableStateOf("")}
-
-    val hoje = LocalDate.now();
-    val checkedStates = remember { mutableStateMapOf<Int, Boolean>() }
     val deleteTaskName = remember { mutableStateOf("") }
 
+    var showDatePicker by remember { mutableStateOf(false) }
+    var isDeletingCharacter by remember {
+        mutableStateOf(false)
+    }
+
+    var isDateNotDefined by remember {
+        mutableStateOf(false)
+    }
 
     var showCreateModal by remember { mutableStateOf(false) }
     var showDeleteModal by remember { mutableStateOf(false) }
     var showFilterPanel by remember { mutableStateOf(false) }
-
-    val tarefasAgrupadas = tarefas.groupBy {
-        if (it.data.isBefore(hoje)) "Atrasado"
-        else "${it.data.month.getDisplayName(TextStyleDate.FULL, Locale.getDefault())
-            .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }} ${it.data.year}"
-    }
 
     Column(
         modifier = Modifier
@@ -161,7 +151,6 @@ fun ListaTarefasScreen(navController: NavController, paddingValues: PaddingValue
                     .padding(1.dp)
             ) {
                 LinearProgressIndicator(
-                    progress = progresso,
                     modifier = Modifier
                         .fillMaxSize(),
                     color = rosa,
@@ -192,8 +181,11 @@ fun ListaTarefasScreen(navController: NavController, paddingValues: PaddingValue
                 Spacer(modifier = Modifier.width(8.dp))
 
                 TextField(
-                    value = searchText,
-                    onValueChange = { searchText = it },
+                    value = viewModel.searchText,
+                    onValueChange = {
+                        viewModel.searchText = it
+                        viewModel.carregarTarefas()
+                    },
                     placeholder = { Text("Pesquisar tarefas...") },
                     textStyle = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier
@@ -222,63 +214,13 @@ fun ListaTarefasScreen(navController: NavController, paddingValues: PaddingValue
             Spacer(Modifier.height(20.dp))
 
             LazyColumn(modifier = Modifier.fillMaxSize()) {
-                tarefasAgrupadas["Atrasado"]?.let { listaTarefas ->
-                    item {
-                        Text(
-                            style = MaterialTheme.typography.titleMedium,
-                            text = "Atrasado",
-                            modifier = Modifier.padding(8.dp)
-                        )
-                    }
-
-                    item {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .border(1.dp, Color.LightGray, RoundedCornerShape(8.dp))
-                        ) {
-
-                            Column () {
-                                listaTarefas.forEachIndexed { index, tarefa ->
-                                    TarefaCard(
-                                        tarefa = tarefa,
-                                        onDeleteClick = { showDeleteModal = true },
-                                        deleteTaskName = deleteTaskName,
-                                        onCheckClick = { isChecked ->
-                                            tarefas = tarefas.map {
-                                                if (it.id == tarefa.id) it.copy(concluida = isChecked)
-                                                else it
-                                            }
-                                        }
-                                    )
-
-                                    if (index < listaTarefas.size - 1) {
-                                        Divider(
-                                            color = Color.LightGray,
-                                            thickness = 1.dp,
-                                            modifier = Modifier.fillMaxWidth()
-                                        )
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    item {
-                        AddTarefa(showCreateModal = showCreateModal, onAddClick = {showCreateModal = true })
-                    }
-                }
-
-                var sectionIndex = 0
-
-                tarefasAgrupadas
-                    .filterKeys { it != "Atrasado" }
-                    .forEach { (tituloSeccao, listaTarefas) ->
+                tarefas.forEach {tarefas ->
+                    tarefas!!.tarefasDoAno().forEach{
                         item {
                             Text(
-                                text = tituloSeccao,
-                                modifier = Modifier.padding(8.dp),
-                                style = MaterialTheme.typography.titleMedium
+                                style = MaterialTheme.typography.titleMedium,
+                                text = "${it.key} ${tarefas.ano}",
+                                modifier = Modifier.padding(8.dp)
                             )
                         }
 
@@ -288,20 +230,29 @@ fun ListaTarefasScreen(navController: NavController, paddingValues: PaddingValue
                                     .fillMaxWidth()
                                     .border(1.dp, Color.LightGray, RoundedCornerShape(8.dp))
                             ) {
-                                Column {
-                                    listaTarefas.forEachIndexed { index, tarefa ->
+
+                                Column{
+                                    it.value.forEachIndexed { index, task ->
                                         TarefaCard(
-                                            tarefa = tarefa,
-                                            onDeleteClick = { showDeleteModal = true },
+                                            tarefa = task,
+                                            onDeleteClick = {
+                                                viewModel.selectedTarefa = task
+                                                showDeleteModal = true
+                                            },
                                             deleteTaskName = deleteTaskName,
                                             onCheckClick = { isChecked ->
-                                                tarefas = tarefas.map {
-                                                    if (it.id == tarefa.id) it.copy(concluida = isChecked)
-                                                    else it
-                                                }
+                                                val novoStatus = if (task.status == "CONCLUIDO") "EM_ANDAMENTO" else "CONCLUIDO"
+                                                viewModel.selectedTarefa = task
+                                                viewModel.selectedTarefa.status = novoStatus
+                                                viewModel.atualizarTarefa(task.id!!)
+                                            },
+                                            onUpdateClick = {
+                                                viewModel.selectedTarefa = task
+                                                showCreateModal = true
                                             }
                                         )
-                                        if (index < listaTarefas.size - 1) {
+
+                                        if (index < it.value.size - 1) {
                                             Divider(
                                                 color = Color.LightGray,
                                                 thickness = 1.dp,
@@ -312,14 +263,16 @@ fun ListaTarefasScreen(navController: NavController, paddingValues: PaddingValue
                                 }
                             }
                         }
-
-                        item {
-                            AddTarefa(
-                                showCreateModal = showCreateModal,
-                                onAddClick = { showCreateModal = true }
-                            )
-                        }
                     }
+                    item {
+                        AddTarefa(onAddClick = {showCreateModal = true })
+                    }
+                }
+                if(tarefas.isEmpty()){
+                    item {
+                        AddTarefa(onAddClick = {showCreateModal = true })
+                    }
+                }
             }
         }
     }
@@ -352,45 +305,10 @@ fun ListaTarefasScreen(navController: NavController, paddingValues: PaddingValue
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         TextField(
-                            value = nomeTaskText,
-                            onValueChange = { nomeTaskText = it },
-                            textStyle = MaterialTheme.typography.bodyMedium,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .background(Color.Transparent),
-                            colors = TextFieldDefaults.colors(
-                                focusedContainerColor = Color.Transparent,
-                                unfocusedContainerColor = Color.Transparent,
-                                disabledContainerColor = Color.Transparent,
-                                focusedIndicatorColor = Color.Transparent, // Remove a linha inferior no estado focado
-                                unfocusedIndicatorColor = Color.Transparent // Remove a linha inferior no estado não focado
-                            )
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(16.dp)) // Espaçamento entre os campos
-
-                // Campo: Descrição da Tarefa
-                Column {
-                    Text(
-                        text ="Descrição da tarefa personalizada",
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                    Spacer(Modifier.height(8.dp))
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(48.dp)
-                            .clip(RoundedCornerShape(8.dp))
-                            .border(1.dp, Color.LightGray, RoundedCornerShape(8.dp))
-                            .background(Color.White)
-                            .padding(horizontal = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        TextField(
-                            value = descTaskText,
-                            onValueChange = { descTaskText = it },
+                            value = viewModel.selectedTarefa.nome,
+                            onValueChange = { viewModel.selectedTarefa = viewModel.selectedTarefa.copy(
+                                nome = it
+                            ) },
                             textStyle = MaterialTheme.typography.bodyMedium,
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -408,10 +326,9 @@ fun ListaTarefasScreen(navController: NavController, paddingValues: PaddingValue
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Campo: Notas
                 Column {
                     Text(
-                        text = "Notas",
+                        text = "Descrição da tarefa personalizada",
                         style = MaterialTheme.typography.bodyMedium
                     )
                     Spacer(Modifier.height(8.dp))
@@ -426,8 +343,10 @@ fun ListaTarefasScreen(navController: NavController, paddingValues: PaddingValue
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         TextField(
-                            value = notesTaskText,
-                            onValueChange = { notesTaskText = it },
+                            value = viewModel.selectedTarefa.descricao,
+                            onValueChange = { viewModel.selectedTarefa = viewModel.selectedTarefa.copy(
+                                descricao = it
+                            ) },
                             placeholder = { Text("Escreva algo aqui...") },
                             textStyle = MaterialTheme.typography.bodySmall,
                             modifier = Modifier
@@ -446,7 +365,6 @@ fun ListaTarefasScreen(navController: NavController, paddingValues: PaddingValue
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Campo: Data
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
@@ -455,7 +373,7 @@ fun ListaTarefasScreen(navController: NavController, paddingValues: PaddingValue
                     Text(
                         text ="Data",
                         style = MaterialTheme.typography.bodyMedium
-                        )
+                    )
                     Spacer(modifier = Modifier.width(8.dp))
                     Row(
                         modifier = Modifier
@@ -468,11 +386,24 @@ fun ListaTarefasScreen(navController: NavController, paddingValues: PaddingValue
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         TextField(
-                            value = dateTaskText,
-                            onValueChange = { dateTaskText = it },
+                            value = viewModel.selectedTarefa.dataLimite ?: "",
+                            onValueChange = {
+                                if(viewModel.selectedTarefa.dataLimite.length < DateDefaults.DATE_LENGTH){
+                                    isDeletingCharacter = false
+                                }
+                                if((viewModel.selectedTarefa.dataLimite.length < DateDefaults.DATE_LENGTH && it.isDigitsOnly()) ||
+                                    isDeletingCharacter){
+                                    viewModel.selectedTarefa = viewModel.selectedTarefa.copy(
+                                        dataLimite = it
+                                    )
+                                    isDateNotDefined = false
+                                }
+                            },
+                            visualTransformation = MaskVisualTransformation(DateDefaults.DATE_MASK),
                             textStyle = MaterialTheme.typography.bodyMedium,
                             modifier = Modifier
                                 .fillMaxWidth()
+                                .clickable { showDatePicker = true }
                                 .background(Color.Transparent),
                             colors = TextFieldDefaults.colors(
                                 focusedContainerColor = Color.Transparent,
@@ -487,7 +418,6 @@ fun ListaTarefasScreen(navController: NavController, paddingValues: PaddingValue
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Campo: Categoria
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
@@ -496,39 +426,31 @@ fun ListaTarefasScreen(navController: NavController, paddingValues: PaddingValue
                     Text(
                         text ="Categoria",
                         style = MaterialTheme.typography.bodyMedium
-                        )
+                    )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth(0.8f)
-                            .height(48.dp)
-                            .clip(RoundedCornerShape(8.dp))
-                            .border(1.dp, Color.LightGray, RoundedCornerShape(8.dp))
-                            .background(Color.White)
-                            .padding(horizontal = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        TextField(
-                            value = categoryTaskText,
-                            onValueChange = { categoryTaskText = it },
-                            textStyle = MaterialTheme.typography.bodyMedium,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .background(Color.Transparent),
-                            colors = TextFieldDefaults.colors(
-                                focusedContainerColor = Color.Transparent,
-                                unfocusedContainerColor = Color.Transparent,
-                                disabledContainerColor = Color.Transparent,
-                                focusedIndicatorColor = Color.Transparent,
-                                unfocusedIndicatorColor = Color.Transparent
-                            )
-                        )
-                    }
+                    SimpleDropDown(
+                        modifier = Modifier.fillMaxWidth(0.8f)
+                            .height(60.dp)
+                            .clip(RoundedCornerShape(8.dp)),
+                        options = listOf(
+                            "Fotografia",
+                            "Cabelo e Maquiagem",
+                            "Vestidos",
+                            "Locais",
+                            "Musica",
+                            "Planejador"
+                        ),
+                        selectedOption = viewModel.selectedTarefa.categoria,
+                        onOptionSelected = {viewModel.selectedTarefa = viewModel.selectedTarefa.copy(
+                            categoria = it.uppercase()
+                        )}
+                    )
                 }
             }
+
         },
         onConfirm = {
-            println("Tarefa Criada")
+            viewModel.adicionarTarefa()
             showCreateModal = false
         },
         onCancel = {
@@ -536,12 +458,13 @@ fun ListaTarefasScreen(navController: NavController, paddingValues: PaddingValue
         }
     )
 
+
+
     FilterPanel(
         isVisible = showFilterPanel,
         onDismiss = { showFilterPanel = false },
         content = {
             Column(modifier = Modifier.fillMaxSize()) {
-                // Cabeçalho
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center
@@ -580,18 +503,23 @@ fun ListaTarefasScreen(navController: NavController, paddingValues: PaddingValue
                                 verticalAlignment = Alignment.CenterVertically,
                                 modifier = Modifier
                                     .padding(vertical = 4.dp)
-                                    .clickable {
-                                        statusFilter = statusFilter.toMutableList().apply {
-                                            this[index] = this[index].copy(check = !this[index].check)
-                                        }
-                                    }
                             ) {
                                 Checkbox(
                                     checked = status.check,
                                     onCheckedChange = { isChecked ->
-                                        statusFilter = statusFilter.map {
-                                            if (it.nome == status.nome) it.copy(check = isChecked)
-                                            else it
+                                        statusFilter = statusFilter.toMutableList().apply {
+                                            this.forEachIndexed() {indice, valor ->
+                                                if(indice != index){
+                                                    valor.check = false
+                                                }
+                                            }
+                                            this[index] =
+                                                this[index].copy(check = !this[index].check)
+                                            if(!this[index].check){
+                                                viewModel.status = null
+                                            }else{
+                                                viewModel.status = this[index].valor as String
+                                            }
                                         }
                                     },
                                     modifier = Modifier.size(24.dp),
@@ -629,18 +557,20 @@ fun ListaTarefasScreen(navController: NavController, paddingValues: PaddingValue
                                 verticalAlignment = Alignment.CenterVertically,
                                 modifier = Modifier
                                     .padding(vertical = 4.dp)
-                                    .clickable {
-                                        mesFilter = mesFilter.toMutableList().apply {
-                                            this[index] = this[index].copy(check = !this[index].check)
-                                        }
-                                    }
                             ) {
                                 Checkbox(
                                     checked = mes.check,
                                     onCheckedChange = { isChecked ->
-                                        mesFilter = mesFilter.map {
-                                            if (it.nome == mes.nome) it.copy(check = isChecked)
-                                            else it
+                                        mesFilter = mesFilter.toMutableList().apply {
+                                            this[index] =
+                                                this[index].copy(check = !this[index].check)
+                                            if(viewModel.mes.isEmpty()){
+                                                viewModel.mes.add(this[index].valor.toString())
+                                            }else if(!this[index].check){
+                                                viewModel.mes.remove(this[index].valor.toString())
+                                            } else{
+                                                viewModel.mes.add("${this[index].valor}")
+                                            }
                                         }
                                     },
                                     modifier = Modifier.size(24.dp),
@@ -660,7 +590,7 @@ fun ListaTarefasScreen(navController: NavController, paddingValues: PaddingValue
                     }
                 }
 
-                // Botões FIXOS na parte inferior
+
                 Column(modifier = Modifier.padding(top = 8.dp)) {
                     Divider(
                         color = Color.LightGray,
@@ -692,7 +622,10 @@ fun ListaTarefasScreen(navController: NavController, paddingValues: PaddingValue
                         }
                         Spacer(modifier = Modifier.width(8.dp))
                         Button(
-                            onClick = { showFilterPanel = false },
+                            onClick = {
+                                showFilterPanel = false
+                                viewModel.carregarTarefas()
+                            },
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = Color(0xFFDD7B78),
                                 contentColor = Color.White
@@ -726,7 +659,7 @@ fun ListaTarefasScreen(navController: NavController, paddingValues: PaddingValue
                     .fillMaxWidth()
             ) {
                 Text(
-                    style = MaterialTheme.typography.bodyLarge.copy(        fontWeight = FontWeight.Bold
+                    style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold
                     ),
                     textAlign = TextAlign.Center,
                     text = "Deseja remover a tarefa \"${deleteTaskName.value}\"?"
@@ -742,7 +675,7 @@ fun ListaTarefasScreen(navController: NavController, paddingValues: PaddingValue
             }
         },
         onConfirm = {
-            println("Deletar Tarefa")
+            viewModel.deletarTarefa()
             showDeleteModal = false
         },
         onCancel = {
@@ -752,4 +685,3 @@ fun ListaTarefasScreen(navController: NavController, paddingValues: PaddingValue
 
     )
 }
-
