@@ -8,7 +8,7 @@ import retrofit2.create
 
 object ApiInstance {
 
-    private const val BASE_URL = "http://172.18.32.1:8080/api/"
+    private const val BASE_URL = "http://3.226.195.212/api/"
     private lateinit var retrofit: Retrofit
 
     fun init(context: Context){

@@ -13,6 +13,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -80,7 +83,8 @@ fun EmailRegistrationScreen(){
             }
             Column (
                 verticalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier.height(200.dp)
+                modifier = Modifier.height(250.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
                     text = "Enviamos um e-mail para [e-mail] para confirmar a validade do seu endereço de e-mail. Após receber o e-mail, siga o link fornecido para completar o seu registro.",
@@ -88,26 +92,41 @@ fun EmailRegistrationScreen(){
                     textAlign = TextAlign.Center,
                     modifier = Modifier.padding(horizontal = 24.dp)
                 )
+
                 Row (
                     horizontalArrangement = Arrangement.Center,
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
                         text = "Se você não recebeu o e-mail,",
-                        style = MaterialTheme.typography.bodySmall.copy(fontSize = 17.sp),
-
-                        )
-                    Spacer(
-                        modifier = Modifier.width(5.dp)
+                        style = MaterialTheme.typography.bodySmall.copy(fontSize = 17.sp)
                     )
+                    Spacer(modifier = Modifier.width(5.dp))
                     Text(
                         text = "clique aqui",
                         style = MaterialTheme.typography.bodySmall.copy(fontSize = 17.sp),
-
                         color = Color(0xFFF38986),
-                        modifier = Modifier.clickable {}
+                        modifier = Modifier.clickable { }
                     )
                 }
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                Button(
+                    onClick = {
+
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth(0.8f)
+                        .align(Alignment.CenterHorizontally),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFFDD7B78),
+                        contentColor = Color.White
+                    )
+                ) {
+                    Text(text = "Voltar para a página inicial", color = Color.White)
+                }
+
             }
         }
     }
