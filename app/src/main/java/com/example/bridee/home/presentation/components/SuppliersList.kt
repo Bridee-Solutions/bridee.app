@@ -27,18 +27,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.bridee.R
-import com.example.bridee.calculadora.domain.CalculadoraViewModel
-import com.example.bridee.calculadora.presentation.components.Calculadora.ControleDeGastoCard
+import com.example.bridee.calculadora.presentation.components.Calculadora.GastoCard
+import com.example.bridee.core.navigation.Screen
 import com.example.bridee.home.domain.Categoria
 import com.example.bridee.home.presentation.viewmodel.HomeViewModel
 import com.example.bridee.ui.components.CustomModal
+import java.math.BigDecimal
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SuppliersList(
     viewModel: HomeViewModel,
-    calculadoraViewModel: CalculadoraViewModel
+    navController: NavController
 ) {
     var showModal by remember { mutableStateOf(false) }
     var selectedCategoryId by remember { mutableIntStateOf(0) }
@@ -91,19 +93,28 @@ fun SuppliersList(
         }
 
         item {
-            ControleDeGastoCard(calculadoraViewModel)
+            val orcamento = viewModel.orcamento()
+            val orcamentoTotal = orcamento?.orcamentoTotal ?: BigDecimal("0")
+            val orcamentoGasto = orcamento?.orcamentoGasto ?: BigDecimal("0")
+            GastoCard(orcamentoTotal, orcamentoGasto, {})
         }
 
         item {
+            val tarefasInfo = viewModel.tarefas()
+            val totalItens = tarefasInfo?.totalItens ?: 0
+            val totalConcluidas = tarefasInfo?.totalConcluidos ?: 0
+            val totalAtrasadas = tarefasInfo?.totalAtrasadas ?: 0
             InfoCardSection(
                 title = "Lista de tarefas",
-                totalInfo = "100 tarefas",
+                totalInfo = "$totalItens",
                 cards = listOf(
-                    Triple("20", "Concluídas", 0),
-                    Triple("78", "A fazer", 0),
-                    Triple("2", "Atrasadas", 0)
+                    Triple("$totalConcluidas", "Concluídas", 0),
+                    Triple("${totalItens - totalConcluidas}", "A fazer", 0),
+                    Triple("$totalAtrasadas", "Atrasadas", 0)
                 ),
-                onClick = { /* TODO: precisa navegar para tela de tarefas */ }
+                onClick = {
+                    navController.navigate(Screen.ListaTarefas.route)
+                }
             )
         }
     }

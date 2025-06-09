@@ -12,7 +12,9 @@ import com.example.bridee.home.data.HomeEndpoints
 import com.example.bridee.home.domain.AssessorResponse
 import com.example.bridee.home.domain.Categoria
 import com.example.bridee.home.domain.Fornecedor
+import com.example.bridee.home.domain.HomeOrcamentoResponse
 import com.example.bridee.home.domain.HomeResponseDto
+import com.example.bridee.home.domain.HomeTarefasResponse
 import com.example.bridee.home.domain.OrcamentoFornecedorRequest
 import com.example.bridee.home.domain.icons
 import kotlinx.coroutines.launch
@@ -182,5 +184,13 @@ class HomeViewModel: ViewModel() {
                 e.printStackTrace()
             }
         }
+    }
+
+    fun tarefas(): HomeTarefasResponse? {
+        return homeResponse?.tarefas
+    }
+
+    fun orcamento(): HomeOrcamentoResponse?{
+        return homeResponse?.orcamento
     }
 }

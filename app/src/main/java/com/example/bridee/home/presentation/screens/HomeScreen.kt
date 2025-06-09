@@ -8,7 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavController
-import com.example.bridee.calculadora.domain.CalculadoraViewModel
 import com.example.bridee.home.presentation.components.CountdownSection
 import com.example.bridee.home.presentation.components.SuppliersList
 import com.example.bridee.home.presentation.components.WeddingHeader
@@ -19,7 +18,6 @@ import com.example.bridee.home.presentation.viewmodel.HomeViewModel
 fun HomeScreen(
     viewModel: HomeViewModel,
     navController: NavController,
-    calculadoraViewModel: CalculadoraViewModel,
     paddingValues: PaddingValues
 ) {
     val homeResponse = viewModel.homeResponse
@@ -36,7 +34,7 @@ fun HomeScreen(
             homeResponse = homeResponse,
             navController = navController)
         CountdownSection(viewModel)
-        SuppliersList(viewModel, calculadoraViewModel)
+        SuppliersList(viewModel, navController)
     }}
 
 
