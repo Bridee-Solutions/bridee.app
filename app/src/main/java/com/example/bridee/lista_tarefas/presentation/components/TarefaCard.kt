@@ -1,5 +1,6 @@
 package com.example.bridee.lista_tarefas.presentation.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -34,13 +35,17 @@ fun TarefaCard(
     tarefa: Tarefa,
     deleteTaskName: MutableState<String>,
     onDeleteClick: () -> Unit,
+    onUpdateClick: () -> Unit,
     onCheckClick: (Boolean) -> Unit
 ) {
 
     val isChecked = remember { mutableStateOf(tarefa.status) }
     Card(
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable(true) {
+                onUpdateClick()
+            },
         colors = CardColors(
             containerColor = Color.Transparent,
             contentColor = Color.Gray,

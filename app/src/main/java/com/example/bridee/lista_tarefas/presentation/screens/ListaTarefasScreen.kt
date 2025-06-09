@@ -133,21 +133,6 @@ fun ListaTarefasScreen(
     var showDeleteModal by remember { mutableStateOf(false) }
     var showFilterPanel by remember { mutableStateOf(false) }
 
-//    val tarefasAgrupadas = tarefas.groupBy {
-//        val data = it.dataLimite
-//        if (data != null && data.isBefore(hoje)) {
-//            "Atrasado"
-//        } else if (data != null) {
-//            val mes = data.month.getDisplayName(TextStyleDate.FULL, Locale.getDefault())
-//                .replaceFirstChar { char ->
-//                    if (char.isLowerCase()) char.titlecase(Locale.getDefault()) else char.toString()
-//                }
-//            "$mes ${data.year}"
-//        } else {
-//            "Sem data"
-//        }
-//    }
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -252,7 +237,7 @@ fun ListaTarefasScreen(
                                     .border(1.dp, Color.LightGray, RoundedCornerShape(8.dp))
                             ) {
 
-                                Column () {
+                                Column{
                                     it.value.forEachIndexed { index, task ->
                                         TarefaCard(
                                             tarefa = task,
@@ -263,7 +248,13 @@ fun ListaTarefasScreen(
                                             deleteTaskName = deleteTaskName,
                                             onCheckClick = { isChecked ->
                                                 val novoStatus = if (task.status == "CONCLUIDO") "EM_ANDAMENTO" else "CONCLUIDO"
+                                                viewModel.selectedTarefa = task
+                                                viewModel.selectedTarefa.status = novoStatus
                                                 viewModel.atualizarTarefa(task.id!!)
+                                            },
+                                            onUpdateClick = {
+                                                viewModel.selectedTarefa = task
+                                                showCreateModal = true
                                             }
                                         )
 
@@ -279,9 +270,13 @@ fun ListaTarefasScreen(
                             }
                         }
                     }
-
                     item {
-                        AddTarefa(showCreateModal = showCreateModal, onAddClick = {showCreateModal = true })
+                        AddTarefa(onAddClick = {showCreateModal = true })
+                    }
+                }
+                if(tarefas.isEmpty()){
+                    item {
+                        AddTarefa(onAddClick = {showCreateModal = true })
                     }
                 }
             }
@@ -328,8 +323,8 @@ fun ListaTarefasScreen(
                                 focusedContainerColor = Color.Transparent,
                                 unfocusedContainerColor = Color.Transparent,
                                 disabledContainerColor = Color.Transparent,
-                                focusedIndicatorColor = Color.Transparent, // Remove a linha inferior no estado focado
-                                unfocusedIndicatorColor = Color.Transparent // Remove a linha inferior no estado não focado
+                                focusedIndicatorColor = Color.Transparent,
+                                unfocusedIndicatorColor = Color.Transparent
                             )
                         )
                     }
@@ -456,41 +451,13 @@ fun ListaTarefasScreen(
                             categoria = it.uppercase()
                         )}
                     )
-//                    Row(
-//                        modifier = Modifier
-//                            .fillMaxWidth(0.8f)
-//                            .height(48.dp)
-//                            .clip(RoundedCornerShape(8.dp))
-//                            .border(1.dp, Color.LightGray, RoundedCornerShape(8.dp))
-//                            .background(Color.White)
-//                            .padding(horizontal = 8.dp),
-//                        verticalAlignment = Alignment.CenterVertically
-//                    ) {
-//
-//                        TextField(
-//                            value = categoryTaskText,
-//                            onValueChange = { categoryTaskText = it },
-//                            textStyle = MaterialTheme.typography.bodyMedium,
-//                            modifier = Modifier
-//                                .fillMaxWidth()
-//                                .background(Color.Transparent),
-//                            colors = TextFieldDefaults.colors(
-//                                focusedContainerColor = Color.Transparent,
-//                                unfocusedContainerColor = Color.Transparent,
-//                                disabledContainerColor = Color.Transparent,
-//                                focusedIndicatorColor = Color.Transparent,
-//                                unfocusedIndicatorColor = Color.Transparent
-//                            )
-//                        )
-//                    }
                 }
             }
 
         },
         onConfirm = {
             viewModel.adicionarTarefa()
-            showCreateModal = true
-            viewModel.selectedTarefa = Tarefa()
+            showCreateModal = false
         },
         onCancel = {
             showCreateModal = false

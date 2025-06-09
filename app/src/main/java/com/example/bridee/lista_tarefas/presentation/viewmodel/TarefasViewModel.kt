@@ -4,8 +4,6 @@ import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.text.substring
-import androidx.compose.ui.text.toUpperCase
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bridee.core.api.ApiInstance
@@ -48,17 +46,22 @@ class TarefasViewModel : ViewModel() {
                     request.dataLimite = date(request.dataLimite)
                     val response = tarefaService.adicionarTarefa(request)
                     if(response.isSuccessful){
-                        tarefas = tarefas.map {
-                            val novaTarefaAno = request.dataLimite.split("-")[0].toInt()
-                            if(it!!.ano == novaTarefaAno){
-                                it.adicionarTarefa(response.body()!!)
-                            }else{
-                                it
-                            }
-                        }
+                        carregarTarefas()
+//                        if(tarefas.isEmpty()){
+//                            carregarTarefas()
+//                        }else{
+//                            val tarefasAtualizadas = tarefas.map {
+//                                val novaTarefaAno = request.dataLimite.split("-")[0].toInt()
+//                                if(it!!.ano == novaTarefaAno){
+//                                    it.adicionarTarefa(response.body()!!)
+//                                }
+//                                it
+//                            }
+//                            tarefas = tarefasAtualizadas
+//                        }
                     }
                 }catch (e: Exception){
-                    Log.e("TAREFAS", "Tarefa adicionada com sucesso")
+                    Log.e("TAREFAS", "Tarefa adicionada com sucesso ${e.message}")
                     e.printStackTrace()
                 }
         }
@@ -77,17 +80,19 @@ class TarefasViewModel : ViewModel() {
             try {
                 val response = tarefaService.atualizarTarefa(id, request)
                 if(response.isSuccessful){
-                    tarefas = tarefas.map {
-                        val tarefaEncontrada = it!!.findTaskById(id)
-                        if(tarefaEncontrada.id == id){
-                            it.updateTask(id, response.body()!!)
-                        }else{
-                            it
-                        }
-                    }
+                    carregarTarefas()
+//                    val tarefasAtualizadas = tarefas.map {
+//                        val tarefaEncontrada = it!!.findTaskById(id)
+//                        if(tarefaEncontrada.id == id){
+//                            it.updateTask(id, response.body()!!)
+//                        }else{
+//                            it
+//                        }
+//                    }
+//                    tarefas = tarefasAtualizadas
                 }
             }catch (e: Exception){
-                Log.e("TAREFAS", "Houve um erro ao atualizar as tarefas")
+                Log.e("TAREFAS", "Houve um erro ao atualizar as tarefas ${e.message}")
             }
         }
     }
@@ -109,7 +114,7 @@ class TarefasViewModel : ViewModel() {
                     tarefas = updatedTasks
                 }
             }catch (e: Exception){
-                Log.e("TAREFAS", "Houve um erro ao deletar as tarefas")
+                Log.e("TAREFAS", "Houve um erro ao deletar as tarefas ${e.message}")
             }
         }
     }
