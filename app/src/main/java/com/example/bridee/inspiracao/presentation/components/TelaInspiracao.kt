@@ -70,7 +70,7 @@ fun TelaInspiracao(viewModel: TelaInspiracaoViewModel) {
     }
 
     LaunchedEffect(reachedBottom) {
-        if(reachedBottom && (pexelsInfo?.photos?.isNotEmpty() == true)){
+        if(reachedBottom && pexelsInfo.photos.isNotEmpty()){
             viewModel.lastPageFetched++
             viewModel.findPexelsImage(inspiracao);
         }
@@ -222,6 +222,7 @@ fun TelaInspiracao(viewModel: TelaInspiracaoViewModel) {
                                     .clickable {
                                         viewModel.lastPageFetched = 1
                                         inspiracao = "Casamento em $estilo"
+                                        viewModel.pexelsInfo = null
                                         viewModel.findPexelsImage(inspiracao)
                                         showFilterDialog = false
                                     }
