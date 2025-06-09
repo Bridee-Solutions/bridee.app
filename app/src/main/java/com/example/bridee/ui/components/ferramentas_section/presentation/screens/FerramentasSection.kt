@@ -83,7 +83,7 @@ fun FerramentasSection(navController: NavController, selectedTool: Tool) {
 
             Spacer(modifier = Modifier.width(16.dp))
 
-            FerramentaItem(
+            /* FerramentaItem(
                 nome = "Convidados",
                 iconeRes = R.drawable.ic_convidados,
                 ativo = selectedTool == Tool.CONVIDADOS,
@@ -93,7 +93,7 @@ fun FerramentasSection(navController: NavController, selectedTool: Tool) {
                         restoreState = true
                     }
                 }
-            )
+            )*/
 
 
 

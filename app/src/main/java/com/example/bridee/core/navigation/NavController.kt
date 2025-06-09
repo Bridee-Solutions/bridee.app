@@ -138,8 +138,15 @@ fun NavController(
             }
         }
         composable(route = Screen.Home.route) {
-            val viewModel: HomeViewModel = viewModel()
-            HomeScreen(viewModel, navController, paddingValues)
+            val homeViewModel: HomeViewModel = viewModel()
+            val calculadoraViewModel: CalculadoraViewModel = viewModel()
+
+            HomeScreen(
+                viewModel = homeViewModel,
+                calculadoraViewModel = calculadoraViewModel,
+                navController = navController,
+                paddingValues = paddingValues
+            )
         }
         composable(route = Screen.Servicos.route) {
             val viewModel: CategoriasViewModel = viewModel()

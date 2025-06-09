@@ -28,6 +28,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.bridee.R
+import com.example.bridee.calculadora.domain.CalculadoraViewModel
+import com.example.bridee.calculadora.presentation.components.Calculadora.ControleDeGastoCard
 import com.example.bridee.home.domain.Categoria
 import com.example.bridee.home.presentation.viewmodel.HomeViewModel
 import com.example.bridee.ui.components.CustomModal
@@ -35,7 +37,8 @@ import com.example.bridee.ui.components.CustomModal
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SuppliersList(
-    viewModel: HomeViewModel
+    viewModel: HomeViewModel,
+    calculadoraViewModel: CalculadoraViewModel
 ) {
     var showModal by remember { mutableStateOf(false) }
     var selectedCategoryId by remember { mutableIntStateOf(0) }
@@ -86,7 +89,25 @@ fun SuppliersList(
                 )
             }
         }
+
+        item {
+            ControleDeGastoCard(calculadoraViewModel)
+        }
+
+        item {
+            InfoCardSection(
+                title = "Lista de tarefas",
+                totalInfo = "100 tarefas",
+                cards = listOf(
+                    Triple("20", "Concluídas", 0),
+                    Triple("78", "A fazer", 0),
+                    Triple("2", "Atrasadas", 0)
+                ),
+                onClick = { /* TODO: precisa navegar para tela de tarefas */ }
+            )
+        }
     }
+
 
     CustomModal(
         showModal = showModal,
