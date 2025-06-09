@@ -73,7 +73,7 @@ fun ListaTarefasScreen(
     val tarefas = viewModel.tarefas
     val concluidas = tarefas.sumOf { it?.tarefas!!.tarefasConcluidas() }
     val progresso = tarefas.sumOf { it?.tarefas!!.tarefasEmProgresso() }
-    val total = tarefas.sumOf { it?.tarefas!!.totalTarefas() }
+    var total = tarefas.sumOf { it?.tarefas!!.totalTarefas() }
 
     LaunchedEffect(true) {
         viewModel.carregarTarefas()
@@ -150,7 +150,11 @@ fun ListaTarefasScreen(
                     .border(1.dp, Color.LightGray, RoundedCornerShape(4.dp))
                     .padding(1.dp)
             ) {
+                if(total == 0){
+                    total = 1
+                }
                 LinearProgressIndicator(
+                    progress = (concluidas.toFloat()/total),
                     modifier = Modifier
                         .fillMaxSize(),
                     color = rosa,
